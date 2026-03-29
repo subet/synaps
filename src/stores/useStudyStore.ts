@@ -1,0 +1,188 @@
+import { create } from 'zustand';
+import {
+  bulkInsertCards,
+  completeStudySession,
+  createStudySession,
+  createCard,
+  deleteCard,
+  getDueCards,
+  getCardsByDeckId,
+  recordStudyActivity,
+  updateCard,
+} from '../services/database';
+import { calculateSM2 } from '../services/srs';
+import { Card, SRSGrade, StudySessionResult } from '../types';
+
+interface StudyState {
+  // Current study session
+  sessionId: string | null;
+  queue: Card[];
+  currentIndex: number;
+  isFlipped: boolean;
+  sessionStartTime: number | null;
+  gradeDistribution: { again: number; hard: number; good: number; easy: number };
+  isSessionComplete: boolean;
+  sessionResult: StudySessionResult | null;
+
+  // Card list for deck view
+  deckCards: Card[];
+  isLoadingCards: boolean;
+
+  startSession: (deckId: string) => Promise<void>;
+  flipCard: () => void;
+  gradeCard: (grade: SRSGrade) => Promise<void>;
+  endSession: () => Promise<void>;
+  resetSession: () => void;
+
+  loadDeckCards: (deckId: string) => Promise<void>;
+  createCard: (data: Omit<Card, 'id' | 'created_at' | 'updated_at'>) => Promise<Card>;
+  updateCard: (id: string, data: Partial<Omit<Card, 'id' | 'created_at'>>) => Promise<void>;
+  deleteCard: (id: string) => Promise<void>;
+}
+
+export const useStudyStore = create<StudyState>((set, get) => ({
+  sessionId: null,
+  queue: [],
+  currentIndex: 0,
+  isFlipped: false,
+  sessionStartTime: null,
+  gradeDistribution: { again: 0, hard: 0, good: 0, easy: 0 },
+  isSessionComplete: false,
+  sessionResult: null,
+  deckCards: [],
+  isLoadingCards: false,
+
+  startSession: async (deckId) => {
+    const session = await createStudySession(deckId);
+    const dueCards = await getDueCards(deckId);
+
+    set({
+      sessionId: session.id,
+      queue: dueCards,
+      currentIndex: 0,
+      isFlipped: false,
+      sessionStartTime: Date.now(),
+      gradeDistribution: { again: 0, hard: 0, good: 0, easy: 0 },
+      isSessionComplete: dueCards.length === 0,
+      sessionResult: null,
+    });
+  },
+
+  flipCard: () => {
+    set((state) => ({ isFlipped: !state.isFlipped }));
+  },
+
+  gradeCard: async (grade) => {
+    const { queue, currentIndex, gradeDistribution } = get();
+    const card = queue[currentIndex];
+    if (!card) return;
+
+    // Calculate new SRS values
+    const result = calculateSM2(
+      grade,
+      card.ease_factor,
+      card.interval,
+      card.repetitions,
+      card.status
+    );
+
+    // Update card in database
+    await updateCard(card.id, {
+      ease_factor: result.easeFactor,
+      interval: result.interval,
+      repetitions: result.repetitions,
+      status: result.status,
+      due_date: result.dueDate.toISOString(),
+      last_reviewed: new Date().toISOString(),
+    });
+
+    // Track grade distribution
+    const gradeKey = (['again', 'hard', 'good', 'easy'] as const)[grade];
+    const newDist = { ...gradeDistribution, [gradeKey]: gradeDistribution[gradeKey] + 1 };
+
+    const nextIndex = currentIndex + 1;
+    const isLast = nextIndex >= queue.length;
+
+    if (isLast) {
+      await get().endSession();
+      set({ gradeDistribution: newDist });
+    } else {
+      set({ currentIndex: nextIndex, isFlipped: false, gradeDistribution: newDist });
+    }
+  },
+
+  endSession: async () => {
+    const { sessionId, queue, gradeDistribution, sessionStartTime } = get();
+    if (!sessionId) return;
+
+    const durationSeconds = sessionStartTime
+      ? Math.round((Date.now() - sessionStartTime) / 1000)
+      : 0;
+
+    const cardsStudied = queue.length;
+    const cardsCorrect = gradeDistribution.good + gradeDistribution.easy;
+
+    await completeStudySession(sessionId, {
+      cards_studied: cardsStudied,
+      cards_correct: cardsCorrect,
+      duration_seconds: durationSeconds,
+    });
+
+    await recordStudyActivity(cardsStudied);
+
+    set({
+      isSessionComplete: true,
+      sessionResult: {
+        cardsStudied,
+        cardsCorrect,
+        durationSeconds,
+        gradeDistribution,
+      },
+    });
+  },
+
+  resetSession: () => {
+    set({
+      sessionId: null,
+      queue: [],
+      currentIndex: 0,
+      isFlipped: false,
+      sessionStartTime: null,
+      gradeDistribution: { again: 0, hard: 0, good: 0, easy: 0 },
+      isSessionComplete: false,
+      sessionResult: null,
+    });
+  },
+
+  loadDeckCards: async (deckId) => {
+    set({ isLoadingCards: true });
+    try {
+      const cards = await getCardsByDeckId(deckId);
+      set({ deckCards: cards, isLoadingCards: false });
+    } catch {
+      set({ isLoadingCards: false });
+    }
+  },
+
+  createCard: async (data) => {
+    const card = await createCard(data);
+    set((state) => ({ deckCards: [...state.deckCards, card] }));
+    return card;
+  },
+
+  updateCard: async (id, data) => {
+    await updateCard(id, data);
+    set((state) => ({
+      deckCards: state.deckCards.map((c) =>
+        c.id === id ? { ...c, ...data } : c
+      ),
+    }));
+  },
+
+  deleteCard: async (id) => {
+    await deleteCard(id);
+    set((state) => ({
+      deckCards: state.deckCards.filter((c) => c.id !== id),
+    }));
+  },
+}));
