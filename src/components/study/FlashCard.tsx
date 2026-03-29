@@ -6,6 +6,8 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import * as Speech from 'expo-speech';
+import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { Card } from '../../types';
 
@@ -14,9 +16,10 @@ interface FlashCardProps {
   isFlipped: boolean;
   onFlip: () => void;
   reversed?: boolean;
+  speakLanguage?: string;
 }
 
-export function FlashCard({ card, isFlipped, onFlip, reversed = false }: FlashCardProps) {
+export function FlashCard({ card, isFlipped, onFlip, reversed = false, speakLanguage }: FlashCardProps) {
   const rotation = useSharedValue(0);
 
   useEffect(() => {
@@ -72,6 +75,19 @@ export function FlashCard({ card, isFlipped, onFlip, reversed = false }: FlashCa
           <Image source={{ uri: backImage }} style={styles.image} resizeMode="contain" />
         ) : null}
         <Text style={typography.cardBack}>{backText}</Text>
+        {speakLanguage ? (
+          <Pressable
+            style={styles.speakBtn}
+            onPress={(e) => {
+              e.stopPropagation();
+              Speech.speak(backText, { language: speakLanguage });
+            }}
+            hitSlop={12}
+            accessibilityLabel="Listen to pronunciation"
+          >
+            <Ionicons name="volume-high" size={22} color={colors.primary} />
+          </Pressable>
+        ) : null}
       </Animated.View>
     </Pressable>
   );
@@ -134,5 +150,16 @@ const styles = StyleSheet.create({
   tapHintText: {
     ...typography.caption,
     color: colors.textMuted,
+  },
+  speakBtn: {
+    position: 'absolute',
+    bottom: spacing.md,
+    right: spacing.md,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.primaryLight,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

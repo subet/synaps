@@ -16,6 +16,17 @@ import { RatingButtons } from '../../src/components/study/RatingButtons';
 import { FlashCard } from '../../src/components/study/FlashCard';
 import { Button } from '../../src/components/ui/Button';
 import { colors, spacing, typography } from '../../src/constants';
+
+const LANGUAGE_CODES: Record<string, string> = {
+  'deck-german-vocab': 'de',
+  'deck-spanish-vocab': 'es',
+  'deck-french-vocab': 'fr',
+  'deck-turkish-vocab': 'tr',
+  'deck-dutch-vocab': 'nl',
+  'deck-russian-vocab': 'ru',
+  'deck-arabic-vocab': 'ar',
+  'deck-chinese-vocab': 'zh',
+};
 import { getPreviewIntervals } from '../../src/services/srs';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStudyStore } from '../../src/stores/useStudyStore';
@@ -39,6 +50,7 @@ export default function StudyScreen() {
   } = useStudyStore();
 
   const deck = getDeckById(deckId);
+  const speakLanguage = deck?.source_id ? LANGUAGE_CODES[deck.source_id] : undefined;
   const currentCard = queue[currentIndex];
 
   const progressWidth = useSharedValue(0);
@@ -114,6 +126,7 @@ export default function StudyScreen() {
           isFlipped={isFlipped}
           onFlip={flipCard}
           reversed={deck?.reverse_cards}
+          speakLanguage={speakLanguage}
         />
       </View>
 
