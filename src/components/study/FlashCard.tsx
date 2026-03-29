@@ -11,25 +11,47 @@ import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { Card } from '../../types';
 
+// Per-language card colors & flags
+const LANGUAGE_META: Record<string, { color: string; flag: string }> = {
+  de: { color: '#667eea', flag: '🇩🇪' },
+  es: { color: '#f5576c', flag: '🇪🇸' },
+  fr: { color: '#4facfe', flag: '🇫🇷' },
+  tr: { color: '#fda085', flag: '🇹🇷' },
+  nl: { color: '#fa709a', flag: '🇳🇱' },
+  ru: { color: '#a18cd1', flag: '🇷🇺' },
+  ar: { color: '#43e97b', flag: '🇸🇦' },
+  zh: { color: '#ff0844', flag: '🇨🇳' },
+};
+
+const DEFAULT_COLOR = '#4361EE';
+
 interface FlashCardProps {
   card: Card;
   isFlipped: boolean;
   onFlip: () => void;
   reversed?: boolean;
   speakLanguage?: string;
+  deckIcon?: string;
 }
 
-export function FlashCard({ card, isFlipped, onFlip, reversed = false, speakLanguage }: FlashCardProps) {
+export function FlashCard({
+  card,
+  isFlipped,
+  onFlip,
+  reversed = false,
+  speakLanguage,
+  deckIcon,
+}: FlashCardProps) {
   const rotation = useSharedValue(0);
 
   useEffect(() => {
-    rotation.value = withTiming(isFlipped ? 1 : 0, { duration: 350 });
+    rotation.value = withTiming(isFlipped ? 1 : 0, { duration: 380 });
   }, [isFlipped]);
 
   const frontStyle = useAnimatedStyle(() => {
     const rotateY = interpolate(rotation.value, [0, 0.5, 1], [0, 90, 180]);
     return {
-      transform: [{ perspective: 1000 }, { rotateY: `${rotateY}deg` }],
+      transform: [{ perspective: 1200 }, { rotateY: `${rotateY}deg` }],
       backfaceVisibility: 'hidden',
       opacity: rotation.value < 0.5 ? 1 : 0,
     };
@@ -38,7 +60,7 @@ export function FlashCard({ card, isFlipped, onFlip, reversed = false, speakLang
   const backStyle = useAnimatedStyle(() => {
     const rotateY = interpolate(rotation.value, [0, 0.5, 1], [180, 270, 360]);
     return {
-      transform: [{ perspective: 1000 }, { rotateY: `${rotateY}deg` }],
+      transform: [{ perspective: 1200 }, { rotateY: `${rotateY}deg` }],
       backfaceVisibility: 'hidden',
       opacity: rotation.value >= 0.5 ? 1 : 0,
     };
@@ -49,45 +71,72 @@ export function FlashCard({ card, isFlipped, onFlip, reversed = false, speakLang
   const frontImage = reversed ? card.back_image : card.front_image;
   const backImage = reversed ? card.front_image : card.back_image;
 
+  const langMeta = speakLanguage ? LANGUAGE_META[speakLanguage] : undefined;
+  const cardColor = langMeta?.color ?? DEFAULT_COLOR;
+  // Language decks show flag; all other decks show the deck icon
+  const cornerIcon = langMeta?.flag ?? deckIcon;
+
+  const handleSpeak = () => {
+    if (!speakLanguage) return;
+    const text = reversed ? card.front : card.back;
+    Speech.speak(text, { language: speakLanguage });
+  };
+
   return (
     <Pressable onPress={onFlip} style={styles.wrapper} accessibilityRole="button">
-      {/* Front */}
-      <Animated.View style={[styles.card, frontStyle]}>
+      {/* ── Front ── */}
+      <Animated.View style={[styles.card, { backgroundColor: cardColor }, frontStyle]}>
+        {/* Shine overlay */}
+        <View style={styles.shineOverlay} pointerEvents="none" />
+
+        {cornerIcon ? (
+          <View style={styles.flagBadge}>
+            <Text style={styles.flagText}>{cornerIcon}</Text>
+          </View>
+        ) : null}
+
         {frontImage ? (
           <Image source={{ uri: frontImage }} style={styles.image} resizeMode="contain" />
         ) : null}
-        <Text style={typography.cardFront}>{frontText}</Text>
+
+        <Text style={styles.frontText}>{frontText}</Text>
+
         <View style={styles.tapHint}>
-          <Text style={styles.tapHintText}>👆 Tap to show answer</Text>
+          <Text style={styles.tapHintText}>Tap to reveal</Text>
         </View>
       </Animated.View>
 
-      {/* Back */}
+      {/* ── Back ── */}
       <Animated.View style={[styles.card, styles.cardBack, backStyle]}>
+        {/* Flag + speak — top-right, absolute */}
+        <View style={styles.topRight}>
+          {cornerIcon ? (
+            <Text style={styles.flagText}>{cornerIcon}</Text>
+          ) : null}
+          {speakLanguage ? (
+            <Pressable
+              onPress={handleSpeak}
+              style={styles.speakBtn}
+              hitSlop={10}
+              accessibilityLabel="Listen to pronunciation"
+            >
+              <Ionicons name="volume-high-outline" size={18} color={colors.primary} />
+            </Pressable>
+          ) : null}
+        </View>
+
         {frontImage ? (
           <Image source={{ uri: frontImage }} style={styles.imageSmall} resizeMode="contain" />
         ) : null}
-        <Text style={[typography.cardFront, styles.frontRef]} numberOfLines={2}>
-          {frontText}
-        </Text>
+
+        <Text style={styles.frontRef} numberOfLines={2}>{frontText}</Text>
         <View style={styles.divider} />
+
         {backImage ? (
           <Image source={{ uri: backImage }} style={styles.image} resizeMode="contain" />
         ) : null}
-        <Text style={typography.cardBack}>{backText}</Text>
-        {speakLanguage ? (
-          <Pressable
-            style={styles.speakBtn}
-            onPress={(e) => {
-              e.stopPropagation();
-              Speech.speak(backText, { language: speakLanguage });
-            }}
-            hitSlop={12}
-            accessibilityLabel="Listen to pronunciation"
-          >
-            <Ionicons name="volume-high" size={22} color={colors.primary} />
-          </Pressable>
-        ) : null}
+
+        <Text style={styles.backText}>{backText}</Text>
       </Animated.View>
     </Pressable>
   );
@@ -96,27 +145,126 @@ export function FlashCard({ card, isFlipped, onFlip, reversed = false, speakLang
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    justifyContent: 'center',
   },
+
+  // ── Shared card shell ──
   card: {
     position: 'absolute',
+    top: 0,
+    bottom: 0,
     left: 0,
     right: 0,
-    minHeight: 300,
-    backgroundColor: colors.surface,
-    borderRadius: borderRadius.xl,
+    borderRadius: 28,
     padding: spacing.xl,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: colors.shadowColor,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 16,
-    elevation: 4,
+    overflow: 'hidden',
+    // Shadow
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.18,
+    shadowRadius: 24,
+    elevation: 10,
   },
+
+  // Front uses gradient (no background — LinearGradient fills it)
+  // Back is white
   cardBack: {
-    // Additional back styling applied dynamically
+    backgroundColor: colors.surface,
+    overflow: 'hidden',
   },
+
+  // Shine: semi-transparent white ellipse at top-left
+  shineOverlay: {
+    position: 'absolute',
+    top: -40,
+    left: -40,
+    width: 220,
+    height: 180,
+    borderRadius: 110,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+  },
+
+  // Flag badge — absolute top-right
+  flagBadge: {
+    position: 'absolute',
+    top: spacing.md,
+    right: spacing.md,
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  flagText: {
+    fontSize: 22,
+    lineHeight: 28,
+  },
+
+  // Front text
+  frontText: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    letterSpacing: -0.5,
+    textShadowColor: 'rgba(0,0,0,0.15)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
+
+  tapHint: {
+    position: 'absolute',
+    bottom: spacing.md,
+    alignSelf: 'center',
+  },
+  tapHintText: {
+    ...typography.caption,
+    color: 'rgba(255,255,255,0.7)',
+    letterSpacing: 0.3,
+  },
+
+  // Back: top-right cluster (flag + speak)
+  topRight: {
+    position: 'absolute',
+    top: spacing.md,
+    right: spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  speakBtn: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: colors.primaryLight,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  // Back content
+  frontRef: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: colors.textMuted,
+    marginBottom: spacing.md,
+    textAlign: 'center',
+  },
+  divider: {
+    height: 1,
+    width: '70%',
+    backgroundColor: colors.border,
+    marginBottom: spacing.md,
+  },
+  backText: {
+    fontSize: 34,
+    fontWeight: '700',
+    color: colors.textPrimary,
+    textAlign: 'center',
+    letterSpacing: -0.5,
+  },
+
   image: {
     width: '100%',
     height: 120,
@@ -129,37 +277,5 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.sm,
     marginBottom: spacing.sm,
     opacity: 0.6,
-  },
-  frontRef: {
-    color: colors.textSecondary,
-    fontSize: 16,
-    fontWeight: '500',
-    marginBottom: spacing.md,
-  },
-  divider: {
-    height: 1,
-    width: '80%',
-    backgroundColor: colors.border,
-    marginBottom: spacing.md,
-  },
-  tapHint: {
-    position: 'absolute',
-    bottom: spacing.md,
-    alignSelf: 'center',
-  },
-  tapHintText: {
-    ...typography.caption,
-    color: colors.textMuted,
-  },
-  speakBtn: {
-    position: 'absolute',
-    bottom: spacing.md,
-    right: spacing.md,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.primaryLight,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

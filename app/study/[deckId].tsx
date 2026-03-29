@@ -16,6 +16,11 @@ import { RatingButtons } from '../../src/components/study/RatingButtons';
 import { FlashCard } from '../../src/components/study/FlashCard';
 import { Button } from '../../src/components/ui/Button';
 import { colors, spacing, typography } from '../../src/constants';
+import { getPreviewIntervals } from '../../src/services/srs';
+import { useDeckStore } from '../../src/stores/useDeckStore';
+import { useStudyStore } from '../../src/stores/useStudyStore';
+import { useStreakStore } from '../../src/stores/useStreakStore';
+import { SRSGrade, StudySessionResult } from '../../src/types';
 
 const LANGUAGE_CODES: Record<string, string> = {
   'deck-german-vocab': 'de',
@@ -27,11 +32,6 @@ const LANGUAGE_CODES: Record<string, string> = {
   'deck-arabic-vocab': 'ar',
   'deck-chinese-vocab': 'zh',
 };
-import { getPreviewIntervals } from '../../src/services/srs';
-import { useDeckStore } from '../../src/stores/useDeckStore';
-import { useStudyStore } from '../../src/stores/useStudyStore';
-import { useStreakStore } from '../../src/stores/useStreakStore';
-import { SRSGrade, StudySessionResult } from '../../src/types';
 
 export default function StudyScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
@@ -127,6 +127,7 @@ export default function StudyScreen() {
           onFlip={flipCard}
           reversed={deck?.reverse_cards}
           speakLanguage={speakLanguage}
+          deckIcon={deck?.icon}
         />
       </View>
 
