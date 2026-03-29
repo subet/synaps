@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -111,7 +112,7 @@ export default function EditCardScreen() {
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           <View style={styles.topRow}>
             <Pressable onPress={() => router.back()}>
-              <Text style={styles.backText}>← Back</Text>
+              <Ionicons name="chevron-back" size={22} color={colors.primary} />
             </Pressable>
             <Text style={styles.title}>Edit Card</Text>
             <View style={{ width: 60 }} />
@@ -132,7 +133,7 @@ export default function EditCardScreen() {
               <View style={styles.imagePreview}>
                 <Image source={{ uri: frontImage }} style={styles.previewImg} resizeMode="contain" />
                 <Pressable onPress={() => setFrontImage(undefined)} style={styles.removeImg}>
-                  <Text style={styles.removeImgText}>✕</Text>
+                  <Ionicons name="close-circle" size={18} color={colors.white} />
                 </Pressable>
               </View>
             ) : null}
@@ -156,7 +157,7 @@ export default function EditCardScreen() {
               <View style={styles.imagePreview}>
                 <Image source={{ uri: backImage }} style={styles.previewImg} resizeMode="contain" />
                 <Pressable onPress={() => setBackImage(undefined)} style={styles.removeImg}>
-                  <Text style={styles.removeImgText}>✕</Text>
+                  <Ionicons name="close-circle" size={18} color={colors.white} />
                 </Pressable>
               </View>
             ) : null}

@@ -1,5 +1,6 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -90,7 +91,7 @@ export default function PaywallScreen() {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {/* Close button */}
         <Pressable style={styles.closeBtn} onPress={() => router.back()}>
-          <Text style={styles.closeText}>✕</Text>
+          <Ionicons name="close" size={22} color={colors.textSecondary} />
         </Pressable>
 
         {/* Header */}

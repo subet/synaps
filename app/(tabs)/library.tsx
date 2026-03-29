@@ -1,5 +1,6 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
@@ -366,7 +367,8 @@ function FeaturedDeckCard({
       <Text style={styles.featuredCount}>{deck.card_count} cards</Text>
       {isDownloaded ? (
         <View style={styles.downloadedBadge}>
-          <Text style={styles.downloadedBadgeText}>✓ Downloaded</Text>
+          <Ionicons name="checkmark" size={14} color={colors.white} />
+          <Text style={styles.downloadedBadgeText}> Downloaded</Text>
         </View>
       ) : (
         <Pressable
@@ -407,7 +409,7 @@ function EditorsChoiceDeckCard({
         <Text style={styles.editorsEmoji}>{getCategoryEmoji(deck.category)}</Text>
         {isDownloaded ? (
           <View style={styles.downloadedBadgeSmall}>
-            <Text style={styles.downloadedBadgeSmallText}>✓</Text>
+            <Ionicons name="checkmark" size={18} color={colors.white} />
           </View>
         ) : (
           <Pressable
@@ -447,7 +449,8 @@ function BrowseDeckCard({
       </View>
       {isDownloaded ? (
         <View style={styles.downloadedBadge}>
-          <Text style={styles.downloadedBadgeText}>✓ Done</Text>
+          <Ionicons name="checkmark" size={14} color={colors.white} />
+          <Text style={styles.downloadedBadgeText}> Done</Text>
         </View>
       ) : (
         <Pressable
@@ -666,9 +669,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     minWidth: 64,
+    flexDirection: 'row',
     alignItems: 'center',
-    height: 30,
     justifyContent: 'center',
+    height: 30,
   },
   downloadedBadgeText: { ...typography.smallBold, color: colors.white },
   downloadedBadgeSmall: {

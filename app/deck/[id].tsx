@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { CardListItem } from '../../src/components/deck/CardListItem';
 import { DonutChart } from '../../src/components/deck/DonutChart';
 import { Button } from '../../src/components/ui/Button';
@@ -55,7 +56,7 @@ export default function DeckDetailScreen() {
     return (
       <SafeAreaView style={styles.safe}>
         <Pressable style={styles.backBtn} onPress={() => router.back()}>
-          <Text style={styles.backText}>← Back</Text>
+          <Ionicons name="chevron-back" size={22} color={colors.primary} />
         </Pressable>
         <EmptyState title="Deck not found" subtitle="This deck may have been deleted." />
       </SafeAreaView>
@@ -67,15 +68,15 @@ export default function DeckDetailScreen() {
       {/* Header row */}
       <View style={styles.headerRow}>
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={styles.backText}>←</Text>
+          <Ionicons name="chevron-back" size={22} color={colors.primary} />
         </Pressable>
         <Text style={styles.deckName} numberOfLines={1}>{deck.name}</Text>
         <View style={styles.headerActions}>
           <Pressable onPress={() => router.push(`/card/create/${id}`)} style={styles.headerBtn}>
-            <Text style={styles.headerBtnText}>+□</Text>
+            <Ionicons name="add-circle-outline" size={22} color={colors.primary} />
           </Pressable>
           <Pressable onPress={() => router.push(`/deck/edit/${id}`)} style={styles.headerBtn}>
-            <Text style={styles.headerBtnText}>⚙</Text>
+            <Ionicons name="settings-outline" size={22} color={colors.primary} />
           </Pressable>
         </View>
       </View>
@@ -83,18 +84,17 @@ export default function DeckDetailScreen() {
       {/* Stats row */}
       <View style={styles.statsRow}>
         {/* Donut / due today */}
-        <View style={styles.statCard}>
+        <View style={[styles.statCard, styles.statCardDue]}>
           <Text style={styles.statCardTitle}>Cards for today</Text>
           <DonutChart
             total={stats?.dueToday ?? 0}
             reviewed={stats?.dueToday ?? 0}
-            size={110}
+            size={96}
           />
-          <Text style={styles.dueNumber}>{stats?.dueToday ?? 0}</Text>
         </View>
 
         {/* Progress bar */}
-        <View style={[styles.statCard, styles.statCardGrow]}>
+        <View style={[styles.statCard, styles.statCardGrow, styles.statCardProgress]}>
           <Text style={styles.statCardTitle}>{stats?.total ?? 0} cards in deck</Text>
           <ProgressBar stats={stats} />
           <View style={styles.legend}>
@@ -117,7 +117,7 @@ export default function DeckDetailScreen() {
           style={styles.addCardBtn}
           onPress={() => router.push(`/card/create/${id}`)}
         >
-          <Text style={styles.addCardBtnText}>+</Text>
+          <Ionicons name="add" size={24} color={colors.white} />
         </Pressable>
       </View>
 
@@ -146,7 +146,7 @@ export default function DeckDetailScreen() {
           { paddingBottom: 120 },
           filteredCards.length === 0 && { flex: 1 },
         ]}
-        getItemLayout={(_, index) => ({ length: 88, offset: 88 * index, index })}
+        getItemLayout={(_, index) => ({ length: 58, offset: 58 * index, index })}
       />
 
       {(stats?.dueToday ?? 0) > 0 && (
@@ -171,9 +171,9 @@ function ProgressBar({ stats }: { stats?: { total: number; notStudied: number; l
 
   return (
     <View style={styles.progressBar}>
-      <View style={[styles.progressSegment, { flex: notStudiedPct, backgroundColor: colors.notStudied }]} />
-      <View style={[styles.progressSegment, { flex: learningPct, backgroundColor: colors.learning }]} />
       <View style={[styles.progressSegment, { flex: masteredPct, backgroundColor: colors.mastered }]} />
+      <View style={[styles.progressSegment, { flex: learningPct, backgroundColor: colors.learning }]} />
+      <View style={[styles.progressSegment, { flex: notStudiedPct, backgroundColor: colors.notStudied }]} />
     </View>
   );
 }
@@ -207,17 +207,23 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.lg,
     padding: spacing.md,
     alignItems: 'center',
-    shadowColor: colors.shadowColor,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 1,
+    overflow: 'hidden',
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.10,
+    shadowRadius: 12,
+    elevation: 3,
+  },
+  statCardDue: {
+    backgroundColor: '#D6E0FF',
+  },
+  statCardProgress: {
+    backgroundColor: '#D6F5E3',
   },
   statCardGrow: { flex: 1 },
   statCardTitle: { ...typography.captionBold, color: colors.textSecondary, marginBottom: spacing.sm },
-  dueNumber: { ...typography.h2, color: colors.primary, marginTop: spacing.xs },
-  progressBar: { width: '100%', height: 12, borderRadius: 6, flexDirection: 'row', overflow: 'hidden', backgroundColor: colors.borderLight, marginBottom: spacing.sm },
-  progressBarEmpty: { width: '100%', height: 12, borderRadius: 6, backgroundColor: colors.borderLight, marginBottom: spacing.sm },
+  progressBar: { width: '100%', height: 10, borderRadius: 5, flexDirection: 'row', overflow: 'hidden', backgroundColor: colors.borderLight, marginBottom: spacing.sm },
+  progressBarEmpty: { width: '100%', height: 10, borderRadius: 5, backgroundColor: colors.borderLight, marginBottom: spacing.sm },
   progressSegment: {},
   legend: { width: '100%', gap: 4 },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },

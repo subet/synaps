@@ -1,56 +1,88 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { Card } from '../../types';
-import { StatusBadge } from '../ui/Badge';
 
 interface CardListItemProps {
   card: Card;
   onPress: () => void;
 }
 
+const STATUS_COLOR: Record<string, string> = {
+  new: colors.notStudied,
+  learning: colors.learning,
+  review: colors.primary,
+  mastered: colors.mastered,
+};
+
 export function CardListItem({ card, onPress }: CardListItemProps) {
+  const accentColor = STATUS_COLOR[card.status] ?? colors.notStudied;
+
   return (
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
       onPress={onPress}
       accessibilityLabel={`Card: ${card.front}`}
     >
-      <View style={styles.topRow}>
-        <StatusBadge status={card.status} />
-      </View>
-      <Text style={styles.front} numberOfLines={2}>{card.front}</Text>
-      <Text style={styles.back} numberOfLines={2}>{card.back}</Text>
+      {/* Status accent stripe */}
+      <View style={[styles.stripe, { backgroundColor: accentColor }]} />
+
+      {/* Front */}
+      <Text style={styles.front} numberOfLines={1}>{card.front}</Text>
+
+      {/* Divider arrow */}
+      <Ionicons name="arrow-forward" size={13} color={colors.textMuted} style={styles.arrow} />
+
+      {/* Back */}
+      <Text style={styles.back} numberOfLines={1}>{card.back}</Text>
+
+      {/* Edit chevron */}
+      <Ionicons name="chevron-forward" size={16} color={colors.borderLight} />
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
-    padding: spacing.md,
     marginHorizontal: spacing.md,
-    marginBottom: spacing.sm,
+    marginBottom: 6,
+    height: 52,
+    overflow: 'hidden',
     shadowColor: colors.shadowColor,
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
     elevation: 1,
   },
   pressed: {
-    opacity: 0.75,
+    opacity: 0.7,
+    transform: [{ scale: 0.99 }],
   },
-  topRow: {
-    marginBottom: spacing.sm,
+  stripe: {
+    width: 4,
+    alignSelf: 'stretch',
+    marginRight: spacing.sm,
   },
   front: {
     ...typography.bodyBold,
     color: colors.textPrimary,
-    marginBottom: spacing.xs,
+    flex: 1,
+    fontSize: 14,
+  },
+  arrow: {
+    marginHorizontal: spacing.xs,
   },
   back: {
     ...typography.body,
     color: colors.textSecondary,
+    flex: 1,
+    textAlign: 'right',
+    fontSize: 14,
+    marginRight: spacing.sm,
   },
 });

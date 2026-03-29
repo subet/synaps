@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
@@ -71,7 +72,7 @@ export default function CreateDeckScreen() {
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           <View style={styles.topRow}>
             <Pressable onPress={() => router.back()}>
-              <Text style={styles.backText}>← Back</Text>
+              <Ionicons name="chevron-back" size={22} color={colors.primary} />
             </Pressable>
             <Text style={styles.title}>New Deck</Text>
             <View style={{ width: 60 }} />

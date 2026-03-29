@@ -1,5 +1,6 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, ViewStyle } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -30,7 +31,7 @@ export function FAB({ onPress, style }: FABProps) {
       accessibilityLabel="Add new deck"
       accessibilityRole="button"
     >
-      <Text style={styles.icon}>+</Text>
+      <Ionicons name="add" size={28} color="white" />
     </AnimatedPressable>
   );
 }
@@ -48,11 +49,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.35,
     shadowRadius: 8,
     elevation: 8,
-  },
-  icon: {
-    fontSize: 28,
-    color: colors.white,
-    lineHeight: 32,
-    fontWeight: '400',
   },
 });

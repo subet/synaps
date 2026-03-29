@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
+  cancelAnimation,
   interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import * as Speech from 'expo-speech';
+import { speak as speechSpeak } from 'expo-speech';
 import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { Card } from '../../types';
@@ -43,10 +44,21 @@ export function FlashCard({
   deckIcon,
 }: FlashCardProps) {
   const rotation = useSharedValue(0);
+  const prevCardId = useRef(card.id);
 
   useEffect(() => {
-    rotation.value = withTiming(isFlipped ? 1 : 0, { duration: 380 });
-  }, [isFlipped]);
+    const cardChanged = prevCardId.current !== card.id;
+    prevCardId.current = card.id;
+
+    if (cardChanged) {
+      // New card: cancel any animation and snap to front instantly
+      cancelAnimation(rotation);
+      rotation.value = 0;
+    } else {
+      // Same card: user tapped — animate flip in either direction
+      rotation.value = withTiming(isFlipped ? 1 : 0, { duration: 380 });
+    }
+  }, [card.id, isFlipped]);
 
   const frontStyle = useAnimatedStyle(() => {
     const rotateY = interpolate(rotation.value, [0, 0.5, 1], [0, 90, 180]);
@@ -79,7 +91,11 @@ export function FlashCard({
   const handleSpeak = () => {
     if (!speakLanguage) return;
     const text = reversed ? card.front : card.back;
-    Speech.speak(text, { language: speakLanguage });
+    try {
+      speechSpeak(text, { language: speakLanguage });
+    } catch {
+      // TTS unavailable (e.g. iOS Simulator — works on real device)
+    }
   };
 
   return (

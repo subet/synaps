@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
@@ -65,7 +66,7 @@ export default function LoginScreen() {
       >
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           <Pressable style={styles.backBtn} onPress={() => router.back()}>
-            <Text style={styles.backText}>← Back</Text>
+            <Ionicons name="chevron-back" size={22} color={colors.primary} />
           </Pressable>
 
           <View style={styles.header}>

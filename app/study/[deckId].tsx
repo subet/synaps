@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -35,7 +36,7 @@ const LANGUAGE_CODES: Record<string, string> = {
 
 export default function StudyScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
-  const { getDeckById, loadDeckStats } = useDeckStore();
+  const { getDeckById, loadDeckStats, deckStats } = useDeckStore();
   const { loadStreak } = useStreakStore();
   const {
     startSession,
@@ -57,15 +58,18 @@ export default function StudyScreen() {
 
   useEffect(() => {
     startSession(deckId);
+    loadDeckStats(deckId);
     return () => { resetSession(); };
   }, [deckId]);
 
+  // Overall deck progress: studied (learning + mastered) / total
   useEffect(() => {
-    if (queue.length > 0) {
-      const pct = currentIndex / queue.length;
+    const stats = deckStats[deckId];
+    if (stats && stats.total > 0) {
+      const pct = (stats.learning + stats.mastered) / stats.total;
       progressWidth.value = withTiming(pct, { duration: 300 });
     }
-  }, [currentIndex, queue.length]);
+  }, [deckStats[deckId]]);
 
   const progressStyle = useAnimatedStyle(() => ({
     width: `${progressWidth.value * 100}%`,
@@ -106,7 +110,7 @@ export default function StudyScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Pressable onPress={() => router.back()} style={styles.closeBtn}>
-          <Text style={styles.closeText}>✕</Text>
+          <Ionicons name="close" size={22} color={colors.textSecondary} />
         </Pressable>
         <Text style={styles.counter}>
           {currentIndex + 1} / {queue.length}
