@@ -6,35 +6,36 @@ import {
   ActivityIndicator,
   Alert,
   Pressable,
-
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import { borderRadius, colors, spacing, typography } from '../../src/constants';
+import { useTranslation } from '../../src/i18n';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 
-const PRO_FEATURES = [
-  'Unlimited deck downloads',
-  'Unlimited cards per deck',
-  'Cloud sync across devices',
-  'Audio on cards',
-  'Advanced insights',
-  'No ads',
-  'Priority support',
-  'Offline study mode',
-  'Custom card styling',
-];
+const PRO_FEATURE_KEYS = [
+  'unlimited_downloads',
+  'unlimited_cards',
+  'cloud_sync',
+  'audio_cards',
+  'advanced_insights',
+  'no_ads',
+  'priority_support',
+  'offline_study',
+  'custom_styling',
+] as const;
 
 const PLANS = [
-  { key: 'weekly', label: 'Weekly', price: '$1.99', period: '/week', savings: null },
-  { key: 'monthly', label: 'Monthly', price: '$4.99', period: '/month', savings: null, popular: true },
-  { key: 'annual', label: 'Annual', price: '$29.99', period: '/year', savings: 'Save 50%', bestValue: true },
-  { key: 'lifetime', label: 'Lifetime', price: '$49.99', period: ' one-time', savings: null },
+  { key: 'weekly',   labelKey: 'weekly',   price: '$1.99',  periodKey: 'per_week',         savingsPercent: null, popular: false, bestValue: false },
+  { key: 'monthly',  labelKey: 'monthly',  price: '$4.99',  periodKey: 'per_month',        savingsPercent: null, popular: true,  bestValue: false },
+  { key: 'annual',   labelKey: 'annual',   price: '$29.99', periodKey: 'per_year',         savingsPercent: 50,   popular: false, bestValue: true  },
+  { key: 'lifetime', labelKey: 'lifetime', price: '$49.99', periodKey: 'one_time_payment', savingsPercent: null, popular: false, bestValue: false },
 ];
 
 export default function PaywallScreen() {
+  const { t } = useTranslation();
   const [selectedPlan, setSelectedPlan] = useState('monthly');
   const { offerings, loadOfferings, purchase, restore, isLoading, isPro } = useSubscriptionStore();
 
@@ -43,36 +44,31 @@ export default function PaywallScreen() {
   }, []);
 
   useEffect(() => {
-    if (isPro) {
-      router.back();
-    }
+    if (isPro) router.back();
   }, [isPro]);
 
   const handleSubscribe = async () => {
     if (!offerings) {
-      Alert.alert('Error', 'Could not load subscription options. Please try again.');
+      Alert.alert(t('error'), t('offers_load_failed'));
       return;
     }
-
     try {
       const pkg = offerings.availablePackages?.find((p: any) =>
         p.product.identifier.includes(selectedPlan)
       );
-
       if (!pkg) {
-        Alert.alert('Error', 'Selected plan is not available.');
+        Alert.alert(t('error'), t('plan_unavailable'));
         return;
       }
-
       const success = await purchase(pkg);
       if (success) {
-        Alert.alert('Welcome to PRO! 🎉', 'You now have access to all features.', [
-          { text: 'Get Started', onPress: () => router.back() },
+        Alert.alert(t('welcome_pro_title'), t('welcome_pro_message'), [
+          { text: t('get_started'), onPress: () => router.back() },
         ]);
       }
     } catch (e: any) {
       if (!e.message?.includes('cancelled')) {
-        Alert.alert('Purchase Failed', 'Please try again.');
+        Alert.alert(t('purchase_failed'), t('please_try_again') ?? 'Please try again.');
       }
     }
   };
@@ -80,9 +76,9 @@ export default function PaywallScreen() {
   const handleRestore = async () => {
     const success = await restore();
     if (success) {
-      Alert.alert('Restored!', 'Your PRO subscription has been restored.');
+      Alert.alert(t('restored_title'), t('restored_message'));
     } else {
-      Alert.alert('No Purchases Found', 'We could not find any previous purchases.');
+      Alert.alert(t('no_purchases_title'), t('no_purchases_message'));
     }
   };
 
@@ -97,16 +93,16 @@ export default function PaywallScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerEmoji}>⚡</Text>
-          <Text style={styles.title}>Unlock Synaps PRO</Text>
-          <Text style={styles.subtitle}>Supercharge your learning with unlimited access</Text>
+          <Text style={styles.title}>{t('unlock_pro')}</Text>
+          <Text style={styles.subtitle}>{t('paywall_subtitle')}</Text>
         </View>
 
         {/* Features */}
         <View style={styles.featuresCard}>
-          {PRO_FEATURES.map((feature) => (
-            <View key={feature} style={styles.featureRow}>
+          {PRO_FEATURE_KEYS.map((key) => (
+            <View key={key} style={styles.featureRow}>
               <Text style={styles.checkmark}>✅</Text>
-              <Text style={styles.featureText}>{feature}</Text>
+              <Text style={styles.featureText}>{t(`pro_features.${key}`)}</Text>
             </View>
           ))}
         </View>
@@ -125,30 +121,30 @@ export default function PaywallScreen() {
                 </View>
                 <View>
                   <Text style={[styles.planLabel, selectedPlan === plan.key && styles.planLabelSelected]}>
-                    {plan.label}
+                    {t(plan.labelKey)}
                   </Text>
                   {plan.popular && (
                     <View style={styles.popularBadge}>
-                      <Text style={styles.popularBadgeText}>Most Popular</Text>
+                      <Text style={styles.popularBadgeText}>{t('most_popular')}</Text>
                     </View>
                   )}
                   {plan.bestValue && (
                     <View style={[styles.popularBadge, styles.bestValueBadge]}>
-                      <Text style={styles.popularBadgeText}>Best Value</Text>
+                      <Text style={styles.popularBadgeText}>{t('best_value')}</Text>
                     </View>
                   )}
                 </View>
               </View>
               <View style={styles.planRight}>
-                {plan.savings && (
+                {plan.savingsPercent !== null && (
                   <View style={styles.savingsBadge}>
-                    <Text style={styles.savingsBadgeText}>{plan.savings}</Text>
+                    <Text style={styles.savingsBadgeText}>{t('save_badge', { percent: plan.savingsPercent })}</Text>
                   </View>
                 )}
                 <Text style={[styles.planPrice, selectedPlan === plan.key && styles.planPriceSelected]}>
                   {plan.price}
                 </Text>
-                <Text style={styles.planPeriod}>{plan.period}</Text>
+                <Text style={styles.planPeriod}>{t(plan.periodKey)}</Text>
               </View>
             </Pressable>
           ))}
@@ -164,19 +160,17 @@ export default function PaywallScreen() {
             <ActivityIndicator color={colors.white} />
           ) : (
             <Text style={styles.subscribeBtnText}>
-              {selectedPlan === 'lifetime' ? 'Buy Lifetime Access' : 'Start Free Trial'}
+              {selectedPlan === 'lifetime' ? t('buy_lifetime') : t('start_free_trial')}
             </Text>
           )}
         </Pressable>
 
         {/* Restore */}
         <Pressable onPress={handleRestore} style={styles.restoreBtn}>
-          <Text style={styles.restoreText}>Restore Purchases</Text>
+          <Text style={styles.restoreText}>{t('restore_purchases')}</Text>
         </Pressable>
 
-        <Text style={styles.finePrint}>
-          Cancel anytime. Subscription auto-renews unless cancelled at least 24 hours before the end of the current period.
-        </Text>
+        <Text style={styles.finePrint}>{t('paywall_fine_print')}</Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -186,7 +180,6 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
   content: { padding: spacing.lg, paddingBottom: 40 },
   closeBtn: { alignSelf: 'flex-start', padding: spacing.sm, marginBottom: spacing.sm },
-  closeText: { fontSize: 20, color: colors.textSecondary },
   header: { alignItems: 'center', marginBottom: spacing.xl },
   headerEmoji: { fontSize: 56, marginBottom: spacing.md },
   title: { ...typography.h1, color: colors.textPrimary, textAlign: 'center', marginBottom: spacing.sm },
