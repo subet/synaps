@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { borderRadius, colors, spacing, typography } from '../../constants';
+import { tap } from '../../utils/haptics';
 import { Deck, DeckStats } from '../../types';
 
 interface DeckListItemProps {
@@ -16,7 +17,7 @@ export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
   return (
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
-      onPress={onPress}
+      onPress={() => { tap(); onPress(); }}
       accessibilityLabel={`${deck.name}, ${dueCount} cards due today`}
     >
       {/* Icon */}

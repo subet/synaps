@@ -12,6 +12,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { borderRadius, colors, spacing, typography } from '../../constants';
+import { tap } from '../../utils/haptics';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
 
@@ -43,6 +44,7 @@ export function Button({
   }));
 
   const handlePressIn = () => {
+    tap();
     scale.value = withSpring(0.96, { damping: 15 });
   };
 

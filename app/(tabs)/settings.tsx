@@ -21,6 +21,7 @@ import {
   scheduleDailyReminder,
 } from '../../src/services/notifications';
 import { useAppStore } from '../../src/stores/useAppStore';
+import { tap } from '../../src/utils/haptics';
 import { useAuthStore } from '../../src/stores/useAuthStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import Constants from 'expo-constants';
@@ -42,7 +43,7 @@ function SettingsRow({
   return (
     <Pressable
       style={({ pressed }) => [styles.row, pressed && onPress && styles.rowPressed]}
-      onPress={onPress}
+      onPress={() => { tap(); onPress?.(); }}
       disabled={!onPress && !right}
     >
       <Text style={[styles.rowLabel, danger && styles.dangerText]}>{label}</Text>
@@ -65,7 +66,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default function SettingsScreen() {
-  const { notifications, language, setNotificationsEnabled, setNotificationTime, setLanguage } = useAppStore();
+  const { notifications, language, hapticsEnabled, setNotificationsEnabled, setNotificationTime, setLanguage, setHapticsEnabled } = useAppStore();
   const { user, logout } = useAuthStore();
   const { isPro } = useSubscriptionStore();
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -180,6 +181,15 @@ export default function SettingsScreen() {
               onPress={() => setShowTimePicker(true)}
             />
           )}
+          <SettingsRow
+            label="Haptics"
+            right={
+              <Toggle
+                value={hapticsEnabled}
+                onValueChange={(v) => { tap(); setHapticsEnabled(v); }}
+              />
+            }
+          />
           <SettingsRow
             label="Language"
             value={language === 'tr' ? 'Türkçe' : 'English'}

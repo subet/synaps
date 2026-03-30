@@ -1,4 +1,3 @@
-import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
@@ -7,6 +6,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { borderRadius, colors, spacing, typography } from '../../constants';
+import { tap } from '../../utils/haptics';
 import { SRSGrade } from '../../types';
 
 interface RatingButtonsProps {
@@ -47,8 +47,8 @@ function RatingButton({
     transform: [{ scale: scale.value }],
   }));
 
-  const handlePress = async () => {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  const handlePress = () => {
+    tap();
     onPress();
   };
 

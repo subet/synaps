@@ -7,6 +7,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { colors } from '../../constants';
+import { tap } from '../../utils/haptics';
 
 interface FABProps {
   onPress: () => void;
@@ -26,7 +27,7 @@ export function FAB({ onPress, style }: FABProps) {
     <AnimatedPressable
       style={[styles.fab, animatedStyle, style]}
       onPress={onPress}
-      onPressIn={() => { scale.value = withSpring(0.88, { damping: 12 }); }}
+      onPressIn={() => { tap(); scale.value = withSpring(0.88, { damping: 12 }); }}
       onPressOut={() => { scale.value = withSpring(1, { damping: 12 }); }}
       accessibilityLabel="Add new deck"
       accessibilityRole="button"

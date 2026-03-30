@@ -129,4 +129,5 @@ export interface AppSettings {
   notifications: NotificationSettings;
   hasSeenOnboarding: boolean;
   freeDownloadsUsed: number;
+  hapticsEnabled: boolean;
 }

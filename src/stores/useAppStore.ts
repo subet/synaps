@@ -8,6 +8,7 @@ interface AppState extends AppSettings {
   setLanguage: (lang: Language) => Promise<void>;
   setNotificationsEnabled: (enabled: boolean) => Promise<void>;
   setNotificationTime: (time: string) => Promise<void>;
+  setHapticsEnabled: (enabled: boolean) => Promise<void>;
   markOnboardingComplete: () => Promise<void>;
   incrementFreeDownloads: () => Promise<void>;
   resetFreeDownloads: () => Promise<void>;
@@ -20,6 +21,7 @@ const defaultSettings: AppSettings = {
   notifications: { enabled: false, time: '09:00' },
   hasSeenOnboarding: false,
   freeDownloadsUsed: 0,
+  hapticsEnabled: true,
 };
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -57,6 +59,11 @@ export const useAppStore = create<AppState>((set, get) => ({
     await saveSettings({ ...get(), notifications });
   },
 
+  setHapticsEnabled: async (hapticsEnabled) => {
+    set({ hapticsEnabled });
+    await saveSettings({ ...get(), hapticsEnabled });
+  },
+
   markOnboardingComplete: async () => {
     set({ hasSeenOnboarding: true });
     await saveSettings({ ...get(), hasSeenOnboarding: true });
@@ -76,10 +83,10 @@ export const useAppStore = create<AppState>((set, get) => ({
 
 async function saveSettings(settings: AppSettings): Promise<void> {
   try {
-    const { hasSeenOnboarding, language, notifications, freeDownloadsUsed } = settings;
+    const { hasSeenOnboarding, language, notifications, freeDownloadsUsed, hapticsEnabled } = settings;
     await AsyncStorage.setItem(
       SETTINGS_KEY,
-      JSON.stringify({ hasSeenOnboarding, language, notifications, freeDownloadsUsed })
+      JSON.stringify({ hasSeenOnboarding, language, notifications, freeDownloadsUsed, hapticsEnabled })
     );
   } catch {
     // Silently fail — preferences are not critical
