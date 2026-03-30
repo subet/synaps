@@ -310,4 +310,11 @@ export const ru = {
   confirm_password: 'Подтвердите пароль',
   update_email: 'Обновить почту',
   update_password: 'Обновить пароль',
+
+  // Статистика главного экрана
+  daily_momentum: 'ЕЖЕДНЕВНЫЙ ТЕМП',
+  streak_motivation: 'Сохраняй темп!',
+  unlocked_count: '%{count} Открыто',
+  cards_mastered_label: 'Освоено карточек',
+  avg_daily_focus: 'Среднее время фокуса в день',
 };

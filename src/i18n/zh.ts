@@ -310,4 +310,11 @@ export const zh = {
   confirm_password: '确认密码',
   update_email: '更新邮箱',
   update_password: '更新密码',
+
+  // 主页统计
+  daily_momentum: '每日动力',
+  streak_motivation: '保持动力！',
+  unlocked_count: '已解锁 %{count} 个',
+  cards_mastered_label: '已掌握卡片',
+  avg_daily_focus: '平均每日专注时间',
 };

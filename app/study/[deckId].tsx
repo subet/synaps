@@ -1,7 +1,9 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import {
+  AppState,
+  AppStateStatus,
   Pressable,
   StyleSheet,
   Text,
@@ -50,6 +52,8 @@ export default function StudyScreen() {
     flipCard,
     gradeCard,
     resetSession,
+    pauseCardTimer,
+    resumeCardTimer,
     isSessionComplete,
     sessionResult,
   } = useStudyStore();
@@ -65,6 +69,18 @@ export default function StudyScreen() {
     loadDeckStats(deckId);
     return () => { resetSession(); };
   }, [deckId]);
+
+  useEffect(() => {
+    const handleAppStateChange = (nextState: AppStateStatus) => {
+      if (nextState === 'background' || nextState === 'inactive') {
+        pauseCardTimer();
+      } else if (nextState === 'active') {
+        resumeCardTimer();
+      }
+    };
+    const sub = AppState.addEventListener('change', handleAppStateChange);
+    return () => sub.remove();
+  }, []);
 
   // Overall deck progress: studied (learning + mastered) / total
   useEffect(() => {

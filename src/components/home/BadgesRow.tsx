@@ -8,27 +8,14 @@ import { useBadgeStore } from '../../stores/useBadgeStore';
 import { BadgeWithStatus } from '../../services/badgeService';
 
 function SmallBadgeCircle({ badge }: { badge: BadgeWithStatus }) {
-  const { t } = useTranslation();
-  const { achieved, progress, color } = badge;
-  const bgColor = achieved ? `${color}22` : '#F3F4F6';
-  const borderColor = achieved ? color : colors.border;
+  const { achieved, color } = badge;
+  const bgColor = achieved ? `${color}22` : '#F0F2FF';
 
   return (
     <View style={styles.badgeWrap}>
-      <View style={[styles.circle, { backgroundColor: bgColor, borderColor }]}>
-        <Text style={{ fontSize: 20, opacity: achieved ? 1 : 0.3 }}>{badge.icon}</Text>
-        {!achieved && progress > 0 && (
-          <View style={[styles.progressArc, { borderColor: color }]} />
-        )}
-        {!achieved && progress === 0 && (
-          <View style={styles.lockDot}>
-            <Ionicons name="lock-closed" size={8} color={colors.textMuted} />
-          </View>
-        )}
+      <View style={[styles.circle, { backgroundColor: bgColor }]}>
+        <Text style={{ fontSize: 22, opacity: achieved ? 1 : 0.25 }}>{badge.icon}</Text>
       </View>
-      <Text style={[styles.badgeName, { color: achieved ? colors.textPrimary : colors.textMuted }]} numberOfLines={1}>
-        {t(badge.nameKey)}
-      </Text>
     </View>
   );
 }
@@ -41,7 +28,6 @@ export function BadgesRow() {
     loadBadges();
   }, []);
 
-  // Show: all achieved + next in-progress badge per criteria group + up to 10 total
   const achieved = badges.filter((b) => b.achieved);
   const inProgress = badges.filter((b) => !b.achieved && b.progress > 0);
   const locked = badges.filter((b) => !b.achieved && b.progress === 0).slice(0, 3);
@@ -49,16 +35,22 @@ export function BadgesRow() {
 
   if (badges.length === 0) return null;
 
+  const unlockedCount = achieved.length;
+
   return (
-    <View style={styles.wrapper}>
+    <View style={styles.card}>
+      {/* Header row */}
       <View style={styles.header}>
-        <Text style={styles.title}>{t('achievements')}</Text>
+        <Text style={styles.sectionLabel}>{t('achievements')}</Text>
         <Pressable style={styles.seeAll} onPress={() => router.push('/badges')}>
-          <Text style={styles.seeAllText}>{t('see_all')}</Text>
-          <Ionicons name="chevron-forward" size={14} color={colors.primary} />
+          <Text style={styles.unlockedCount}>
+            {t('unlocked_count', { count: unlockedCount })}
+          </Text>
+          <Ionicons name="chevron-forward" size={13} color={colors.primary} />
         </Pressable>
       </View>
 
+      {/* Badge circles */}
       <FlatList
         data={displayed}
         keyExtractor={(item) => item.id}
@@ -72,71 +64,52 @@ export function BadgesRow() {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
+  card: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    marginHorizontal: spacing.md,
     marginBottom: spacing.md,
+    shadowColor: colors.shadowColor,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 3,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: spacing.md,
-    marginBottom: spacing.sm,
+    marginBottom: spacing.md,
   },
-  title: {
-    ...typography.h3,
-    color: colors.textPrimary,
+  sectionLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1.2,
+    color: colors.primary,
     flex: 1,
+    textTransform: 'uppercase',
   },
   seeAll: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 2,
   },
-  seeAllText: {
+  unlockedCount: {
     ...typography.caption,
     color: colors.primary,
     fontWeight: '600',
   },
   list: {
-    paddingHorizontal: spacing.md,
     gap: spacing.sm,
   },
   badgeWrap: {
     alignItems: 'center',
-    width: 60,
-    gap: 4,
   },
   circle: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    borderWidth: 2,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: colors.shadowColor,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  progressArc: {
-    position: 'absolute',
-    top: -3,
-    left: -3,
-    right: -3,
-    bottom: -3,
-    borderRadius: 27,
-    borderWidth: 2,
-    borderStyle: 'dashed',
-    opacity: 0.6,
-  },
-  lockDot: {
-    position: 'absolute',
-    bottom: 2,
-    right: 2,
-  },
-  badgeName: {
-    fontSize: 9,
-    fontWeight: '600',
-    textAlign: 'center',
   },
 });

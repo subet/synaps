@@ -21,14 +21,35 @@ import { useTranslation } from '../../src/i18n';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 
-const ICONS = ['📚', '🗂️', '🧠', '💡', '🔬', '🌍', '🎨', '💻', '🏥', '📝', '⚗️', '🎵', '🧮', '📖', '🗺️'];
+const ICONS: string[] = [
+  'book-outline',
+  'bulb-outline',
+  'flask-outline',
+  'globe-outline',
+  'musical-notes-outline',
+  'code-slash-outline',
+  'calculator-outline',
+  'medkit-outline',
+  'color-palette-outline',
+  'document-text-outline',
+  'school-outline',
+  'airplane-outline',
+  'fitness-outline',
+  'leaf-outline',
+  'briefcase-outline',
+  'planet-outline',
+  'pizza-outline',
+  'paw-outline',
+  'language-outline',
+  'telescope-outline',
+];
 const COLORS = ['#4361EE', '#E53E3E', '#48BB78', '#ED8936', '#9B59B6', '#3182CE', '#319795', '#D69E2E', '#F687B3', '#2D3748'];
 
 export default function CreateDeckScreen() {
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedIcon, setSelectedIcon] = useState('📚');
+  const [selectedIcon, setSelectedIcon] = useState('book-outline');
   const [selectedColor, setSelectedColor] = useState<string>(colors.primary);
   const [nameError, setNameError] = useState('');
 
@@ -83,7 +104,7 @@ export default function CreateDeckScreen() {
           {/* Preview */}
           <View style={[styles.preview, { borderColor: selectedColor }]}>
             <View style={[styles.previewIcon, { backgroundColor: `${selectedColor}22` }]}>
-              <Text style={styles.previewEmoji}>{selectedIcon}</Text>
+              <Ionicons name={selectedIcon as any} size={32} color={selectedColor} />
             </View>
             <Text style={styles.previewName}>{name || 'Deck Name'}</Text>
           </View>
@@ -115,7 +136,11 @@ export default function CreateDeckScreen() {
                 style={[styles.iconOption, selectedIcon === icon && styles.iconOptionSelected]}
                 onPress={() => setSelectedIcon(icon)}
               >
-                <Text style={styles.iconText}>{icon}</Text>
+                <Ionicons
+                  name={icon as any}
+                  size={22}
+                  color={selectedIcon === icon ? colors.primary : colors.textSecondary}
+                />
               </TouchableOpacity>
             ))}
           </View>
@@ -161,7 +186,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.sm,
   },
-  previewEmoji: { fontSize: 32 },
   previewName: { ...typography.h3, color: colors.textPrimary, textAlign: 'center' },
   sectionLabel: { ...typography.captionBold, color: colors.textSecondary, marginBottom: spacing.sm },
   iconGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, marginBottom: spacing.lg },

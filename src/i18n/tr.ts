@@ -310,4 +310,11 @@ export const tr = {
   confirm_password: 'Şifreyi Onayla',
   update_email: 'E-postayı Güncelle',
   update_password: 'Şifreyi Güncelle',
+
+  // Ana ekran istatistikleri
+  daily_momentum: 'GÜNLÜK MOMENTUM',
+  streak_motivation: 'Momentumu canlı tut!',
+  unlocked_count: '%{count} Kazanıldı',
+  cards_mastered_label: 'Öğrenilen Kartlar',
+  avg_daily_focus: 'Ortalama Günlük Odak',
 };

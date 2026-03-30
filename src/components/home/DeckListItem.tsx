@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { tap } from '../../utils/haptics';
 import { useTranslation } from '../../i18n';
@@ -24,7 +25,11 @@ export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
     >
       {/* Icon */}
       <View style={[styles.iconContainer, { backgroundColor: `${accentColor}20` }]}>
-        <Text style={styles.icon}>{deck.icon ?? '🗂️'}</Text>
+        {deck.icon && /^[a-z]/.test(deck.icon) ? (
+          <Ionicons name={deck.icon as any} size={22} color={accentColor} />
+        ) : (
+          <Text style={styles.icon}>{deck.icon ?? '📚'}</Text>
+        )}
       </View>
 
       {/* Name + description */}

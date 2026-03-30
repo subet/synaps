@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { useTranslation } from '../../i18n';
+import { useAppStore } from '../../stores/useAppStore';
 import { StreakDay } from '../../types';
 
 interface StreakCardProps {
@@ -9,40 +10,77 @@ interface StreakCardProps {
   weekDays: StreakDay[];
 }
 
-// Sunday=0 … Saturday=6
-const UTC_DAY_LETTER = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const BAR_MAX_HEIGHT = 80;
+const BAR_MIN_HEIGHT = 14;
+const BAR_WIDTH = 32;
+
+const LANG_LOCALE: Record<string, string> = {
+  en: 'en-US', tr: 'tr-TR', de: 'de-DE', fr: 'fr-FR',
+  nl: 'nl-NL', ru: 'ru-RU', zh: 'zh-CN', pt_BR: 'pt-BR', pt_PT: 'pt-PT',
+};
 
 export function StreakCard({ currentStreak, weekDays }: StreakCardProps) {
   const { t } = useTranslation();
+  const language = useAppStore((s) => s.language);
+  const locale = LANG_LOCALE[language] ?? 'en-US';
   const today = new Date().toISOString().split('T')[0];
+
+  const maxCards = Math.max(...weekDays.map((d) => d.cards_studied), 1);
 
   return (
     <View style={styles.card}>
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.streakNumber}>{currentStreak}</Text>
-          <Text style={styles.streakLabel}>
-            {currentStreak === 1 ? t('day_streak') : t('days_streak')}
-          </Text>
-        </View>
-        <Text style={styles.trophy}>🏆</Text>
+      {/* Section label */}
+      <Text style={styles.sectionLabel}>{t('daily_momentum')}</Text>
+
+      {/* Streak number */}
+      <View style={styles.streakRow}>
+        <Text style={styles.streakNumber}>{currentStreak}</Text>
+        <Text style={styles.streakSuffix}>
+          {' '}{currentStreak === 1 ? t('day_streak') : t('days_streak')}
+        </Text>
       </View>
 
-      <View style={styles.weekRow}>
+      {/* Motivation */}
+      <Text style={styles.motivation}>{t('streak_motivation')}</Text>
+
+      {/* Bar chart */}
+      <View style={styles.chartArea}>
         {weekDays.map((dayData, idx) => {
-          // Parse as UTC to get the correct day letter regardless of timezone
-          const dayLetter = UTC_DAY_LETTER[new Date(dayData.date + 'T12:00:00Z').getUTCDay()];
           const isToday = dayData.date === today;
           const hasStudied = dayData.cards_studied > 0;
+          const barHeight = hasStudied
+            ? Math.max(BAR_MIN_HEIGHT + 12, (dayData.cards_studied / maxCards) * BAR_MAX_HEIGHT)
+            : BAR_MIN_HEIGHT;
+
+          const barColor = isToday && hasStudied
+            ? colors.primary
+            : hasStudied
+              ? '#7B8EEF'
+              : '#DDE2F9';
+
+          // Get locale-aware 3-letter day abbreviation
+          const dateObj = new Date(dayData.date + 'T12:00:00Z');
+          const dayLabel = new Intl.DateTimeFormat(locale, { weekday: 'short' })
+            .format(dateObj)
+            .toUpperCase()
+            .slice(0, 3);
 
           return (
-            <View key={idx} style={styles.dayColumn}>
-              <Text style={[styles.dayLabel, isToday && styles.dayLabelToday]}>{dayLetter}</Text>
-              <StreakCircle
-                hasStudied={hasStudied}
-                isToday={isToday}
-                streakPosition={idx / Math.max(weekDays.length - 1, 1)}
-              />
+            <View key={idx} style={styles.barColumn}>
+              <Text style={[styles.barCount, isToday && styles.barCountToday, !hasStudied && styles.barCountHidden]}>
+                {hasStudied ? dayData.cards_studied : ' '}
+              </Text>
+              <View style={styles.barTrack}>
+                <View
+                  style={[
+                    styles.bar,
+                    { height: barHeight, backgroundColor: barColor },
+                  ]}
+                />
+              </View>
+              <Text style={[styles.dayLabel, isToday && styles.dayLabelToday]}>
+                {dayLabel}
+              </Text>
             </View>
           );
         })}
@@ -51,90 +89,86 @@ export function StreakCard({ currentStreak, weekDays }: StreakCardProps) {
   );
 }
 
-interface StreakCircleProps {
-  hasStudied: boolean;
-  isToday: boolean;
-  streakPosition: number;
-}
-
-function StreakCircle({ hasStudied, isToday, streakPosition }: StreakCircleProps) {
-  if (hasStudied) {
-    const opacity = 0.5 + streakPosition * 0.5;
-    return (
-      <View
-        style={[
-          styles.circle,
-          { backgroundColor: colors.streakGold, opacity },
-        ]}
-      />
-    );
-  }
-  if (isToday) {
-    return <View style={[styles.circle, styles.circleToday]} />;
-  }
-  return <View style={[styles.circle, styles.circleEmpty]} />;
-}
-
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing.lg,
     marginHorizontal: spacing.md,
     marginBottom: spacing.md,
     shadowColor: colors.shadowColor,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 2,
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 3,
   },
-  header: {
+  sectionLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1.2,
+    color: colors.primary,
+    marginBottom: spacing.sm,
+  },
+  streakRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: spacing.lg,
+    alignItems: 'flex-end',
+    marginBottom: spacing.xs,
   },
   streakNumber: {
-    ...typography.streakNumber,
-    color: colors.streakText,
+    fontSize: 52,
+    fontWeight: '800',
+    color: colors.textPrimary,
+    lineHeight: 56,
   },
-  streakLabel: {
-    ...typography.caption,
+  streakSuffix: {
+    ...typography.h2,
+    color: colors.textPrimary,
+    marginBottom: 6,
+    marginLeft: 4,
+  },
+  motivation: {
+    ...typography.body,
     color: colors.textSecondary,
+    marginBottom: spacing.lg,
   },
-  trophy: {
-    fontSize: 32,
-  },
-  weekRow: {
+  chartArea: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
-  dayColumn: {
+  barColumn: {
     alignItems: 'center',
     gap: spacing.xs,
+    flex: 1,
+  },
+  barTrack: {
+    height: BAR_MAX_HEIGHT,
+    justifyContent: 'flex-end',
+  },
+  bar: {
+    width: BAR_WIDTH,
+    borderRadius: BAR_WIDTH / 2,
+  },
+  barCount: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#7B8EEF',
+    marginBottom: 2,
+  },
+  barCountToday: {
+    color: colors.primary,
+  },
+  barCountHidden: {
+    opacity: 0,
   },
   dayLabel: {
-    ...typography.small,
-    color: colors.textMuted,
+    fontSize: 10,
     fontWeight: '600',
+    color: colors.textMuted,
+    letterSpacing: 0.3,
   },
   dayLabelToday: {
-    color: colors.streakText,
+    color: colors.primary,
     fontWeight: '700',
-  },
-  circle: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-  },
-  circleToday: {
-    backgroundColor: colors.transparent,
-    borderWidth: 2,
-    borderColor: colors.streakGold,
-  },
-  circleEmpty: {
-    backgroundColor: colors.borderLight,
   },
 });

@@ -310,4 +310,11 @@ export const en = {
   confirm_password: 'Confirm Password',
   update_email: 'Update Email',
   update_password: 'Update Password',
+
+  // Home stats
+  daily_momentum: 'DAILY MOMENTUM',
+  streak_motivation: 'Keep the momentum going!',
+  unlocked_count: '%{count} Unlocked',
+  cards_mastered_label: 'Cards Mastered',
+  avg_daily_focus: 'Average Daily Focus',
 };

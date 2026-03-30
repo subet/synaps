@@ -8,6 +8,7 @@ import {
   getDueCards,
   getCardsByDeckId,
   recordStudyActivity,
+  recordFocusSeconds,
   updateCard,
 } from '../services/database';
 import { calculateSM2 } from '../services/srs';
@@ -20,6 +21,8 @@ interface StudyState {
   currentIndex: number;
   isFlipped: boolean;
   sessionStartTime: number | null;
+  cardShownAt: number | null;
+  accumulatedCardSeconds: number;
   gradeDistribution: { again: number; hard: number; good: number; easy: number };
   isSessionComplete: boolean;
   sessionResult: StudySessionResult | null;
@@ -33,6 +36,8 @@ interface StudyState {
   gradeCard: (grade: SRSGrade) => Promise<void>;
   endSession: () => Promise<void>;
   resetSession: () => void;
+  pauseCardTimer: () => void;
+  resumeCardTimer: () => void;
 
   loadDeckCards: (deckId: string) => Promise<void>;
   createCard: (data: Omit<Card, 'id' | 'created_at' | 'updated_at'>) => Promise<Card>;
@@ -46,6 +51,8 @@ export const useStudyStore = create<StudyState>((set, get) => ({
   currentIndex: 0,
   isFlipped: false,
   sessionStartTime: null,
+  cardShownAt: null,
+  accumulatedCardSeconds: 0,
   gradeDistribution: { again: 0, hard: 0, good: 0, easy: 0 },
   isSessionComplete: false,
   sessionResult: null,
@@ -62,6 +69,8 @@ export const useStudyStore = create<StudyState>((set, get) => ({
       currentIndex: 0,
       isFlipped: false,
       sessionStartTime: Date.now(),
+      cardShownAt: Date.now(),
+      accumulatedCardSeconds: 0,
       gradeDistribution: { again: 0, hard: 0, good: 0, easy: 0 },
       isSessionComplete: dueCards.length === 0,
       sessionResult: null,
@@ -73,7 +82,7 @@ export const useStudyStore = create<StudyState>((set, get) => ({
   },
 
   gradeCard: async (grade) => {
-    const { queue, currentIndex, gradeDistribution } = get();
+    const { queue, currentIndex, gradeDistribution, cardShownAt, accumulatedCardSeconds } = get();
     const card = queue[currentIndex];
     if (!card) return;
 
@@ -96,6 +105,14 @@ export const useStudyStore = create<StudyState>((set, get) => ({
       last_reviewed: new Date().toISOString(),
     });
 
+    // Count every grade press and record time spent on this card (excluding background time)
+    const activeSeconds = cardShownAt ? (Date.now() - cardShownAt) / 1000 : 0;
+    const elapsedSeconds = Math.round(accumulatedCardSeconds + activeSeconds);
+    await Promise.all([
+      recordStudyActivity(1),
+      recordFocusSeconds(elapsedSeconds),
+    ]);
+
     // Track grade distribution
     const gradeKey = (['again', 'hard', 'good', 'easy'] as const)[grade];
     const newDist = { ...gradeDistribution, [gradeKey]: gradeDistribution[gradeKey] + 1 };
@@ -107,7 +124,7 @@ export const useStudyStore = create<StudyState>((set, get) => ({
       await get().endSession();
       set({ gradeDistribution: newDist });
     } else {
-      set({ currentIndex: nextIndex, isFlipped: false, gradeDistribution: newDist });
+      set({ currentIndex: nextIndex, isFlipped: false, gradeDistribution: newDist, cardShownAt: Date.now(), accumulatedCardSeconds: 0 });
     }
   },
 
@@ -128,8 +145,6 @@ export const useStudyStore = create<StudyState>((set, get) => ({
       duration_seconds: durationSeconds,
     });
 
-    await recordStudyActivity(cardsStudied);
-
     set({
       isSessionComplete: true,
       sessionResult: {
@@ -141,6 +156,17 @@ export const useStudyStore = create<StudyState>((set, get) => ({
     });
   },
 
+  pauseCardTimer: () => {
+    const { cardShownAt, accumulatedCardSeconds } = get();
+    if (!cardShownAt) return;
+    const elapsed = (Date.now() - cardShownAt) / 1000;
+    set({ accumulatedCardSeconds: accumulatedCardSeconds + elapsed, cardShownAt: null });
+  },
+
+  resumeCardTimer: () => {
+    set({ cardShownAt: Date.now() });
+  },
+
   resetSession: () => {
     set({
       sessionId: null,
@@ -148,6 +174,8 @@ export const useStudyStore = create<StudyState>((set, get) => ({
       currentIndex: 0,
       isFlipped: false,
       sessionStartTime: null,
+      cardShownAt: null,
+      accumulatedCardSeconds: 0,
       gradeDistribution: { again: 0, hard: 0, good: 0, easy: 0 },
       isSessionComplete: false,
       sessionResult: null,

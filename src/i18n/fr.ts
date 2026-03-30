@@ -310,4 +310,11 @@ export const fr = {
   confirm_password: 'Confirmer le mot de passe',
   update_email: 'Mettre à jour l\'e-mail',
   update_password: 'Mettre à jour le mot de passe',
+
+  // Statistiques d'accueil
+  daily_momentum: 'ÉLAN QUOTIDIEN',
+  streak_motivation: 'Gardez l\'élan !',
+  unlocked_count: '%{count} Débloqué(s)',
+  cards_mastered_label: 'Cartes maîtrisées',
+  avg_daily_focus: 'Concentration journalière moy.',
 };

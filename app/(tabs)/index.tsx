@@ -1,6 +1,7 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
 import {
   FlatList,
   RefreshControl,
@@ -10,6 +11,7 @@ import {
 } from 'react-native';
 import { BadgesRow } from '../../src/components/home/BadgesRow';
 import { DeckListItem } from '../../src/components/home/DeckListItem';
+import { StatBoxes } from '../../src/components/home/StatBoxes';
 import { StreakCard } from '../../src/components/home/StreakCard';
 import { EmptyState } from '../../src/components/ui/EmptyState';
 import { FAB } from '../../src/components/ui/FAB';
@@ -25,16 +27,21 @@ import { Deck } from '../../src/types';
 export default function HomeScreen() {
   const { t } = useTranslation();
   const { decks, deckStats, loadDecks, loadDeckStats } = useDeckStore();
-  const { currentStreak, weekDays, loadStreak } = useStreakStore();
+  const { currentStreak, weekDays, cardsMastered, avgDailyFocusMinutes, loadStreak } = useStreakStore();
   const { checkBadges } = useBadgeStore();
   const language = useAppStore((s) => s.language);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     loadDecks();
-    loadStreak();
     checkBadges();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadStreak();
+    }, [])
+  );
 
   useEffect(() => {
     decks.forEach((deck) => {
@@ -63,20 +70,21 @@ export default function HomeScreen() {
   const ListHeader = useMemo(
     () => (
       <View>
-        <TabHeader />
         <StreakCard currentStreak={currentStreak} weekDays={weekDays} />
         <BadgesRow />
+        <StatBoxes cardsMastered={cardsMastered} avgDailyFocusMinutes={avgDailyFocusMinutes} />
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{t('my_decks')}</Text>
           <Text style={styles.deckCount}>{decks.length}</Text>
         </View>
       </View>
     ),
-    [currentStreak, weekDays, decks.length, language]
+    [currentStreak, weekDays, cardsMastered, avgDailyFocusMinutes, decks.length, language]
   );
 
   return (
     <SafeAreaView style={styles.safe}>
+      <TabHeader />
       <FlatList
         data={decks}
         keyExtractor={(item) => item.id}
@@ -126,7 +134,7 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    bottom: 76,
-    alignSelf: 'center',
+    bottom: 24,
+    right: 16,
   },
 });

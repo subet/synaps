@@ -310,4 +310,11 @@ export const pt_BR = {
   confirm_password: 'Confirmar Senha',
   update_email: 'Atualizar E-mail',
   update_password: 'Atualizar Senha',
+
+  // Estatísticas da tela inicial
+  daily_momentum: 'IMPULSO DIÁRIO',
+  streak_motivation: 'Mantenha o impulso!',
+  unlocked_count: '%{count} Desbloqueado(s)',
+  cards_mastered_label: 'Cartões Dominados',
+  avg_daily_focus: 'Foco Diário Médio',
 };

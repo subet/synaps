@@ -310,4 +310,11 @@ export const nl = {
   confirm_password: 'Wachtwoord bevestigen',
   update_email: 'E-mail bijwerken',
   update_password: 'Wachtwoord bijwerken',
+
+  // Startscherm statistieken
+  daily_momentum: 'DAGELIJKS MOMENTUM',
+  streak_motivation: 'Houd het momentum vast!',
+  unlocked_count: '%{count} Ontgrendeld',
+  cards_mastered_label: 'Beheerste kaarten',
+  avg_daily_focus: 'Gem. dagelijkse focus',
 };

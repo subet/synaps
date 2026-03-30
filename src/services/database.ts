@@ -75,7 +75,8 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
     CREATE TABLE IF NOT EXISTS streaks (
       id TEXT PRIMARY KEY,
       date TEXT UNIQUE NOT NULL,
-      cards_studied INTEGER DEFAULT 0
+      cards_studied INTEGER DEFAULT 0,
+      focus_seconds INTEGER DEFAULT 0
     );
 
     CREATE TABLE IF NOT EXISTS user_badges (
@@ -83,6 +84,13 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
       achieved_at TEXT NOT NULL
     );
   `);
+
+  // Migrations for existing installs
+  try {
+    await database.execAsync(`ALTER TABLE streaks ADD COLUMN focus_seconds INTEGER DEFAULT 0`);
+  } catch {
+    // Column already exists
+  }
 }
 
 // ─── Decks ────────────────────────────────────────────────────────────────────
@@ -318,15 +326,31 @@ export async function completeStudySession(
 
 // ─── Streaks ───────────────────────────────────────────────────────────────────
 
+async function ensureStreakRow(database: SQLite.SQLiteDatabase, date: string): Promise<void> {
+  await database.runAsync(
+    `INSERT OR IGNORE INTO streaks (id, date, cards_studied, focus_seconds) VALUES (?, ?, 0, 0)`,
+    [uuid(), date]
+  );
+}
+
 export async function recordStudyActivity(cardsStudied: number): Promise<void> {
   const database = await getDatabase();
   const today = new Date().toISOString().split('T')[0];
-  const id = uuid();
+  await ensureStreakRow(database, today);
   await database.runAsync(
-    `INSERT INTO streaks (id, date, cards_studied)
-     VALUES (?, ?, ?)
-     ON CONFLICT(date) DO UPDATE SET cards_studied = cards_studied + ?`,
-    [id, today, cardsStudied, cardsStudied]
+    `UPDATE streaks SET cards_studied = cards_studied + ? WHERE date = ?`,
+    [cardsStudied, today]
+  );
+}
+
+export async function recordFocusSeconds(seconds: number): Promise<void> {
+  if (seconds <= 0) return;
+  const database = await getDatabase();
+  const today = new Date().toISOString().split('T')[0];
+  await ensureStreakRow(database, today);
+  await database.runAsync(
+    `UPDATE streaks SET focus_seconds = focus_seconds + ? WHERE date = ?`,
+    [seconds, today]
   );
 }
 
@@ -403,6 +427,15 @@ export async function getStreakData(): Promise<{ currentStreak: number; longestS
   }
 
   return { currentStreak, longestStreak, weekDays };
+}
+
+export async function getAverageDailyFocusMinutes(): Promise<number> {
+  const database = await getDatabase();
+  const row = await database.getFirstAsync<{ avg_seconds: number }>(
+    `SELECT AVG(focus_seconds) as avg_seconds FROM streaks WHERE focus_seconds > 0`
+  );
+  const avgSeconds = row?.avg_seconds ?? 0;
+  return avgSeconds > 0 ? Math.max(1, Math.round(avgSeconds / 60)) : 0;
 }
 
 // ─── Bulk insert (for public deck download) ────────────────────────────────────

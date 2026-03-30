@@ -310,4 +310,11 @@ export const de = {
   confirm_password: 'Passwort bestätigen',
   update_email: 'E-Mail aktualisieren',
   update_password: 'Passwort aktualisieren',
+
+  // Startseite Statistiken
+  daily_momentum: 'TÄGLICHER SCHWUNG',
+  streak_motivation: 'Behalte den Schwung bei!',
+  unlocked_count: '%{count} Freigeschaltet',
+  cards_mastered_label: 'Beherrschte Karten',
+  avg_daily_focus: 'Durchschn. täglicher Fokus',
 };
