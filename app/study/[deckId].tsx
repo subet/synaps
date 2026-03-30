@@ -18,6 +18,7 @@ import { FlashCard } from '../../src/components/study/FlashCard';
 import { Button } from '../../src/components/ui/Button';
 import { colors, spacing, typography } from '../../src/constants';
 import { getPreviewIntervals } from '../../src/services/srs';
+import { useBadgeStore } from '../../src/stores/useBadgeStore';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStudyStore } from '../../src/stores/useStudyStore';
 import { useStreakStore } from '../../src/stores/useStreakStore';
@@ -38,6 +39,7 @@ export default function StudyScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
   const { getDeckById, loadDeckStats, deckStats } = useDeckStore();
   const { loadStreak } = useStreakStore();
+  const { checkBadges } = useBadgeStore();
   const {
     startSession,
     queue,
@@ -85,6 +87,7 @@ export default function StudyScreen() {
     if (isSessionComplete) {
       loadDeckStats(deckId);
       loadStreak();
+      checkBadges();
     }
   };
 

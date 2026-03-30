@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { BadgesRow } from '../../src/components/home/BadgesRow';
 import { DeckListItem } from '../../src/components/home/DeckListItem';
 import { Logo } from '../../src/components/ui/Logo';
 import { StreakCard } from '../../src/components/home/StreakCard';
@@ -18,6 +19,7 @@ import { FAB } from '../../src/components/ui/FAB';
 import { borderRadius, colors, spacing, typography } from '../../src/constants';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStreakStore } from '../../src/stores/useStreakStore';
+import { useBadgeStore } from '../../src/stores/useBadgeStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { Deck } from '../../src/types';
 
@@ -25,11 +27,13 @@ export default function HomeScreen() {
   const { decks, deckStats, loadDecks, loadDeckStats } = useDeckStore();
   const { currentStreak, weekDays, loadStreak } = useStreakStore();
   const { isPro } = useSubscriptionStore();
+  const { checkBadges } = useBadgeStore();
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     loadDecks();
     loadStreak();
+    checkBadges();
   }, []);
 
   useEffect(() => {
@@ -71,6 +75,7 @@ export default function HomeScreen() {
           )}
         </View>
         <StreakCard currentStreak={currentStreak} weekDays={weekDays} />
+        <BadgesRow />
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>My Decks</Text>
           <Text style={styles.deckCount}>{decks.length}</Text>

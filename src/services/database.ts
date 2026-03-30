@@ -77,6 +77,11 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
       date TEXT UNIQUE NOT NULL,
       cards_studied INTEGER DEFAULT 0
     );
+
+    CREATE TABLE IF NOT EXISTS user_badges (
+      badge_id TEXT PRIMARY KEY,
+      achieved_at TEXT NOT NULL
+    );
   `);
 }
 
@@ -424,6 +429,65 @@ export async function bulkInsertCards(cards: Omit<Card, 'id' | 'created_at' | 'u
       );
     }
   });
+}
+
+// ─── Badges ───────────────────────────────────────────────────────────────────
+
+export async function getAwardedBadgeIds(): Promise<string[]> {
+  const database = await getDatabase();
+  const rows = await database.getAllAsync<{ badge_id: string }>(
+    'SELECT badge_id FROM user_badges ORDER BY achieved_at ASC'
+  );
+  return rows.map((r) => r.badge_id);
+}
+
+export async function awardBadge(badgeId: string): Promise<void> {
+  const database = await getDatabase();
+  await database.runAsync(
+    `INSERT OR IGNORE INTO user_badges (badge_id, achieved_at) VALUES (?, datetime('now'))`,
+    [badgeId]
+  );
+}
+
+export interface BadgeStats {
+  totalCardsReviewed: number;
+  currentStreak: number;
+  longestStreak: number;
+  decksCreated: number;
+  cardsMastered: number;
+  sessionsCompleted: number;
+}
+
+export async function getBadgeStats(): Promise<BadgeStats> {
+  const database = await getDatabase();
+
+  const reviewed = await database.getFirstAsync<{ total: number }>(
+    `SELECT COALESCE(SUM(cards_studied), 0) as total
+     FROM study_sessions WHERE completed_at IS NOT NULL`
+  );
+
+  const decks = await database.getFirstAsync<{ count: number }>(
+    'SELECT COUNT(*) as count FROM decks'
+  );
+
+  const mastered = await database.getFirstAsync<{ count: number }>(
+    `SELECT COUNT(*) as count FROM cards WHERE status = 'mastered'`
+  );
+
+  const sessions = await database.getFirstAsync<{ count: number }>(
+    `SELECT COUNT(*) as count FROM study_sessions WHERE completed_at IS NOT NULL`
+  );
+
+  const streakData = await getStreakData();
+
+  return {
+    totalCardsReviewed: reviewed?.total ?? 0,
+    currentStreak: streakData.currentStreak,
+    longestStreak: streakData.longestStreak,
+    decksCreated: decks?.count ?? 0,
+    cardsMastered: mastered?.count ?? 0,
+    sessionsCompleted: sessions?.count ?? 0,
+  };
 }
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
