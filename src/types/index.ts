@@ -122,7 +122,7 @@ export interface NotificationSettings {
   time: string; // HH:MM format
 }
 
-export type Language = 'en' | 'tr';
+export type Language = 'en' | 'tr' | 'de' | 'fr' | 'nl' | 'ru' | 'zh' | 'pt_BR' | 'pt_PT';
 
 export interface AppSettings {
   language: Language;

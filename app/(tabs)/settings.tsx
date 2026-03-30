@@ -28,6 +28,23 @@ import { useAuthStore } from '../../src/stores/useAuthStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Language } from '../../src/types';
+
+const LANGUAGES: { code: Language; label: string }[] = [
+  { code: 'en',    label: 'English' },
+  { code: 'de',    label: 'Deutsch' },
+  { code: 'fr',    label: 'Français' },
+  { code: 'nl',    label: 'Nederlands' },
+  { code: 'pt_BR', label: 'Português (Brasil)' },
+  { code: 'pt_PT', label: 'Português (Portugal)' },
+  { code: 'ru',    label: 'Русский' },
+  { code: 'tr',    label: 'Türkçe' },
+  { code: 'zh',    label: '中文' },
+];
+
+const LANGUAGE_NAMES: Record<Language, string> = Object.fromEntries(
+  LANGUAGES.map(({ code, label }) => [code, label])
+) as Record<Language, string>;
 
 function SettingsRow({
   label,
@@ -195,11 +212,13 @@ export default function SettingsScreen() {
           />
           <SettingsRow
             label={t('ui_language')}
-            value={language === 'tr' ? 'Türkçe' : 'English'}
+            value={LANGUAGE_NAMES[language] ?? 'English'}
             onPress={() => {
               Alert.alert(t('ui_language'), t('select_language'), [
-                { text: 'English', onPress: () => setLanguage('en') },
-                { text: 'Türkçe', onPress: () => setLanguage('tr') },
+                ...LANGUAGES.map(({ code, label }) => ({
+                  text: label,
+                  onPress: () => setLanguage(code),
+                })),
                 { text: t('cancel'), style: 'cancel' },
               ]);
             }}

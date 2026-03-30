@@ -7,10 +7,22 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { scheduleDailyReminder } from '../src/services/notifications';
 import { setLocale } from '../src/i18n';
 import { useAppStore } from '../src/stores/useAppStore';
+import { Language } from '../src/types';
 import { useAuthStore } from '../src/stores/useAuthStore';
 import { useSubscriptionStore } from '../src/stores/useSubscriptionStore';
 
 SplashScreen.preventAutoHideAsync();
+
+const SUPPORTED: Language[] = ['en', 'tr', 'de', 'fr', 'nl', 'ru', 'zh', 'pt_BR', 'pt_PT'];
+
+function detectLocale(languageTag: string, languageCode: string): Language {
+  // Portuguese needs region to distinguish pt-BR from pt-PT
+  if (languageCode === 'pt') {
+    return languageTag.startsWith('pt-BR') ? 'pt_BR' : 'pt_PT';
+  }
+  const match = SUPPORTED.find((l) => l === languageCode);
+  return match ?? 'en';
+}
 
 export default function RootLayout() {
   const { loadSettings, hasSeenOnboarding, language, isLoading } = useAppStore();
@@ -21,9 +33,19 @@ export default function RootLayout() {
   useEffect(() => {
     async function bootstrap() {
       await loadSettings();
-      // Apply stored locale immediately after settings load
-      const { language } = useAppStore.getState();
-      if (language) setLocale(language);
+
+      const { language, setLanguage } = useAppStore.getState();
+      if (language) {
+        // Returning user — apply stored locale
+        setLocale(language);
+      } else {
+        // First launch — detect from device locale and persist
+        const tag = locales[0]?.languageTag ?? '';
+        const code = locales[0]?.languageCode ?? '';
+        const detected = detectLocale(tag, code);
+        await setLanguage(detected);
+      }
+
       await initAuth();
       await initSubscription();
 
@@ -43,16 +65,6 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [isLoading, isInitialized]);
-
-  // On first launch, set locale from device language if user hasn't chosen one yet
-  useEffect(() => {
-    const stored = useAppStore.getState().language;
-    if (!stored && locales[0]?.languageCode) {
-      const code = locales[0].languageCode;
-      const locale = ['tr'].includes(code) ? 'tr' : 'en';
-      setLocale(locale);
-    }
-  }, []);
 
   if (isLoading || !isInitialized) {
     return null;
