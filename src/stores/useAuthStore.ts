@@ -52,7 +52,15 @@ export const useAuthStore = create<AuthState>((set) => ({
       const data = await signUp(email, password, displayName);
       set({ user: data.user ?? null, isLoading: false });
     } catch (e: any) {
-      set({ error: e.message ?? 'Registration failed', isLoading: false });
+      const parts = [
+        e.message,
+        e.code ? `code: ${e.code}` : null,
+        e.status ? `status: ${e.status}` : null,
+        e.details ? `details: ${e.details}` : null,
+        e.hint ? `hint: ${e.hint}` : null,
+      ].filter(Boolean);
+      console.error('[register error]', e);
+      set({ error: parts.join(' · ') || 'Registration failed', isLoading: false });
       throw e;
     }
   },
