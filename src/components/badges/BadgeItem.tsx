@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
+import { useTranslation } from '../../i18n';
 import { BadgeWithStatus } from '../../services/badgeService';
 
 interface BadgeItemProps {
@@ -10,6 +11,7 @@ interface BadgeItemProps {
 }
 
 export function BadgeItem({ badge, size = 'lg' }: BadgeItemProps) {
+  const { t } = useTranslation();
   const isSmall = size === 'sm';
   const circleSize = isSmall ? 52 : 72;
   const iconSize = isSmall ? 22 : 30;
@@ -64,7 +66,7 @@ export function BadgeItem({ badge, size = 'lg' }: BadgeItemProps) {
         style={[styles.name, isSmall && styles.nameSm, { color: achieved ? colors.textPrimary : colors.textMuted }]}
         numberOfLines={2}
       >
-        {badge.name}
+        {t(badge.nameKey)}
       </Text>
 
       {!achieved && progress > 0 && (

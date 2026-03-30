@@ -4,10 +4,12 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../src/constants';
+import { useAppStore } from '../../src/stores/useAppStore';
 
-const LAST_UPDATED = '30 March 2026';
+const LAST_UPDATED_EN = '30 March 2026';
+const LAST_UPDATED_TR = '30 Mart 2026';
 
-const SECTIONS = [
+const SECTIONS_EN = [
   {
     title: '1. Acceptance of Terms',
     body: `By downloading, installing, or using Synaps ("the App"), you agree to be bound by these Terms and Conditions. If you do not agree, please do not use the App.\n\nThese Terms constitute a legally binding agreement between you and Mudimedia Ltd, a company registered in England and Wales ("we", "us", or "our").`,
@@ -54,18 +56,70 @@ const SECTIONS = [
   },
 ];
 
+const SECTIONS_TR = [
+  {
+    title: '1. Koşulların Kabulü',
+    body: `Synaps'ı ("Uygulama") indirerek, yükleyerek veya kullanarak bu Kullanım Koşullarına uymayı kabul etmiş olursunuz. Kabul etmiyorsanız lütfen Uygulamayı kullanmayın.\n\nBu Koşullar, siz ile İngiltere ve Galler'de kayıtlı bir şirket olan Mudimedia Ltd ("biz", "bize" veya "bizim") arasında hukuken bağlayıcı bir anlaşma oluşturmaktadır.`,
+  },
+  {
+    title: '2. Hizmetin Tanımı',
+    body: `Synaps, kullanıcıların bilgi ezberlemesine ve hatırlamasına yardımcı olmak için tasarlanmış aralıklı tekrar tabanlı bir flash kart uygulamasıdır. Uygulama esas olarak çevrimdışı çalışır; internet bağlantısı yalnızca hesap oluşturma, bulut senkronizasyonu (PRO) ve kütüphane indirmeleri için gereklidir.`,
+  },
+  {
+    title: '3. Kullanıcı Hesapları',
+    body: `Synaps'ı hesap olmadan kullanabilirsiniz. Hesap oluşturmayı tercih ederseniz, kimlik bilgilerinizin gizliliğini korumaktan sorumlusunuz. Doğru bilgi vermeniz ve yetkisiz erişim durumunda bizi derhal bilgilendirmeniz gerekmektedir.\n\nHesap oluşturmak için en az 13 yaşında olmanız gerekmektedir.`,
+  },
+  {
+    title: '4. Abonelikler ve Ödemeler',
+    body: `Synaps, ücretsiz bir plan ve PRO aboneliği sunmaktadır. PRO abonelikleri Apple App Store veya Google Play Store üzerinden faturalandırılır. Fiyatlar satın alma öncesinde gösterilir ve bölgeye göre değişebilir.\n\nAbonelikler, mevcut dönemin sona ermesinden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir. Aboneliğinizi cihazınızın hesap ayarlarından yönetebilir veya iptal edebilirsiniz. Yürürlükteki mevzuatın gerektirdiği durumlar dışında kısmi abonelik dönemleri için iade yapılmaz.`,
+  },
+  {
+    title: '5. Kullanıcı İçeriği',
+    body: `Oluşturduğunuz flash kart içeriğinin mülkiyeti size aittir. Uygulamayı kullanarak, içeriğinizi yalnızca size hizmet sunma amacıyla depolamamız ve görüntülememiz için bize sınırlı, münhasır olmayan bir lisans vermiş olursunuz.\n\nYasadışı, zararlı, iftira niteliğinde veya üçüncü tarafların fikri mülkiyet haklarını ihlal eden içerik oluşturmamayı kabul edersiniz.`,
+  },
+  {
+    title: '6. Fikri Mülkiyet',
+    body: `Tüm Uygulama tasarımı, kodu, grafikleri ve önceden hazırlanmış kütüphane desteleri, Mudimedia Ltd veya lisans verenlerinin mülkiyetinde olup fikri mülkiyet yasalarıyla korunmaktadır. Önceden yazılı iznimiz olmadan kopyalayamazsınız, değiştiremezsiniz, dağıtamazsınız veya türev eserler oluşturamazsınız.`,
+  },
+  {
+    title: '7. Garanti Reddi',
+    body: `Uygulama, açık veya zımni herhangi bir garanti olmaksızın "olduğu gibi" ve "mevcut olduğu şekilde" sunulmaktadır. Uygulamanın kesintisiz, hatasız veya virüs ya da zararlı bileşenlerden arınmış olacağını garanti etmiyoruz.`,
+  },
+  {
+    title: '8. Sorumluluk Sınırlaması',
+    body: `Yürürlükteki yasaların izin verdiği azami ölçüde, Mudimedia Ltd; Uygulamayı kullanmanızdan veya kullanamamanızdan kaynaklanan dolaylı, arızi, özel, sonuç doğurucu veya cezai zararlardan, bu tür zararların olasılığı hakkında bilgilendirilmiş olsa dahi sorumlu tutulamaz.\n\nHerhangi bir talep için size karşı toplam sorumluluğumuz, talepten önceki 12 ay içinde bize ödediğiniz tutarı aşmayacaktır.`,
+  },
+  {
+    title: '9. Geçerli Hukuk',
+    body: `Bu Koşullar, İngiltere ve Galler hukukuna tabidir. Tüm anlaşmazlıklar, İngiltere ve Galler mahkemelerinin münhasır yargı yetkisine tabi olacaktır.`,
+  },
+  {
+    title: '10. Koşullardaki Değişiklikler',
+    body: `Bu Koşulları zaman zaman güncelleyebiliriz. Önemli değişiklikler Uygulama içinden bildirilecektir. Bildirimden sonra Uygulamayı kullanmaya devam etmeniz, güncellenmiş Koşulları kabul ettiğiniz anlamına gelir.`,
+  },
+  {
+    title: '11. İletişim',
+    body: `Bu Koşullar hakkındaki sorularınız için lütfen iletişime geçin:\n\nMudimedia Ltd\nLondra, Birleşik Krallık\nsynaps@mudimedia.co.uk`,
+  },
+];
+
 export default function TermsScreen() {
+  const language = useAppStore((s) => s.language);
+  const isTR = language === 'tr';
+  const SECTIONS = isTR ? SECTIONS_TR : SECTIONS_EN;
+  const lastUpdated = isTR ? LAST_UPDATED_TR : LAST_UPDATED_EN;
+
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
-        <Text style={styles.title}>Terms & Conditions</Text>
+        <Text style={styles.title}>{isTR ? 'Kullanım Koşulları' : 'Terms & Conditions'}</Text>
         <Pressable onPress={() => router.back()} style={styles.closeBtn}>
           <Ionicons name="close" size={22} color={colors.textSecondary} />
         </Pressable>
       </View>
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.meta}>Mudimedia Ltd · Last updated {LAST_UPDATED}</Text>
+        <Text style={styles.meta}>Mudimedia Ltd · {isTR ? 'Son güncelleme' : 'Last updated'} {lastUpdated}</Text>
 
         {SECTIONS.map((s) => (
           <View key={s.title} style={styles.section}>

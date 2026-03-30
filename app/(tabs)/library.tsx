@@ -31,7 +31,7 @@ import { PublicDeck } from '../../src/types';
 type Tab = 'discover' | 'browse';
 
 const CATEGORY_KEYS = [
-  { key: 'all', labelKey: 'All', icon: '🌐' },
+  { key: 'all', labelKey: 'all', icon: '🌐' },
   { key: 'languages', labelKey: 'categories.languages', icon: '🗣️' },
   { key: 'anatomy', labelKey: 'categories.anatomy', icon: '🫀' },
   { key: 'mcat', labelKey: 'categories.mcat', icon: '🩺' },
@@ -149,7 +149,7 @@ export default function LibraryScreen() {
               onPress={() => setActiveTab('discover')}
             >
               <Text style={[styles.tabBtnText, activeTab === 'discover' && styles.tabBtnTextActive]}>
-                Discover
+                {t('discover')}
               </Text>
             </Pressable>
             <Pressable
@@ -157,7 +157,7 @@ export default function LibraryScreen() {
               onPress={() => setActiveTab('browse')}
             >
               <Text style={[styles.tabBtnText, activeTab === 'browse' && styles.tabBtnTextActive]}>
-                Browse
+                {t('browse')}
               </Text>
             </Pressable>
           </View>
@@ -169,7 +169,7 @@ export default function LibraryScreen() {
               {t('downloads_remaining', { count: FREE_DOWNLOAD_LIMIT - freeDownloadsUsed })}
             </Text>
             <Pressable onPress={() => router.push('/paywall')}>
-              <Text style={styles.upgradeLink}>Upgrade to PRO</Text>
+              <Text style={styles.upgradeLink}>{t('upgrade_pro')}</Text>
             </Pressable>
           </View>
         )}
@@ -328,7 +328,7 @@ function BrowseTab({
           >
             <Text style={styles.chipIcon}>{cat.icon}</Text>
             <Text style={[styles.chipLabel, selectedCategory === cat.key && styles.chipLabelActive]}>
-              {cat.key === 'all' ? 'All' : t(cat.labelKey)}
+              {t(cat.labelKey)}
             </Text>
           </Pressable>
         ))}

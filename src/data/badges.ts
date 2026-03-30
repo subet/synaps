@@ -10,8 +10,8 @@ export type BadgeCategory = 'streak' | 'learning' | 'mastery' | 'explorer' | 'de
 
 export interface BadgeDefinition {
   id: string;
-  name: string;
-  description: string;
+  nameKey: string;
+  descriptionKey: string;
   icon: string;
   category: BadgeCategory;
   color: string;
@@ -31,8 +31,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   // ── Streak ──────────────────────────────────────────────────────────────────
   {
     id: 'badge-streak-1',
-    name: 'First Flame',
-    description: 'Study for 1 day in a row',
+    nameKey: 'badge_streak_1_name',
+    descriptionKey: 'badge_streak_1_desc',
     icon: '🔥',
     category: 'streak',
     color: BADGE_CATEGORY_COLORS.streak,
@@ -41,8 +41,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-streak-7',
-    name: 'Week Warrior',
-    description: 'Study for 7 days in a row',
+    nameKey: 'badge_streak_7_name',
+    descriptionKey: 'badge_streak_7_desc',
     icon: '⚡',
     category: 'streak',
     color: BADGE_CATEGORY_COLORS.streak,
@@ -51,8 +51,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-streak-30',
-    name: 'Monthly Master',
-    description: 'Study for 30 days in a row',
+    nameKey: 'badge_streak_30_name',
+    descriptionKey: 'badge_streak_30_desc',
     icon: '🌙',
     category: 'streak',
     color: BADGE_CATEGORY_COLORS.streak,
@@ -61,8 +61,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-streak-100',
-    name: 'Century Streak',
-    description: 'Study for 100 days in a row',
+    nameKey: 'badge_streak_100_name',
+    descriptionKey: 'badge_streak_100_desc',
     icon: '💎',
     category: 'streak',
     color: BADGE_CATEGORY_COLORS.streak,
@@ -73,8 +73,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   // ── Learning (cards reviewed) ────────────────────────────────────────────────
   {
     id: 'badge-cards-1',
-    name: 'First Step',
-    description: 'Review your first card',
+    nameKey: 'badge_cards_1_name',
+    descriptionKey: 'badge_cards_1_desc',
     icon: '👣',
     category: 'learning',
     color: BADGE_CATEGORY_COLORS.learning,
@@ -83,8 +83,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-cards-50',
-    name: 'Getting Started',
-    description: 'Review 50 cards total',
+    nameKey: 'badge_cards_50_name',
+    descriptionKey: 'badge_cards_50_desc',
     icon: '📖',
     category: 'learning',
     color: BADGE_CATEGORY_COLORS.learning,
@@ -93,8 +93,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-cards-500',
-    name: 'Dedicated Learner',
-    description: 'Review 500 cards total',
+    nameKey: 'badge_cards_500_name',
+    descriptionKey: 'badge_cards_500_desc',
     icon: '🧠',
     category: 'learning',
     color: BADGE_CATEGORY_COLORS.learning,
@@ -103,8 +103,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-cards-2000',
-    name: 'Scholar',
-    description: 'Review 2,000 cards total',
+    nameKey: 'badge_cards_2000_name',
+    descriptionKey: 'badge_cards_2000_desc',
     icon: '🎓',
     category: 'learning',
     color: BADGE_CATEGORY_COLORS.learning,
@@ -113,8 +113,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-cards-10000',
-    name: 'Legendary',
-    description: 'Review 10,000 cards total',
+    nameKey: 'badge_cards_10000_name',
+    descriptionKey: 'badge_cards_10000_desc',
     icon: '⭐',
     category: 'learning',
     color: BADGE_CATEGORY_COLORS.learning,
@@ -125,8 +125,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   // ── Mastery ──────────────────────────────────────────────────────────────────
   {
     id: 'badge-mastered-1',
-    name: 'First Mastery',
-    description: 'Master your first card',
+    nameKey: 'badge_mastered_1_name',
+    descriptionKey: 'badge_mastered_1_desc',
     icon: '🏅',
     category: 'mastery',
     color: BADGE_CATEGORY_COLORS.mastery,
@@ -135,8 +135,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-mastered-50',
-    name: 'Rising Expert',
-    description: 'Master 50 cards',
+    nameKey: 'badge_mastered_50_name',
+    descriptionKey: 'badge_mastered_50_desc',
     icon: '🥈',
     category: 'mastery',
     color: BADGE_CATEGORY_COLORS.mastery,
@@ -145,8 +145,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-mastered-200',
-    name: 'Expert',
-    description: 'Master 200 cards',
+    nameKey: 'badge_mastered_200_name',
+    descriptionKey: 'badge_mastered_200_desc',
     icon: '🥇',
     category: 'mastery',
     color: BADGE_CATEGORY_COLORS.mastery,
@@ -155,8 +155,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-mastered-1000',
-    name: 'Grand Master',
-    description: 'Master 1,000 cards',
+    nameKey: 'badge_mastered_1000_name',
+    descriptionKey: 'badge_mastered_1000_desc',
     icon: '👑',
     category: 'mastery',
     color: BADGE_CATEGORY_COLORS.mastery,
@@ -167,8 +167,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   // ── Explorer ─────────────────────────────────────────────────────────────────
   {
     id: 'badge-decks-1',
-    name: 'Deck Builder',
-    description: 'Create your first deck',
+    nameKey: 'badge_decks_1_name',
+    descriptionKey: 'badge_decks_1_desc',
     icon: '🗂️',
     category: 'explorer',
     color: BADGE_CATEGORY_COLORS.explorer,
@@ -177,8 +177,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-decks-5',
-    name: 'Collector',
-    description: 'Create or download 5 decks',
+    nameKey: 'badge_decks_5_name',
+    descriptionKey: 'badge_decks_5_desc',
     icon: '📚',
     category: 'explorer',
     color: BADGE_CATEGORY_COLORS.explorer,
@@ -187,8 +187,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-decks-10',
-    name: 'Librarian',
-    description: 'Create or download 10 decks',
+    nameKey: 'badge_decks_10_name',
+    descriptionKey: 'badge_decks_10_desc',
     icon: '🏛️',
     category: 'explorer',
     color: BADGE_CATEGORY_COLORS.explorer,
@@ -199,8 +199,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   // ── Dedication (sessions) ────────────────────────────────────────────────────
   {
     id: 'badge-sessions-1',
-    name: 'First Session',
-    description: 'Complete your first study session',
+    nameKey: 'badge_sessions_1_name',
+    descriptionKey: 'badge_sessions_1_desc',
     icon: '🎯',
     category: 'dedication',
     color: BADGE_CATEGORY_COLORS.dedication,
@@ -209,8 +209,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-sessions-10',
-    name: 'Consistent',
-    description: 'Complete 10 study sessions',
+    nameKey: 'badge_sessions_10_name',
+    descriptionKey: 'badge_sessions_10_desc',
     icon: '💪',
     category: 'dedication',
     color: BADGE_CATEGORY_COLORS.dedication,
@@ -219,8 +219,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-sessions-50',
-    name: 'Veteran',
-    description: 'Complete 50 study sessions',
+    nameKey: 'badge_sessions_50_name',
+    descriptionKey: 'badge_sessions_50_desc',
     icon: '🏆',
     category: 'dedication',
     color: BADGE_CATEGORY_COLORS.dedication,
@@ -229,8 +229,8 @@ export const ALL_BADGES: BadgeDefinition[] = [
   },
   {
     id: 'badge-sessions-100',
-    name: 'Elite',
-    description: 'Complete 100 study sessions',
+    nameKey: 'badge_sessions_100_name',
+    descriptionKey: 'badge_sessions_100_desc',
     icon: '🌟',
     category: 'dedication',
     color: BADGE_CATEGORY_COLORS.dedication,

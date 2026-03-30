@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { tap } from '../../utils/haptics';
+import { useTranslation } from '../../i18n';
 import { Deck, DeckStats } from '../../types';
 
 interface DeckListItemProps {
@@ -11,6 +12,7 @@ interface DeckListItemProps {
 }
 
 export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
+  const { t } = useTranslation();
   const dueCount = stats?.dueToday ?? 0;
   const accentColor = deck.color ?? colors.primary;
 
@@ -36,7 +38,7 @@ export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
       {/* Due pill */}
       <View style={[styles.duePill, { backgroundColor: `${accentColor}12` }]}>
         <Text style={[styles.dueCount, { color: accentColor }]}>{dueCount}</Text>
-        <Text style={[styles.dueLabel, { color: accentColor }]}>due</Text>
+        <Text style={[styles.dueLabel, { color: accentColor }]}>{t('due')}</Text>
       </View>
     </Pressable>
   );

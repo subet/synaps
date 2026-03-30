@@ -5,10 +5,11 @@ import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'r
 import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../src/constants';
 import { tap } from '../../src/utils/haptics';
+import { useAppStore } from '../../src/stores/useAppStore';
 
 const SUPPORT_EMAIL = 'synaps@mudimedia.co.uk';
 
-const FAQS = [
+const FAQS_EN = [
   {
     q: 'How does spaced repetition work?',
     a: 'Synaps uses the SM-2 algorithm. Cards you find difficult appear more often; cards you know well appear less frequently. Over time, this schedules reviews just before you are likely to forget, making learning far more efficient than re-reading.',
@@ -32,6 +33,33 @@ const FAQS = [
   {
     q: 'I found a bug — how do I report it?',
     a: `Email us at ${SUPPORT_EMAIL} with a description of what happened, your device model, and iOS/Android version. Screenshots are always helpful.`,
+  },
+];
+
+const FAQS_TR = [
+  {
+    q: 'Aralıklı tekrar nasıl çalışır?',
+    a: 'Synaps, SM-2 algoritmasını kullanır. Zor bulduğunuz kartlar daha sık görünür; iyi bildiğiniz kartlar daha seyrek çıkar. Zamanla bu sistem, unutmak üzere olduğunuz anda tekrarları planlar ve öğrenmeyi yeniden okumaktan çok daha verimli kılar.',
+  },
+  {
+    q: 'Serim neden 0 gösteriyor?',
+    a: 'Seriniz tam bir çalışma oturumu tamamladığınızda artar. Serilerde bir günlük tolerans süresi vardır — dün çalıştıysanız ancak bugün henüz çalışmadıysanız, seriniz günün sonuna kadar korunur.',
+  },
+  {
+    q: 'Synaps\'ı çevrimdışı kullanabilir miyim?',
+    a: 'Evet. Tüm desteleriniz ve çalışma oturumlarınız cihazınızda yerel olarak depolanır. İnternet bağlantısı yalnızca hesaba giriş, bulut senkronizasyonu (PRO) ve kütüphane destelerini indirmek için gereklidir.',
+  },
+  {
+    q: 'PRO aboneliğimi nasıl geri yüklerim?',
+    a: 'Ayarlar → Aboneliği Yönet\'e gidin ve "Satın Alımları Geri Yükle"ye dokunun. Aynı App Store veya Google Play hesabıyla satın alındıysa aboneliğiniz geri yüklenecektir.',
+  },
+  {
+    q: 'Verilerimi nasıl silerim?',
+    a: 'Ayarlar → Tüm verileri sil\'e gidin. Bu, cihazdaki tüm yerel desteleri, kartları ve çalışma geçmişini kaldırır. Bulut senkronizasyonu etkinse sunucu tarafındaki verileri kaldırmak için destek ekibiyle iletişime geçin.',
+  },
+  {
+    q: 'Bir hata buldum — nasıl bildiririm?',
+    a: `${SUPPORT_EMAIL} adresine ne olduğuna dair bir açıklama, cihaz modeliniz ve iOS/Android sürümünüzle birlikte e-posta gönderin. Ekran görüntüleri her zaman yardımcı olur.`,
   },
 ];
 
@@ -64,16 +92,23 @@ function ContactCard({
 }
 
 export default function SupportScreen() {
+  const language = useAppStore((s) => s.language);
+  const isTR = language === 'tr';
+  const FAQS = isTR ? FAQS_TR : FAQS_EN;
+
   const handleEmail = () => {
     Linking.openURL(`mailto:${SUPPORT_EMAIL}?subject=Synaps Support`).catch(() => {
-      Alert.alert('Cannot open email', `Please email us at ${SUPPORT_EMAIL}`);
+      Alert.alert(
+        isTR ? 'E-posta açılamıyor' : 'Cannot open email',
+        isTR ? `Lütfen bize şu adresten e-posta gönderin: ${SUPPORT_EMAIL}` : `Please email us at ${SUPPORT_EMAIL}`
+      );
     });
   };
 
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
-        <Text style={styles.title}>Contact Support</Text>
+        <Text style={styles.title}>{isTR ? 'Destek ile İletişim' : 'Contact Support'}</Text>
         <Pressable onPress={() => router.back()} style={styles.closeBtn}>
           <Ionicons name="close" size={22} color={colors.textSecondary} />
         </Pressable>
@@ -82,22 +117,24 @@ export default function SupportScreen() {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
 
         {/* Contact options */}
-        <Text style={styles.sectionLabel}>GET IN TOUCH</Text>
+        <Text style={styles.sectionLabel}>{isTR ? 'İLETİŞİME GEÇİN' : 'GET IN TOUCH'}</Text>
         <View style={styles.card}>
           <ContactCard
             icon="mail-outline"
-            label="Email Support"
+            label={isTR ? 'E-posta Desteği' : 'Email Support'}
             value={SUPPORT_EMAIL}
             onPress={handleEmail}
           />
         </View>
 
         <Text style={styles.note}>
-          We're a small team at Mudimedia Ltd, London. We aim to respond within 1–2 business days.
+          {isTR
+            ? "Mudimedia Ltd, Londra'da küçük bir ekibiz. 1-2 iş günü içinde yanıt vermeyi hedefliyoruz."
+            : "We're a small team at Mudimedia Ltd, London. We aim to respond within 1–2 business days."}
         </Text>
 
         {/* FAQ */}
-        <Text style={styles.sectionLabel}>FREQUENTLY ASKED QUESTIONS</Text>
+        <Text style={styles.sectionLabel}>{isTR ? 'SIK SORULAN SORULAR' : 'FREQUENTLY ASKED QUESTIONS'}</Text>
         <View style={styles.card}>
           {FAQS.map((faq, i) => (
             <View key={i} style={[styles.faqItem, i < FAQS.length - 1 && styles.faqBorder]}>

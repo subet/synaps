@@ -1,4 +1,9 @@
 export const en = {
+  // Navigation tabs
+  tab_home: 'Home',
+  tab_library: 'Library',
+  tab_settings: 'Settings',
+
   // General
   app_name: 'Synaps',
   cancel: 'Cancel',
@@ -41,6 +46,7 @@ export const en = {
   // Streak
   day_streak: 'day streak',
   days_streak: 'days streak',
+  due: 'due',
 
   // Achievements / Badges
   achievements: 'Achievements',
@@ -134,6 +140,10 @@ export const en = {
   browse_by_subject: 'Browse by Subject',
   downloaded: 'Downloaded',
   no_decks_found: 'No decks found',
+  discover: 'Discover',
+  browse: 'Browse',
+  all: 'All',
+  upgrade_pro: 'Upgrade to PRO',
   categories: {
     languages: 'Languages',
     anatomy: 'Anatomy',
@@ -216,4 +226,46 @@ export const en = {
     offline_study: 'Offline study mode',
     custom_styling: 'Custom card styling',
   },
+
+  // Badges
+  badge_streak_1_name: 'First Flame',
+  badge_streak_1_desc: 'Study for 1 day in a row',
+  badge_streak_7_name: 'Week Warrior',
+  badge_streak_7_desc: 'Study for 7 days in a row',
+  badge_streak_30_name: 'Monthly Master',
+  badge_streak_30_desc: 'Study for 30 days in a row',
+  badge_streak_100_name: 'Century Streak',
+  badge_streak_100_desc: 'Study for 100 days in a row',
+  badge_cards_1_name: 'First Step',
+  badge_cards_1_desc: 'Review your first card',
+  badge_cards_50_name: 'Getting Started',
+  badge_cards_50_desc: 'Review 50 cards total',
+  badge_cards_500_name: 'Dedicated Learner',
+  badge_cards_500_desc: 'Review 500 cards total',
+  badge_cards_2000_name: 'Scholar',
+  badge_cards_2000_desc: 'Review 2,000 cards total',
+  badge_cards_10000_name: 'Legendary',
+  badge_cards_10000_desc: 'Review 10,000 cards total',
+  badge_mastered_1_name: 'First Mastery',
+  badge_mastered_1_desc: 'Master your first card',
+  badge_mastered_50_name: 'Rising Expert',
+  badge_mastered_50_desc: 'Master 50 cards',
+  badge_mastered_200_name: 'Expert',
+  badge_mastered_200_desc: 'Master 200 cards',
+  badge_mastered_1000_name: 'Grand Master',
+  badge_mastered_1000_desc: 'Master 1,000 cards',
+  badge_decks_1_name: 'Deck Builder',
+  badge_decks_1_desc: 'Create your first deck',
+  badge_decks_5_name: 'Collector',
+  badge_decks_5_desc: 'Create or download 5 decks',
+  badge_decks_10_name: 'Librarian',
+  badge_decks_10_desc: 'Create or download 10 decks',
+  badge_sessions_1_name: 'First Session',
+  badge_sessions_1_desc: 'Complete your first study session',
+  badge_sessions_10_name: 'Consistent',
+  badge_sessions_10_desc: 'Complete 10 study sessions',
+  badge_sessions_50_name: 'Veteran',
+  badge_sessions_50_desc: 'Complete 50 study sessions',
+  badge_sessions_100_name: 'Elite',
+  badge_sessions_100_desc: 'Complete 100 study sessions',
 };

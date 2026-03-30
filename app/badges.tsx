@@ -56,6 +56,7 @@ export default function BadgesScreen() {
 }
 
 function BadgeRow({ badge }: { badge: BadgeWithStatus }) {
+  const { t } = useTranslation();
   const { achieved, progress, color, currentValue, threshold } = badge;
 
   return (
@@ -66,9 +67,9 @@ function BadgeRow({ badge }: { badge: BadgeWithStatus }) {
 
       <View style={styles.rowInfo}>
         <Text style={[styles.badgeName, { color: achieved ? colors.textPrimary : colors.textMuted }]}>
-          {badge.name}
+          {t(badge.nameKey)}
         </Text>
-        <Text style={styles.badgeDesc}>{badge.description}</Text>
+        <Text style={styles.badgeDesc}>{t(badge.descriptionKey)}</Text>
 
         {!achieved && (
           <View style={styles.progressBar}>

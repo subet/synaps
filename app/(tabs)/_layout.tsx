@@ -5,35 +5,37 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../../src/constants';
+import { useTranslation } from '../../src/i18n';
 
 type TabConfig = {
   name: string;
-  label: string;
+  labelKey: string;
   iconFocused: keyof typeof Ionicons.glyphMap;
   iconUnfocused: keyof typeof Ionicons.glyphMap;
 };
 
 const TABS: TabConfig[] = [
-  { name: 'index', label: 'Home', iconFocused: 'home', iconUnfocused: 'home-outline' },
-  { name: 'library', label: 'Library', iconFocused: 'library', iconUnfocused: 'library-outline' },
-  { name: 'settings', label: 'Settings', iconFocused: 'settings', iconUnfocused: 'settings-outline' },
+  { name: 'index', labelKey: 'tab_home', iconFocused: 'home', iconUnfocused: 'home-outline' },
+  { name: 'library', labelKey: 'tab_library', iconFocused: 'library', iconUnfocused: 'library-outline' },
+  { name: 'settings', labelKey: 'tab_settings', iconFocused: 'settings', iconUnfocused: 'settings-outline' },
 ];
 
 function TabItem({
-  label,
+  labelKey,
   iconFocused,
   iconUnfocused,
   focused,
   onPress,
   onLongPress,
 }: {
-  label: string;
+  labelKey: string;
   iconFocused: keyof typeof Ionicons.glyphMap;
   iconUnfocused: keyof typeof Ionicons.glyphMap;
   focused: boolean;
   onPress: () => void;
   onLongPress: () => void;
 }) {
+  const { t } = useTranslation();
   const scaleAnim = useRef(new Animated.Value(focused ? 1 : 0.92)).current;
   const opacityAnim = useRef(new Animated.Value(focused ? 1 : 0.55)).current;
   const dotOpacity = useRef(new Animated.Value(focused ? 1 : 0)).current;
@@ -92,7 +94,7 @@ function TabItem({
         numberOfLines={1}
         style={[styles.tabLabel, focused ? styles.tabLabelActive : styles.tabLabelInactive]}
       >
-        {label}
+        {t(labelKey)}
       </Text>
       <Animated.View
         style={[
@@ -130,7 +132,7 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           return (
             <TabItem
               key={route.key}
-              label={tab.label}
+              labelKey={tab.labelKey}
               iconFocused={tab.iconFocused}
               iconUnfocused={tab.iconUnfocused}
               focused={focused}

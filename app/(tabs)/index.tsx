@@ -19,6 +19,7 @@ import { TabHeader } from '../../src/components/ui/TabHeader';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStreakStore } from '../../src/stores/useStreakStore';
 import { useBadgeStore } from '../../src/stores/useBadgeStore';
+import { useAppStore } from '../../src/stores/useAppStore';
 import { Deck } from '../../src/types';
 
 export default function HomeScreen() {
@@ -26,6 +27,7 @@ export default function HomeScreen() {
   const { decks, deckStats, loadDecks, loadDeckStats } = useDeckStore();
   const { currentStreak, weekDays, loadStreak } = useStreakStore();
   const { checkBadges } = useBadgeStore();
+  const language = useAppStore((s) => s.language);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function HomeScreen() {
         </View>
       </View>
     ),
-    [currentStreak, weekDays, decks.length]
+    [currentStreak, weekDays, decks.length, language]
   );
 
   return (

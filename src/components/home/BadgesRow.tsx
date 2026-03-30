@@ -8,6 +8,7 @@ import { useBadgeStore } from '../../stores/useBadgeStore';
 import { BadgeWithStatus } from '../../services/badgeService';
 
 function SmallBadgeCircle({ badge }: { badge: BadgeWithStatus }) {
+  const { t } = useTranslation();
   const { achieved, progress, color } = badge;
   const bgColor = achieved ? `${color}22` : '#F3F4F6';
   const borderColor = achieved ? color : colors.border;
@@ -26,7 +27,7 @@ function SmallBadgeCircle({ badge }: { badge: BadgeWithStatus }) {
         )}
       </View>
       <Text style={[styles.badgeName, { color: achieved ? colors.textPrimary : colors.textMuted }]} numberOfLines={1}>
-        {badge.name}
+        {t(badge.nameKey)}
       </Text>
     </View>
   );
