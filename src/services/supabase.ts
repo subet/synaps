@@ -143,3 +143,40 @@ export async function getUserProfile(userId: string) {
   if (error) throw error;
   return data;
 }
+
+export async function updateUserProfile(
+  userId: string,
+  updates: { display_name?: string; avatar_url?: string; country?: string }
+) {
+  const { data, error } = await supabase
+    .from('profiles')
+    .upsert({ id: userId, ...updates }, { onConflict: 'id' })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function uploadAvatar(userId: string, localUri: string): Promise<string> {
+  const response = await fetch(localUri);
+  const arrayBuffer = await response.arrayBuffer();
+  const filePath = `${userId}.jpg`;
+  const { error } = await supabase.storage
+    .from('avatars')
+    .upload(filePath, arrayBuffer, { contentType: 'image/jpeg', upsert: true });
+  if (error) throw error;
+  const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
+  return `${data.publicUrl}?t=${Date.now()}`;
+}
+
+export async function updateAuthEmail(newEmail: string) {
+  const { data, error } = await supabase.auth.updateUser({ email: newEmail });
+  if (error) throw error;
+  return data;
+}
+
+export async function updateAuthPassword(newPassword: string) {
+  const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+  if (error) throw error;
+  return data;
+}

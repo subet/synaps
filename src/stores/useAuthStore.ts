@@ -1,9 +1,21 @@
 import { create } from 'zustand';
 import { User } from '@supabase/supabase-js';
-import { supabase, signIn, signOut, signUp } from '../services/supabase';
+import {
+  supabase,
+  signIn,
+  signOut,
+  signUp,
+  getUserProfile,
+  updateUserProfile,
+  uploadAvatar,
+  updateAuthEmail,
+  updateAuthPassword,
+} from '../services/supabase';
+import { UserProfile } from '../types';
 
 interface AuthState {
   user: User | null;
+  profile: UserProfile | null;
   isLoading: boolean;
   isInitialized: boolean;
   error: string | null;
@@ -13,10 +25,16 @@ interface AuthState {
   register: (email: string, password: string, displayName: string) => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
+  loadProfile: (userId: string) => Promise<void>;
+  updateProfile: (updates: { display_name?: string; avatar_url?: string; country?: string }) => Promise<void>;
+  uploadProfileAvatar: (localUri: string) => Promise<void>;
+  updateEmail: (newEmail: string) => Promise<void>;
+  updatePassword: (newPassword: string) => Promise<void>;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
+  profile: null,
   isLoading: false,
   isInitialized: false,
   error: null,
@@ -26,9 +44,23 @@ export const useAuthStore = create<AuthState>((set) => ({
       const { data: { session } } = await supabase.auth.getSession();
       set({ user: session?.user ?? null, isInitialized: true });
 
-      // Listen for auth state changes
-      supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        try {
+          const profile = await getUserProfile(session.user.id);
+          set({ profile });
+        } catch {}
+      }
+
+      supabase.auth.onAuthStateChange(async (_event, session) => {
         set({ user: session?.user ?? null });
+        if (session?.user) {
+          try {
+            const profile = await getUserProfile(session.user.id);
+            set({ profile });
+          } catch {}
+        } else {
+          set({ profile: null });
+        }
       });
     } catch {
       set({ isInitialized: true });
@@ -69,11 +101,41 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
     try {
       await signOut();
-      set({ user: null, isLoading: false });
+      set({ user: null, profile: null, isLoading: false });
     } catch {
       set({ isLoading: false });
     }
   },
 
   clearError: () => set({ error: null }),
+
+  loadProfile: async (userId) => {
+    const profile = await getUserProfile(userId);
+    set({ profile });
+  },
+
+  updateProfile: async (updates) => {
+    const { user, profile } = get();
+    if (!user) throw new Error('Not authenticated');
+    const updated = await updateUserProfile(user.id, updates);
+    set({ profile: { ...profile!, ...updated } });
+  },
+
+  uploadProfileAvatar: async (localUri) => {
+    const { user } = get();
+    if (!user) throw new Error('Not authenticated');
+    const avatarUrl = await uploadAvatar(user.id, localUri);
+    await updateUserProfile(user.id, { avatar_url: avatarUrl });
+    set((state) => ({
+      profile: state.profile ? { ...state.profile, avatar_url: avatarUrl } : state.profile,
+    }));
+  },
+
+  updateEmail: async (newEmail) => {
+    await updateAuthEmail(newEmail);
+  },
+
+  updatePassword: async (newPassword) => {
+    await updateAuthPassword(newPassword);
+  },
 }));

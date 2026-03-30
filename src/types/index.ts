@@ -84,6 +84,7 @@ export interface UserProfile {
   streak_count: number;
   longest_streak: number;
   total_cards_studied: number;
+  country?: string;
   created_at: string;
 }
 

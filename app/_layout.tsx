@@ -101,6 +101,7 @@ export default function RootLayout() {
             name="legal/support"
             options={{ presentation: 'modal' }}
           />
+          <Stack.Screen name="profile/index" />
         </Stack>
       </SafeAreaProvider>
     </GestureHandlerRootView>
