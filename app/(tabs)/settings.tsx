@@ -216,9 +216,9 @@ export default function SettingsScreen() {
 
         {/* Legal */}
         <Section title="Legal & Support">
-          <SettingsRow label="Terms & Conditions" onPress={() => Linking.openURL('https://example.com/terms').catch(() => {})} />
-          <SettingsRow label="Privacy Policy" onPress={() => Linking.openURL('https://example.com/privacy').catch(() => {})} />
-          <SettingsRow label="Contact Support" onPress={() => Linking.openURL('mailto:support@synaps.app').catch(() => {})} />
+          <SettingsRow label="Terms & Conditions" onPress={() => router.push('/legal/terms')} />
+          <SettingsRow label="Privacy Policy" onPress={() => router.push('/legal/privacy')} />
+          <SettingsRow label="Contact Support" onPress={() => router.push('/legal/support')} />
         </Section>
 
         <Text style={styles.version}>App Version {version}</Text>

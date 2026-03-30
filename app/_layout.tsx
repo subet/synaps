@@ -64,6 +64,18 @@ export default function RootLayout() {
             name="paywall/index"
             options={{ presentation: 'modal' }}
           />
+          <Stack.Screen
+            name="legal/terms"
+            options={{ presentation: 'modal' }}
+          />
+          <Stack.Screen
+            name="legal/privacy"
+            options={{ presentation: 'modal' }}
+          />
+          <Stack.Screen
+            name="legal/support"
+            options={{ presentation: 'modal' }}
+          />
         </Stack>
       </SafeAreaProvider>
     </GestureHandlerRootView>
