@@ -16,7 +16,7 @@ import { borderRadius, colors, spacing, typography } from '../../src/constants';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 
 const PRO_FEATURES = [
-  'Unlimited deck downloads from Library',
+  'Unlimited deck downloads',
   'Unlimited cards per deck',
   'Cloud sync across devices',
   'Audio on cards',

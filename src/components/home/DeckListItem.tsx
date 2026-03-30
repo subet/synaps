@@ -17,12 +17,14 @@ export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
       onPress={onPress}
-      accessibilityLabel={`${deck.name}, ${dueCount} cards for today`}
+      accessibilityLabel={`${deck.name}, ${dueCount} cards due today`}
     >
-      <View style={[styles.iconContainer, { backgroundColor: `${accentColor}22` }]}>
+      {/* Icon */}
+      <View style={[styles.iconContainer, { backgroundColor: `${accentColor}20` }]}>
         <Text style={styles.icon}>{deck.icon ?? '🗂️'}</Text>
       </View>
 
+      {/* Name + description */}
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={1}>{deck.name}</Text>
         {deck.description ? (
@@ -30,9 +32,10 @@ export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
         ) : null}
       </View>
 
-      <View style={styles.dueContainer}>
-        <Text style={[styles.dueCount, { color: accentColor }]}>↑ {dueCount}</Text>
-        <Text style={styles.dueLabel}>today</Text>
+      {/* Due pill */}
+      <View style={[styles.duePill, { backgroundColor: `${accentColor}12` }]}>
+        <Text style={[styles.dueCount, { color: accentColor }]}>{dueCount}</Text>
+        <Text style={[styles.dueLabel, { color: accentColor }]}>due</Text>
       </View>
     </Pressable>
   );
@@ -44,31 +47,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
-    padding: spacing.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
     marginHorizontal: spacing.md,
     marginBottom: spacing.sm,
     shadowColor: colors.shadowColor,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.07,
+    shadowRadius: 8,
+    elevation: 2,
   },
   pressed: {
-    opacity: 0.75,
+    opacity: 0.82,
+    transform: [{ scale: 0.99 }],
   },
   iconContainer: {
-    width: 44,
-    height: 44,
+    width: 46,
+    height: 46,
     borderRadius: borderRadius.md,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: spacing.md,
+    flexShrink: 0,
   },
-  icon: {
-    fontSize: 22,
-  },
+  icon: { fontSize: 22 },
   info: {
     flex: 1,
+    marginRight: spacing.sm,
   },
   name: {
     ...typography.bodyBold,
@@ -79,14 +84,32 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     marginTop: 2,
   },
-  dueContainer: {
-    alignItems: 'flex-end',
+  // Compact pill badge for due count
+  duePill: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 6,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    minWidth: 48,
+    flexShrink: 0,
+    shadowColor: colors.shadowColor,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.18,
+    shadowRadius: 6,
+    elevation: 3,
   },
   dueCount: {
-    ...typography.captionBold,
+    fontSize: 17,
+    fontWeight: '800',
+    lineHeight: 20,
   },
   dueLabel: {
-    ...typography.small,
-    color: colors.textMuted,
+    fontSize: 10,
+    fontWeight: '600',
+    letterSpacing: 0.3,
+    opacity: 0.8,
   },
 });

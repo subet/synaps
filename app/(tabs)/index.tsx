@@ -3,26 +3,28 @@ import { router } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   FlatList,
+  Pressable,
   RefreshControl,
-
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { DeckListItem } from '../../src/components/home/DeckListItem';
+import { Logo } from '../../src/components/ui/Logo';
 import { StreakCard } from '../../src/components/home/StreakCard';
 import { EmptyState } from '../../src/components/ui/EmptyState';
 import { FAB } from '../../src/components/ui/FAB';
-import { SearchBar } from '../../src/components/ui/SearchBar';
-import { colors, spacing, typography } from '../../src/constants';
+import { borderRadius, colors, spacing, typography } from '../../src/constants';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStreakStore } from '../../src/stores/useStreakStore';
+import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { Deck } from '../../src/types';
 
 export default function HomeScreen() {
   const { decks, deckStats, loadDecks, loadDeckStats } = useDeckStore();
   const { currentStreak, weekDays, loadStreak } = useStreakStore();
-  const [searchQuery, setSearchQuery] = useState('');
+  const { isPro } = useSubscriptionStore();
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -36,11 +38,6 @@ export default function HomeScreen() {
     });
   }, [decks]);
 
-  const filteredDecks = useMemo(() => {
-    if (!searchQuery.trim()) return decks;
-    const q = searchQuery.toLowerCase();
-    return decks.filter((d) => d.name.toLowerCase().includes(q));
-  }, [decks, searchQuery]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -63,14 +60,15 @@ export default function HomeScreen() {
     () => (
       <View>
         <View style={styles.header}>
-          <Text style={styles.appName}>Synaps</Text>
-        </View>
-        <View style={styles.searchContainer}>
-          <SearchBar
-            placeholder="Search decks..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
+          <View style={styles.logoWrapper}>
+            <Logo height={38} />
+          </View>
+          {!isPro && (
+            <Pressable style={styles.proButton} onPress={() => router.push('/paywall')}>
+              <Ionicons name="diamond-outline" size={14} color={colors.white} />
+              <Text style={styles.proButtonText}>PRO</Text>
+            </Pressable>
+          )}
         </View>
         <StreakCard currentStreak={currentStreak} weekDays={weekDays} />
         <View style={styles.sectionHeader}>
@@ -79,31 +77,25 @@ export default function HomeScreen() {
         </View>
       </View>
     ),
-    [currentStreak, weekDays, searchQuery, decks.length]
+    [currentStreak, weekDays, decks.length]
   );
 
   return (
     <SafeAreaView style={styles.safe}>
       <FlatList
-        data={filteredDecks}
+        data={decks}
         keyExtractor={(item) => item.id}
         renderItem={renderDeck}
         ListHeaderComponent={ListHeader}
         ListEmptyComponent={
-          searchQuery ? (
-            <View style={styles.emptySearch}>
-              <Text style={styles.emptyText}>No decks match "{searchQuery}"</Text>
-            </View>
-          ) : (
-            <EmptyState
-              title="No decks yet"
-              subtitle="Create your first deck to start learning"
-              ctaLabel="Create your first deck"
-              onCtaPress={() => router.push('/deck/create')}
-            />
-          )
+          <EmptyState
+            title="No decks yet"
+            subtitle="Create your first deck to start learning"
+            ctaLabel="Create your first deck"
+            onCtaPress={() => router.push('/deck/create')}
+          />
         }
-        contentContainerStyle={filteredDecks.length === 0 ? { flex: 1 } : { paddingBottom: 100 }}
+        contentContainerStyle={decks.length === 0 ? { flex: 1 } : { paddingBottom: 100 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
         }
@@ -123,17 +115,29 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: spacing.md,
     paddingTop: spacing.md,
     paddingBottom: spacing.sm,
   },
-  appName: {
-    ...typography.h1,
-    color: colors.primary,
+  logoWrapper: {
+    flex: 1,
   },
-  searchContainer: {
-    paddingHorizontal: spacing.md,
-    marginBottom: spacing.md,
+  proButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 6,
+    borderRadius: borderRadius.md,
+  },
+  proButtonText: {
+    color: colors.white,
+    fontSize: 13,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -149,14 +153,6 @@ const styles = StyleSheet.create({
   deckCount: {
     ...typography.caption,
     color: colors.textMuted,
-  },
-  emptySearch: {
-    padding: spacing.xl,
-    alignItems: 'center',
-  },
-  emptyText: {
-    ...typography.body,
-    color: colors.textSecondary,
   },
   fab: {
     position: 'absolute',

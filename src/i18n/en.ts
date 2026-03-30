@@ -156,7 +156,7 @@ export const en = {
   best_value: 'Best Value',
   save_badge: 'Save %{percent}%',
   pro_features: {
-    unlimited_downloads: 'Unlimited deck downloads from Library',
+    unlimited_downloads: 'Unlimited deck downloads',
     unlimited_cards: 'Unlimited cards per deck',
     cloud_sync: 'Cloud sync across devices',
     audio_cards: 'Audio on cards',
