@@ -22,6 +22,7 @@ import {
 } from '../../src/data/publicDecks';
 import { bulkInsertCards, createDeck } from '../../src/services/database';
 import { useTranslation } from '../../src/i18n';
+import { TabHeader } from '../../src/components/ui/TabHeader';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useAppStore } from '../../src/stores/useAppStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
@@ -130,9 +131,9 @@ export default function LibraryScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      {/* Fixed header: title + search + tabs */}
+      {/* Fixed header: logo + search + tabs */}
       <View style={styles.header}>
-        <Text style={styles.title}>Library</Text>
+        <TabHeader />
         <View style={styles.searchContainer}>
           <SearchBar
             placeholder={t('search_library')}
@@ -502,13 +503,6 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   header: {
     backgroundColor: colors.background,
-    paddingTop: spacing.md,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.textPrimary,
-    paddingHorizontal: spacing.md,
-    marginBottom: spacing.sm,
   },
   searchContainer: {
     paddingHorizontal: spacing.md,

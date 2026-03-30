@@ -3,32 +3,28 @@ import { router } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   FlatList,
-  Pressable,
   RefreshControl,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { BadgesRow } from '../../src/components/home/BadgesRow';
 import { DeckListItem } from '../../src/components/home/DeckListItem';
-import { Logo } from '../../src/components/ui/Logo';
 import { StreakCard } from '../../src/components/home/StreakCard';
 import { EmptyState } from '../../src/components/ui/EmptyState';
 import { FAB } from '../../src/components/ui/FAB';
-import { borderRadius, colors, spacing, typography } from '../../src/constants';
+import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
+import { TabHeader } from '../../src/components/ui/TabHeader';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStreakStore } from '../../src/stores/useStreakStore';
 import { useBadgeStore } from '../../src/stores/useBadgeStore';
-import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { Deck } from '../../src/types';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
   const { decks, deckStats, loadDecks, loadDeckStats } = useDeckStore();
   const { currentStreak, weekDays, loadStreak } = useStreakStore();
-  const { isPro } = useSubscriptionStore();
   const { checkBadges } = useBadgeStore();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -65,17 +61,7 @@ export default function HomeScreen() {
   const ListHeader = useMemo(
     () => (
       <View>
-        <View style={styles.header}>
-          <View style={styles.logoWrapper}>
-            <Logo height={38} />
-          </View>
-          {!isPro && (
-            <Pressable style={styles.proButton} onPress={() => router.push('/paywall')}>
-              <Ionicons name="diamond-outline" size={14} color={colors.white} />
-              <Text style={styles.proButtonText}>PRO</Text>
-            </Pressable>
-          )}
-        </View>
+        <TabHeader />
         <StreakCard currentStreak={currentStreak} weekDays={weekDays} />
         <BadgesRow />
         <View style={styles.sectionHeader}>
@@ -120,31 +106,6 @@ const styles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: colors.background,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-  },
-  logoWrapper: {
-    flex: 1,
-  },
-  proButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 6,
-    borderRadius: borderRadius.md,
-  },
-  proButtonText: {
-    color: colors.white,
-    fontSize: 13,
-    fontWeight: '700',
-    letterSpacing: 0.5,
   },
   sectionHeader: {
     flexDirection: 'row',

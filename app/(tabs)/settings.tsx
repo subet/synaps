@@ -21,6 +21,7 @@ import {
   scheduleDailyReminder,
 } from '../../src/services/notifications';
 import { useTranslation } from '../../src/i18n';
+import { TabHeader } from '../../src/components/ui/TabHeader';
 import { useAppStore } from '../../src/stores/useAppStore';
 import { tap } from '../../src/utils/haptics';
 import { useAuthStore } from '../../src/stores/useAuthStore';
@@ -137,8 +138,8 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <TabHeader />
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>{t('settings')}</Text>
 
         {/* Account */}
         {user ? (
@@ -284,7 +285,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
   content: { paddingBottom: 40 },
-  title: { ...typography.h1, color: colors.textPrimary, padding: spacing.md },
   section: { marginBottom: spacing.lg, paddingHorizontal: spacing.md },
   sectionTitle: { ...typography.captionBold, color: colors.textMuted, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: spacing.sm },
   sectionCard: { backgroundColor: colors.surface, borderRadius: borderRadius.lg, overflow: 'hidden' },
