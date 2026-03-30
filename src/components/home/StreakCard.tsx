@@ -8,7 +8,8 @@ interface StreakCardProps {
   weekDays: StreakDay[];
 }
 
-const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+// Sunday=0 … Saturday=6
+const UTC_DAY_LETTER = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 export function StreakCard({ currentStreak, weekDays }: StreakCardProps) {
   const today = new Date().toISOString().split('T')[0];
@@ -26,14 +27,15 @@ export function StreakCard({ currentStreak, weekDays }: StreakCardProps) {
       </View>
 
       <View style={styles.weekRow}>
-        {DAY_LABELS.map((day, idx) => {
-          const dayData = weekDays[idx];
-          const isToday = dayData?.date === today;
-          const hasStudied = dayData && dayData.cards_studied > 0;
+        {weekDays.map((dayData, idx) => {
+          // Parse as UTC to get the correct day letter regardless of timezone
+          const dayLetter = UTC_DAY_LETTER[new Date(dayData.date + 'T12:00:00Z').getUTCDay()];
+          const isToday = dayData.date === today;
+          const hasStudied = dayData.cards_studied > 0;
 
           return (
             <View key={idx} style={styles.dayColumn}>
-              <Text style={styles.dayLabel}>{day}</Text>
+              <Text style={[styles.dayLabel, isToday && styles.dayLabelToday]}>{dayLetter}</Text>
               <StreakCircle
                 hasStudied={hasStudied}
                 isToday={isToday}
@@ -113,6 +115,10 @@ const styles = StyleSheet.create({
     ...typography.small,
     color: colors.textMuted,
     fontWeight: '600',
+  },
+  dayLabelToday: {
+    color: colors.streakText,
+    fontWeight: '700',
   },
   circle: {
     width: 28,

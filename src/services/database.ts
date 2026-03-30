@@ -344,16 +344,27 @@ export async function getStreakData(): Promise<{ currentStreak: number; longestS
   let longestStreak = 0;
   let tempStreak = 0;
   const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
 
-  for (let i = 0; i < allRows.length; i++) {
-    const expectedDate = new Date(today);
-    expectedDate.setDate(today.getDate() - i);
-    const expectedStr = expectedDate.toISOString().split('T')[0];
+  // Grace period: if the user hasn't studied yet today but studied yesterday,
+  // keep the streak alive (start counting from yesterday instead of today).
+  const mostRecent = allRows[0]?.date;
+  const offset = mostRecent === todayStr ? 0 : mostRecent === yesterdayStr ? 1 : null;
 
-    if (allRows[i]?.date === expectedStr) {
-      currentStreak++;
-    } else {
-      break;
+  if (offset !== null) {
+    for (let i = 0; i < allRows.length; i++) {
+      const expectedDate = new Date(today);
+      expectedDate.setDate(today.getDate() - (offset + i));
+      const expectedStr = expectedDate.toISOString().split('T')[0];
+
+      if (allRows[i]?.date === expectedStr) {
+        currentStreak++;
+      } else {
+        break;
+      }
     }
   }
 
