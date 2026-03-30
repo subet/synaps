@@ -17,6 +17,7 @@ import {
 import { Button } from '../../src/components/ui/Button';
 import { Input } from '../../src/components/ui/Input';
 import { borderRadius, colors, FREE_DECK_LIMIT, spacing, typography } from '../../src/constants';
+import { useTranslation } from '../../src/i18n';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 
@@ -24,6 +25,7 @@ const ICONS = ['📚', '🗂️', '🧠', '💡', '🔬', '🌍', '🎨', '💻'
 const COLORS = ['#4361EE', '#E53E3E', '#48BB78', '#ED8936', '#9B59B6', '#3182CE', '#319795', '#D69E2E', '#F687B3', '#2D3748'];
 
 export default function CreateDeckScreen() {
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [selectedIcon, setSelectedIcon] = useState('📚');
@@ -60,7 +62,7 @@ export default function CreateDeckScreen() {
       });
       router.replace(`/deck/${deck.id}`);
     } catch {
-      Alert.alert('Error', 'Failed to create deck. Please try again.');
+      Alert.alert(t('error'), t('failed_create_deck'));
     } finally {
       setIsLoading(false);
     }
@@ -74,7 +76,7 @@ export default function CreateDeckScreen() {
             <Pressable onPress={() => router.back()}>
               <Ionicons name="chevron-back" size={22} color={colors.primary} />
             </Pressable>
-            <Text style={styles.title}>New Deck</Text>
+            <Text style={styles.title}>{t('new_deck')}</Text>
             <View style={{ width: 60 }} />
           </View>
 
@@ -87,16 +89,16 @@ export default function CreateDeckScreen() {
           </View>
 
           <Input
-            label="Deck Name *"
+            label={`${t('deck_name')} *`}
             value={name}
-            onChangeText={(t) => { setName(t); setNameError(''); }}
+            onChangeText={(v) => { setName(v); setNameError(''); }}
             error={nameError}
             placeholder="e.g. Spanish Vocabulary"
             autoFocus
           />
 
           <Input
-            label="Description (optional)"
+            label={t('deck_description')}
             value={description}
             onChangeText={setDescription}
             placeholder="What is this deck about?"
@@ -105,7 +107,7 @@ export default function CreateDeckScreen() {
             style={{ minHeight: 80, textAlignVertical: 'top' }}
           />
 
-          <Text style={styles.sectionLabel}>Icon</Text>
+          <Text style={styles.sectionLabel}>{t('deck_icon')}</Text>
           <View style={styles.iconGrid}>
             {ICONS.map((icon) => (
               <TouchableOpacity
@@ -118,7 +120,7 @@ export default function CreateDeckScreen() {
             ))}
           </View>
 
-          <Text style={styles.sectionLabel}>Color</Text>
+          <Text style={styles.sectionLabel}>{t('deck_color')}</Text>
           <View style={styles.colorRow}>
             {COLORS.map((c) => (
               <TouchableOpacity
@@ -129,7 +131,7 @@ export default function CreateDeckScreen() {
             ))}
           </View>
 
-          <Button label="Create Deck" onPress={handleCreate} loading={isLoading} style={styles.createBtn} />
+          <Button label={t('create_deck')} onPress={handleCreate} loading={isLoading} style={styles.createBtn} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

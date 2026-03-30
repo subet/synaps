@@ -21,6 +21,7 @@ import {
   searchStaticDecks,
 } from '../../src/data/publicDecks';
 import { bulkInsertCards, createDeck } from '../../src/services/database';
+import { useTranslation } from '../../src/i18n';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useAppStore } from '../../src/stores/useAppStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
@@ -28,21 +29,22 @@ import { PublicDeck } from '../../src/types';
 
 type Tab = 'discover' | 'browse';
 
-const CATEGORIES = [
-  { key: 'all', label: 'All', icon: '🌐' },
-  { key: 'languages', label: 'Languages', icon: '🗣️' },
-  { key: 'anatomy', label: 'Anatomy', icon: '🫀' },
-  { key: 'mcat', label: 'MCAT', icon: '🩺' },
-  { key: 'science', label: 'Science', icon: '🔬' },
-  { key: 'history', label: 'History', icon: '📜' },
-  { key: 'business', label: 'Business', icon: '💼' },
-  { key: 'math', label: 'Math', icon: '📐' },
-  { key: 'medical', label: 'Medical', icon: '💊' },
-  { key: 'technology', label: 'Technology', icon: '💻' },
-  { key: 'psychology', label: 'Psychology', icon: '🧠' },
+const CATEGORY_KEYS = [
+  { key: 'all', labelKey: 'All', icon: '🌐' },
+  { key: 'languages', labelKey: 'categories.languages', icon: '🗣️' },
+  { key: 'anatomy', labelKey: 'categories.anatomy', icon: '🫀' },
+  { key: 'mcat', labelKey: 'categories.mcat', icon: '🩺' },
+  { key: 'science', labelKey: 'categories.science', icon: '🔬' },
+  { key: 'history', labelKey: 'categories.history', icon: '📜' },
+  { key: 'business', labelKey: 'categories.business', icon: '💼' },
+  { key: 'math', labelKey: 'categories.math', icon: '📐' },
+  { key: 'medical', labelKey: 'categories.medical', icon: '💊' },
+  { key: 'technology', labelKey: 'categories.technology', icon: '💻' },
+  { key: 'psychology', labelKey: 'categories.psychology', icon: '🧠' },
 ];
 
 export default function LibraryScreen() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<Tab>('discover');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -133,7 +135,7 @@ export default function LibraryScreen() {
         <Text style={styles.title}>Library</Text>
         <View style={styles.searchContainer}>
           <SearchBar
-            placeholder="Search all decks..."
+            placeholder={t('search_library')}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
@@ -163,7 +165,7 @@ export default function LibraryScreen() {
         {!isPro && (
           <View style={styles.downloadBanner}>
             <Text style={styles.downloadBannerText}>
-              {FREE_DOWNLOAD_LIMIT - freeDownloadsUsed} free download{FREE_DOWNLOAD_LIMIT - freeDownloadsUsed !== 1 ? 's' : ''} remaining
+              {t('downloads_remaining', { count: FREE_DOWNLOAD_LIMIT - freeDownloadsUsed })}
             </Text>
             <Pressable onPress={() => router.push('/paywall')}>
               <Text style={styles.upgradeLink}>Upgrade to PRO</Text>
@@ -215,10 +217,11 @@ function SearchResults({
   downloadedIds: Set<string>;
   onDownload: (d: PublicDeck) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <ScrollView contentContainerStyle={styles.tabContent}>
       {results.length === 0 ? (
-        <Text style={styles.emptyText}>No decks found</Text>
+        <Text style={styles.emptyText}>{t('no_decks_found')}</Text>
       ) : (
         results.map((deck) => (
           <BrowseDeckCard
@@ -249,12 +252,13 @@ function DiscoverTab({
   downloadedIds: Set<string>;
   onDownload: (d: PublicDeck) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.tabContent}>
       {/* Featured */}
       {featuredDecks.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Featured Decks</Text>
+          <Text style={styles.sectionTitle}>{t('featured_decks')}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carouselRow}>
             {featuredDecks.map((deck) => (
               <FeaturedDeckCard
@@ -272,7 +276,7 @@ function DiscoverTab({
       {/* Editor's Choice */}
       {editorsChoiceDecks.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Editor's Choice</Text>
+          <Text style={styles.sectionTitle}>{t('editors_choice')}</Text>
           {editorsChoiceDecks.map((deck) => (
             <EditorsChoiceDeckCard
               key={deck.id}
@@ -305,6 +309,7 @@ function BrowseTab({
   downloadedIds: Set<string>;
   onDownload: (d: PublicDeck) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <View style={styles.flex}>
       {/* Category chips — sticky above the deck list */}
@@ -314,7 +319,7 @@ function BrowseTab({
         contentContainerStyle={styles.chipsRow}
         style={styles.chipsScroll}
       >
-        {CATEGORIES.map((cat) => (
+        {CATEGORY_KEYS.map((cat) => (
           <Pressable
             key={cat.key}
             style={[styles.chip, selectedCategory === cat.key && styles.chipActive]}
@@ -322,7 +327,7 @@ function BrowseTab({
           >
             <Text style={styles.chipIcon}>{cat.icon}</Text>
             <Text style={[styles.chipLabel, selectedCategory === cat.key && styles.chipLabelActive]}>
-              {cat.label}
+              {cat.key === 'all' ? 'All' : t(cat.labelKey)}
             </Text>
           </Pressable>
         ))}
@@ -358,17 +363,18 @@ function FeaturedDeckCard({
   isDownloading: boolean;
   isDownloaded: boolean;
 }) {
+  const { t } = useTranslation();
   return (
     <View style={styles.featuredCard}>
       <View style={styles.featuredIcon}>
         <Text style={styles.featuredIconText}>{deck.icon_url ?? getCategoryEmoji(deck.category)}</Text>
       </View>
       <Text style={styles.featuredName} numberOfLines={2}>{deck.name}</Text>
-      <Text style={styles.featuredCount}>{deck.card_count} cards</Text>
+      <Text style={styles.featuredCount}>{t('cards_count', { count: deck.card_count })}</Text>
       {isDownloaded ? (
         <View style={styles.downloadedBadge}>
           <Ionicons name="checkmark" size={14} color={colors.white} />
-          <Text style={styles.downloadedBadgeText}> Downloaded</Text>
+          <Text style={styles.downloadedBadgeText}> {t('downloaded')}</Text>
         </View>
       ) : (
         <Pressable
@@ -378,7 +384,7 @@ function FeaturedDeckCard({
         >
           {isDownloading
             ? <ActivityIndicator size="small" color={colors.white} />
-            : <Text style={styles.downloadBtnText}>↓ Download</Text>}
+            : <Text style={styles.downloadBtnText}>↓ {t('download')}</Text>}
         </Pressable>
       )}
     </View>
@@ -396,11 +402,12 @@ function EditorsChoiceDeckCard({
   isDownloading: boolean;
   isDownloaded: boolean;
 }) {
+  const { t } = useTranslation();
   return (
     <View style={[styles.editorsCard, { backgroundColor: getCategoryBg(deck.category) }]}>
       <View style={styles.editorsCardLeft}>
         <View style={styles.editorsBadge}>
-          <Text style={styles.editorsBadgeText}>Editor's choice</Text>
+          <Text style={styles.editorsBadgeText}>{t('editors_choice_badge')}</Text>
         </View>
         <Text style={styles.editorsName}>{deck.name}</Text>
         <Text style={styles.editorsCount}>{deck.card_count} cards</Text>
@@ -438,6 +445,7 @@ function BrowseDeckCard({
   isDownloading: boolean;
   isDownloaded: boolean;
 }) {
+  const { t } = useTranslation();
   return (
     <View style={styles.browseCard}>
       <View style={[styles.browseIcon, { backgroundColor: getCategoryBg(deck.category) }]}>
@@ -445,12 +453,12 @@ function BrowseDeckCard({
       </View>
       <View style={styles.browseInfo}>
         <Text style={styles.browseName} numberOfLines={1}>{deck.name}</Text>
-        <Text style={styles.browseCount}>{deck.card_count} cards</Text>
+        <Text style={styles.browseCount}>{t('cards_count', { count: deck.card_count })}</Text>
       </View>
       {isDownloaded ? (
         <View style={styles.downloadedBadge}>
           <Ionicons name="checkmark" size={14} color={colors.white} />
-          <Text style={styles.downloadedBadgeText}> Done</Text>
+          <Text style={styles.downloadedBadgeText}> {t('downloaded')}</Text>
         </View>
       ) : (
         <Pressable
@@ -460,7 +468,7 @@ function BrowseDeckCard({
         >
           {isDownloading
             ? <ActivityIndicator size="small" color={colors.white} />
-            : <Text style={styles.downloadBtnText}>↓ Get</Text>}
+            : <Text style={styles.downloadBtnText}>↓ {t('download')}</Text>}
         </Pressable>
       )}
     </View>

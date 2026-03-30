@@ -16,6 +16,7 @@ import { Button } from '../../../src/components/ui/Button';
 import { Input } from '../../../src/components/ui/Input';
 import { Toggle } from '../../../src/components/ui/Toggle';
 import { borderRadius, colors, spacing, typography } from '../../../src/constants';
+import { useTranslation } from '../../../src/i18n';
 import { useDeckStore } from '../../../src/stores/useDeckStore';
 import { useSubscriptionStore } from '../../../src/stores/useSubscriptionStore';
 
@@ -48,6 +49,7 @@ function SettingsRow({
 }
 
 export default function EditDeckScreen() {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { getDeckById, updateDeck, deleteDeck, resetDeckProgress } = useDeckStore();
   const { isPro } = useSubscriptionStore();
@@ -65,14 +67,14 @@ export default function EditDeckScreen() {
   if (!deck) {
     return (
       <SafeAreaView style={styles.safe}>
-        <Text style={styles.error}>Deck not found</Text>
+        <Text style={styles.error}>{t('deck_not_found')}</Text>
       </SafeAreaView>
     );
   }
 
   const handleSave = async () => {
     if (!name.trim()) {
-      Alert.alert('Error', 'Deck name is required');
+      Alert.alert(t('error'), 'Deck name is required');
       return;
     }
     setIsSaving(true);
@@ -87,7 +89,7 @@ export default function EditDeckScreen() {
       });
       router.back();
     } catch {
-      Alert.alert('Error', 'Failed to update deck.');
+      Alert.alert(t('error'), 'Failed to update deck.');
     } finally {
       setIsSaving(false);
     }
@@ -95,12 +97,12 @@ export default function EditDeckScreen() {
 
   const handleDelete = () => {
     Alert.alert(
-      'Delete Deck',
-      'Are you sure you want to delete this deck? All cards will be deleted.',
+      t('delete_deck_title'),
+      t('delete_deck_confirm'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('cancel'), style: 'cancel' },
         {
-          text: 'Delete',
+          text: t('delete'),
           style: 'destructive',
           onPress: async () => {
             await deleteDeck(id);
@@ -113,16 +115,16 @@ export default function EditDeckScreen() {
 
   const handleResetProgress = () => {
     Alert.alert(
-      'Reset Progress',
-      'This will reset all card progress in this deck. Continue?',
+      t('reset_progress_title'),
+      t('reset_progress_confirm'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('cancel'), style: 'cancel' },
         {
-          text: 'Reset',
+          text: t('reset'),
           style: 'destructive',
           onPress: async () => {
             await resetDeckProgress(id);
-            Alert.alert('Done', 'Deck progress has been reset.');
+            Alert.alert(t('done'), t('deck_progress_reset'));
           },
         },
       ]
@@ -137,21 +139,21 @@ export default function EditDeckScreen() {
             <Pressable onPress={() => router.back()}>
               <Ionicons name="chevron-back" size={22} color={colors.primary} />
             </Pressable>
-            <Text style={styles.title}>Edit Deck</Text>
+            <Text style={styles.title}>{t('edit_deck_title')}</Text>
             <View style={{ width: 60 }} />
           </View>
 
           <Input
-            label="Deck name"
+            label={t('deck_name')}
             value={name}
             onChangeText={setName}
-            placeholder="Deck name"
+            placeholder={t('deck_name')}
           />
           <Input
-            label="Description"
+            label={t('deck_description')}
             value={description}
             onChangeText={setDescription}
-            placeholder="Description (optional)"
+            placeholder={t('deck_description')}
             multiline
             numberOfLines={3}
             style={{ minHeight: 80, textAlignVertical: 'top' }}
@@ -159,15 +161,15 @@ export default function EditDeckScreen() {
 
           <View style={styles.sectionCard}>
             <SettingsRow
-              label="Add new subdeck"
-              onPress={isPro ? () => Alert.alert('Subdecks', 'Coming soon!') : () => router.push('/paywall')}
+              label={t('add_subdeck')}
+              onPress={isPro ? () => Alert.alert('Subdecks', t('coming_soon')) : () => router.push('/paywall')}
             />
             <SettingsRow
-              label="New cards per day"
+              label={t('new_cards_per_day')}
               value={newCardsPerDay}
               onPress={() => {
                 Alert.prompt(
-                  'New cards per day',
+                  t('new_cards_per_day'),
                   'Enter the maximum number of new cards per day',
                   (text) => { if (text) setNewCardsPerDay(text); },
                   'plain-text',
@@ -177,45 +179,45 @@ export default function EditDeckScreen() {
               }}
             />
             <SettingsRow
-              label="Shuffle cards"
+              label={t('shuffle_cards')}
               right={<Toggle value={shuffleCards} onValueChange={setShuffleCards} />}
             />
             <SettingsRow
-              label="Auto play audio"
+              label={t('auto_play_audio')}
               right={
                 isPro ? (
                   <Toggle value={autoPlayAudio} onValueChange={setAutoPlayAudio} />
                 ) : (
                   <Pressable onPress={() => router.push('/paywall')} style={styles.proBadge}>
-                    <Text style={styles.proBadgeText}>PRO</Text>
+                    <Text style={styles.proBadgeText}>{t('pro_badge')}</Text>
                   </Pressable>
                 )
               }
             />
             <SettingsRow
-              label="Reverse cards"
+              label={t('reverse_cards')}
               right={<Toggle value={reverseCards} onValueChange={setReverseCards} />}
             />
-            <SettingsRow label="Reset progress" onPress={handleResetProgress} danger />
-            <SettingsRow label="Delete deck" onPress={handleDelete} danger />
+            <SettingsRow label={t('reset_progress')} onPress={handleResetProgress} danger />
+            <SettingsRow label={t('delete')} onPress={handleDelete} danger />
           </View>
 
           <View style={styles.sectionCard}>
             <SettingsRow
-              label="Offline Study"
+              label={t('offline_study')}
               right={
                 isPro ? (
                   <Text style={styles.availableText}>Available</Text>
                 ) : (
                   <Pressable onPress={() => router.push('/paywall')} style={styles.proBadge}>
-                    <Text style={styles.proBadgeText}>PRO</Text>
+                    <Text style={styles.proBadgeText}>{t('pro_badge')}</Text>
                   </Pressable>
                 )
               }
             />
           </View>
 
-          <Button label="Save Changes" onPress={handleSave} loading={isSaving} style={styles.saveBtn} />
+          <Button label={t('update_deck')} onPress={handleSave} loading={isSaving} style={styles.saveBtn} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

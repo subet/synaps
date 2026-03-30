@@ -17,6 +17,7 @@ import { RatingButtons } from '../../src/components/study/RatingButtons';
 import { FlashCard } from '../../src/components/study/FlashCard';
 import { Button } from '../../src/components/ui/Button';
 import { colors, spacing, typography } from '../../src/constants';
+import { useTranslation } from '../../src/i18n';
 import { getPreviewIntervals } from '../../src/services/srs';
 import { useBadgeStore } from '../../src/stores/useBadgeStore';
 import { useDeckStore } from '../../src/stores/useDeckStore';
@@ -36,6 +37,7 @@ const LANGUAGE_CODES: Record<string, string> = {
 };
 
 export default function StudyScreen() {
+  const { t } = useTranslation();
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
   const { getDeckById, loadDeckStats, deckStats } = useDeckStore();
   const { loadStreak } = useStreakStore();
@@ -100,9 +102,9 @@ export default function StudyScreen() {
       <SafeAreaView style={styles.safe}>
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyEmoji}>✅</Text>
-          <Text style={styles.emptyTitle}>No cards due</Text>
-          <Text style={styles.emptySubtitle}>Great job! You're all caught up. Come back tomorrow.</Text>
-          <Button label="Back to Deck" onPress={() => router.back()} style={styles.backBtn} />
+          <Text style={styles.emptyTitle}>{t('no_cards_due')}</Text>
+          <Text style={styles.emptySubtitle}>{t('caught_up')}</Text>
+          <Button label={t('back_to_deck')} onPress={() => router.back()} style={styles.backBtn} />
         </View>
       </SafeAreaView>
     );
@@ -143,7 +145,7 @@ export default function StudyScreen() {
         <RatingButtons onGrade={handleGrade} intervals={intervals} />
       ) : (
         <View style={styles.flipHint}>
-          <Text style={styles.flipHintText}>Tap card to reveal answer</Text>
+          <Text style={styles.flipHintText}>{t('tap_to_reveal')}</Text>
         </View>
       )}
     </SafeAreaView>
@@ -157,6 +159,7 @@ function SessionComplete({
   result: StudySessionResult;
   deckId: string;
 }) {
+  const { t } = useTranslation();
   const { loadStreak } = useStreakStore();
   const accuracy = result.cardsStudied > 0
     ? Math.round((result.cardsCorrect / result.cardsStudied) * 100)
@@ -174,40 +177,40 @@ function SessionComplete({
     <SafeAreaView style={styles.safe}>
       <View style={styles.completeContainer}>
         <Text style={styles.celebEmoji}>🎉</Text>
-        <Text style={styles.completeTitle}>Session Complete!</Text>
+        <Text style={styles.completeTitle}>{t('session_complete_title')}</Text>
 
         <View style={styles.statsGrid}>
-          <StatItem emoji="📚" label="Cards studied" value={String(result.cardsStudied)} />
-          <StatItem emoji="⏱️" label="Time spent" value={timeStr} />
-          <StatItem emoji="🎯" label="Accuracy" value={`${accuracy}%`} />
+          <StatItem emoji="📚" label={t('cards_studied_label')} value={String(result.cardsStudied)} />
+          <StatItem emoji="⏱️" label={t('time_spent_label')} value={timeStr} />
+          <StatItem emoji="🎯" label={t('accuracy_label')} value={`${accuracy}%`} />
         </View>
 
         {/* Grade breakdown */}
         {total > 0 && (
           <View style={styles.gradeBreakdown}>
             <GradeBar
-              label="Again"
+              label={t('again')}
               count={result.gradeDistribution.again}
               total={total}
               color={colors.againText}
               bg={colors.again}
             />
             <GradeBar
-              label="Hard"
+              label={t('hard')}
               count={result.gradeDistribution.hard}
               total={total}
               color={colors.hardText}
               bg={colors.hard}
             />
             <GradeBar
-              label="Good"
+              label={t('good')}
               count={result.gradeDistribution.good}
               total={total}
               color={colors.goodText}
               bg={colors.good}
             />
             <GradeBar
-              label="Easy"
+              label={t('easy')}
               count={result.gradeDistribution.easy}
               total={total}
               color={colors.easyText}
@@ -216,7 +219,7 @@ function SessionComplete({
           </View>
         )}
 
-        <Button label="Back to Deck" onPress={() => router.replace(`/deck/${deckId}`)} style={styles.backBtn} />
+        <Button label={t('back_to_deck')} onPress={() => router.replace(`/deck/${deckId}`)} style={styles.backBtn} />
       </View>
     </SafeAreaView>
   );

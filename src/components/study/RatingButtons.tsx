@@ -6,6 +6,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { borderRadius, colors, spacing, typography } from '../../constants';
+import { useTranslation } from '../../i18n';
 import { tap } from '../../utils/haptics';
 import { SRSGrade } from '../../types';
 
@@ -14,17 +15,19 @@ interface RatingButtonsProps {
   intervals: { again: string; hard: string; good: string; easy: string };
 }
 
-const BUTTONS: Array<{
+type ButtonConfig = {
   grade: SRSGrade;
-  label: string;
+  labelKey: string;
   bg: string;
   textColor: string;
   intervalKey: keyof RatingButtonsProps['intervals'];
-}> = [
-  { grade: 0, label: 'Again', bg: colors.again, textColor: colors.againText, intervalKey: 'again' },
-  { grade: 1, label: 'Hard', bg: colors.hard, textColor: colors.hardText, intervalKey: 'hard' },
-  { grade: 2, label: 'Good', bg: colors.good, textColor: colors.goodText, intervalKey: 'good' },
-  { grade: 3, label: 'Easy', bg: colors.easy, textColor: colors.easyText, intervalKey: 'easy' },
+};
+
+const BUTTON_CONFIGS: ButtonConfig[] = [
+  { grade: 0, labelKey: 'again', bg: colors.again, textColor: colors.againText, intervalKey: 'again' },
+  { grade: 1, labelKey: 'hard', bg: colors.hard, textColor: colors.hardText, intervalKey: 'hard' },
+  { grade: 2, labelKey: 'good', bg: colors.good, textColor: colors.goodText, intervalKey: 'good' },
+  { grade: 3, labelKey: 'easy', bg: colors.easy, textColor: colors.easyText, intervalKey: 'easy' },
 ];
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -68,12 +71,13 @@ function RatingButton({
 }
 
 export function RatingButtons({ onGrade, intervals }: RatingButtonsProps) {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
-      {BUTTONS.map((btn) => (
+      {BUTTON_CONFIGS.map((btn) => (
         <RatingButton
           key={btn.grade}
-          label={btn.label}
+          label={t(btn.labelKey)}
           subtitle={intervals[btn.intervalKey]}
           bg={btn.bg}
           textColor={btn.textColor}

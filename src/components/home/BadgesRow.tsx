@@ -3,6 +3,7 @@ import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
+import { useTranslation } from '../../i18n';
 import { useBadgeStore } from '../../stores/useBadgeStore';
 import { BadgeWithStatus } from '../../services/badgeService';
 
@@ -32,6 +33,7 @@ function SmallBadgeCircle({ badge }: { badge: BadgeWithStatus }) {
 }
 
 export function BadgesRow() {
+  const { t } = useTranslation();
   const { badges, loadBadges } = useBadgeStore();
 
   useEffect(() => {
@@ -49,9 +51,9 @@ export function BadgesRow() {
   return (
     <View style={styles.wrapper}>
       <View style={styles.header}>
-        <Text style={styles.title}>Achievements</Text>
+        <Text style={styles.title}>{t('achievements')}</Text>
         <Pressable style={styles.seeAll} onPress={() => router.push('/badges')}>
-          <Text style={styles.seeAllText}>See all</Text>
+          <Text style={styles.seeAllText}>{t('see_all')}</Text>
           <Ionicons name="chevron-forward" size={14} color={colors.primary} />
         </Pressable>
       </View>

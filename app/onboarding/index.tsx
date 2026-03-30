@@ -19,45 +19,23 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Button } from '../../src/components/ui/Button';
 import { borderRadius, colors, spacing, typography } from '../../src/constants';
+import { useTranslation } from '../../src/i18n';
 import { requestNotificationPermissions } from '../../src/services/notifications';
 import { useAppStore } from '../../src/stores/useAppStore';
 
 const { width } = Dimensions.get('window');
 
 const SLIDES = [
-  {
-    key: 'welcome',
-    emoji: '🧠',
-    title: 'Welcome to Synaps',
-    subtitle: "Your brain's best study companion. Learn anything with smart flashcards.",
-    bg: '#E8EDFF',
-  },
-  {
-    key: 'srs',
-    emoji: '🔄',
-    title: 'Learn Smarter, Not Harder',
-    subtitle: "Synaps uses spaced repetition — you'll review cards right before you forget them.",
-    bg: '#E8FFE8',
-  },
-  {
-    key: 'library',
-    emoji: '📚',
-    title: 'Thousands of Ready-Made Decks',
-    subtitle: 'Browse our library of community decks — languages, medicine, science, history, and more.',
-    bg: '#FFF3CD',
-  },
-  {
-    key: 'start',
-    emoji: '🚀',
-    title: 'Ready to supercharge your memory?',
-    subtitle: null,
-    bg: '#FFE8EC',
-  },
+  { key: 'welcome', emoji: '🧠', titleKey: 'onboarding_welcome_title', subtitleKey: 'onboarding_welcome_subtitle', bg: '#E8EDFF' },
+  { key: 'srs', emoji: '🔄', titleKey: 'onboarding_srs_title', subtitleKey: 'onboarding_srs_subtitle', bg: '#E8FFE8' },
+  { key: 'library', emoji: '📚', titleKey: 'onboarding_library_title', subtitleKey: 'onboarding_library_subtitle', bg: '#FFF3CD' },
+  { key: 'start', emoji: '🚀', titleKey: 'onboarding_start_title', subtitleKey: null, bg: '#FFE8EC' },
 ];
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<(typeof SLIDES)[0]>);
 
 export default function OnboardingScreen() {
+  const { t } = useTranslation();
   const { markOnboardingComplete } = useAppStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const listRef = useRef<FlatList>(null);
@@ -97,7 +75,7 @@ export default function OnboardingScreen() {
       {/* Skip button */}
       {!isLastSlide && (
         <Pressable style={styles.skipBtn} onPress={handleSkip}>
-          <Text style={styles.skipText}>Skip</Text>
+          <Text style={styles.skipText}>{t('skip')}</Text>
         </Pressable>
       )}
 
@@ -120,22 +98,20 @@ export default function OnboardingScreen() {
             <View style={[styles.emojiContainer, { backgroundColor: item.bg }]}>
               <Text style={styles.emoji}>{item.emoji}</Text>
             </View>
-            <Text style={styles.slideTitle}>{item.title}</Text>
-            {item.subtitle && (
-              <Text style={styles.slideSubtitle}>{item.subtitle}</Text>
+            <Text style={styles.slideTitle}>{t(item.titleKey)}</Text>
+            {item.subtitleKey && (
+              <Text style={styles.slideSubtitle}>{t(item.subtitleKey)}</Text>
             )}
             {item.key === 'start' && (
               <View style={styles.startButtons}>
-                <Button label="Create Account" onPress={handleGetStarted} />
+                <Button label={t('onboarding_create_account')} onPress={handleGetStarted} />
                 <Button
-                  label="Continue without account"
+                  label={t('onboarding_continue_without')}
                   onPress={handleContinueWithout}
                   variant="secondary"
                   style={{ marginTop: spacing.sm }}
                 />
-                <Text style={styles.lateNote}>
-                  You can always sign up later to sync your data
-                </Text>
+                <Text style={styles.lateNote}>{t('onboarding_later_note')}</Text>
               </View>
             )}
           </View>
@@ -152,7 +128,7 @@ export default function OnboardingScreen() {
       {/* Next button (not shown on last slide) */}
       {!isLastSlide && (
         <View style={styles.nextContainer}>
-          <Button label="Next" onPress={handleNext} />
+          <Button label={t('next')} onPress={handleNext} />
         </View>
       )}
     </SafeAreaView>

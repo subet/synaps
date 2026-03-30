@@ -4,8 +4,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { setLocale } from '../src/i18n';
 import { scheduleDailyReminder } from '../src/services/notifications';
+import { setLocale } from '../src/i18n';
 import { useAppStore } from '../src/stores/useAppStore';
 import { useAuthStore } from '../src/stores/useAuthStore';
 import { useSubscriptionStore } from '../src/stores/useSubscriptionStore';
@@ -21,6 +21,9 @@ export default function RootLayout() {
   useEffect(() => {
     async function bootstrap() {
       await loadSettings();
+      // Apply stored locale immediately after settings load
+      const { language } = useAppStore.getState();
+      if (language) setLocale(language);
       await initAuth();
       await initSubscription();
 
@@ -41,14 +44,15 @@ export default function RootLayout() {
     }
   }, [isLoading, isInitialized]);
 
+  // On first launch, set locale from device language if user hasn't chosen one yet
   useEffect(() => {
-    if (language) {
-      setLocale(language);
-    } else if (locales[0]?.languageCode) {
+    const stored = useAppStore.getState().language;
+    if (!stored && locales[0]?.languageCode) {
       const code = locales[0].languageCode;
-      setLocale(['tr'].includes(code) ? code : 'en');
+      const locale = ['tr'].includes(code) ? 'tr' : 'en';
+      setLocale(locale);
     }
-  }, [language]);
+  }, []);
 
   if (isLoading || !isInitialized) {
     return null;

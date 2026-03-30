@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { borderRadius, colors, spacing, typography } from '../../constants';
+import { useTranslation } from '../../i18n';
 import { StreakDay } from '../../types';
 
 interface StreakCardProps {
@@ -12,6 +13,7 @@ interface StreakCardProps {
 const UTC_DAY_LETTER = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 export function StreakCard({ currentStreak, weekDays }: StreakCardProps) {
+  const { t } = useTranslation();
   const today = new Date().toISOString().split('T')[0];
 
   return (
@@ -20,7 +22,7 @@ export function StreakCard({ currentStreak, weekDays }: StreakCardProps) {
         <View>
           <Text style={styles.streakNumber}>{currentStreak}</Text>
           <Text style={styles.streakLabel}>
-            {currentStreak === 1 ? 'day streak' : 'days streak'}
+            {currentStreak === 1 ? t('day_streak') : t('days_streak')}
           </Text>
         </View>
         <Text style={styles.trophy}>🏆</Text>

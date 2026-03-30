@@ -15,9 +15,11 @@ import {
 import { Button } from '../../src/components/ui/Button';
 import { Input } from '../../src/components/ui/Input';
 import { colors, spacing, typography } from '../../src/constants';
+import { useTranslation } from '../../src/i18n';
 import { useAuthStore } from '../../src/stores/useAuthStore';
 
 export default function RegisterScreen() {
+  const { t } = useTranslation();
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -60,8 +62,8 @@ export default function RegisterScreen() {
 
           <View style={styles.header}>
             <Text style={styles.emoji}>✨</Text>
-            <Text style={styles.title}>Create Account</Text>
-            <Text style={styles.subtitle}>Join Synaps to sync your progress across devices</Text>
+            <Text style={styles.title}>{t('register')}</Text>
+            <Text style={styles.subtitle}>{t('register_subtitle')}</Text>
           </View>
 
           {error && (
@@ -71,38 +73,36 @@ export default function RegisterScreen() {
           )}
 
           <Input
-            label="Display Name"
+            label={t('display_name')}
             value={displayName}
             onChangeText={setDisplayName}
             error={errors.displayName}
-            placeholder="Your name"
+            placeholder={t('your_name')}
             autoCapitalize="words"
           />
           <Input
-            label="Email"
+            label={t('email')}
             value={email}
             onChangeText={setEmail}
             error={errors.email}
-            placeholder="your@email.com"
+            placeholder={t('email_placeholder')}
             keyboardType="email-address"
             autoCapitalize="none"
             autoComplete="email"
           />
           <Input
-            label="Password"
+            label={t('password')}
             value={password}
             onChangeText={setPassword}
             error={errors.password}
-            placeholder="At least 6 characters"
+            placeholder={t('min_chars')}
             secureTextEntry
           />
 
-          <Button label="Create Account" onPress={handleRegister} loading={isLoading} style={styles.registerBtn} />
+          <Button label={t('register')} onPress={handleRegister} loading={isLoading} style={styles.registerBtn} />
 
           <Pressable onPress={() => router.push('/auth/login')} style={styles.switchLink}>
-            <Text style={styles.switchText}>
-              Already have an account? <Text style={styles.switchAction}>Log in</Text>
-            </Text>
+            <Text style={styles.switchText}>{t('has_account')}</Text>
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>

@@ -20,6 +20,7 @@ import {
   requestNotificationPermissions,
   scheduleDailyReminder,
 } from '../../src/services/notifications';
+import { useTranslation } from '../../src/i18n';
 import { useAppStore } from '../../src/stores/useAppStore';
 import { tap } from '../../src/utils/haptics';
 import { useAuthStore } from '../../src/stores/useAuthStore';
@@ -66,6 +67,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default function SettingsScreen() {
+  const { t } = useTranslation();
   const { notifications, language, hapticsEnabled, setNotificationsEnabled, setNotificationTime, setLanguage, setHapticsEnabled } = useAppStore();
   const { user, logout } = useAuthStore();
   const { isPro } = useSubscriptionStore();
@@ -82,7 +84,7 @@ export default function SettingsScreen() {
     if (enabled) {
       const granted = await requestNotificationPermissions();
       if (!granted) {
-        Alert.alert('Permission Required', 'Please enable notifications in your device settings.');
+        Alert.alert(t('permission_required'), t('notifications_permission'));
         return;
       }
       const [h, m] = notifications.time.split(':').map(Number);
@@ -108,16 +110,16 @@ export default function SettingsScreen() {
 
   const handleDeleteData = () => {
     Alert.alert(
-      'Delete All Data',
-      'This will permanently delete all your local data. This cannot be undone.',
+      t('delete_data_title'),
+      t('delete_data_confirm'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('cancel'), style: 'cancel' },
         {
-          text: 'Delete',
+          text: t('delete'),
           style: 'destructive',
           onPress: async () => {
             await AsyncStorage.clear();
-            Alert.alert('Done', 'All local data has been deleted. Please restart the app.');
+            Alert.alert(t('done'), t('data_deleted'));
           },
         },
       ]
@@ -125,9 +127,9 @@ export default function SettingsScreen() {
   };
 
   const handleSignOut = () => {
-    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Sign Out', style: 'destructive', onPress: logout },
+    Alert.alert(t('sign_out_title'), t('sign_out_confirm'), [
+      { text: t('cancel'), style: 'cancel' },
+      { text: t('sign_out'), style: 'destructive', onPress: logout },
     ]);
   };
 
@@ -136,11 +138,11 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Settings</Text>
+        <Text style={styles.title}>{t('settings')}</Text>
 
         {/* Account */}
         {user ? (
-          <Section title="Account">
+          <Section title={t('account')}>
             <View style={[styles.row, styles.profileRow]}>
               <View style={styles.avatar}>
                 <Text style={styles.avatarText}>
@@ -149,24 +151,24 @@ export default function SettingsScreen() {
               </View>
               <View style={styles.profileInfo}>
                 <Text style={styles.profileName}>{user.email}</Text>
-                {isPro && <View style={styles.proBadge}><Text style={styles.proBadgeText}>PRO</Text></View>}
+                {isPro && <View style={styles.proBadge}><Text style={styles.proBadgeText}>{t('pro_badge')}</Text></View>}
               </View>
             </View>
-            <SettingsRow label="Manage Subscription" onPress={() => router.push('/paywall')} />
-            <SettingsRow label="Sync Data" onPress={() => Alert.alert('Sync', 'Cloud sync requires PRO subscription.')} />
-            <SettingsRow label="Sign Out" onPress={handleSignOut} danger />
+            <SettingsRow label={t('manage_subscription')} onPress={() => router.push('/paywall')} />
+            <SettingsRow label={t('sync_data')} onPress={() => Alert.alert('Sync', t('sync_requires_pro'))} />
+            <SettingsRow label={t('sign_out')} onPress={handleSignOut} danger />
           </Section>
         ) : (
-          <Section title="Account">
-            <SettingsRow label="Sign In" onPress={() => router.push('/auth/login')} />
-            <SettingsRow label="Create Account" onPress={() => router.push('/auth/register')} />
+          <Section title={t('account')}>
+            <SettingsRow label={t('sign_in')} onPress={() => router.push('/auth/login')} />
+            <SettingsRow label={t('register')} onPress={() => router.push('/auth/register')} />
           </Section>
         )}
 
         {/* App Settings */}
-        <Section title="App Settings">
+        <Section title={t('section_app_settings')}>
           <SettingsRow
-            label="Reminders"
+            label={t('reminders')}
             right={
               <Toggle
                 value={notifications.enabled}
@@ -176,13 +178,13 @@ export default function SettingsScreen() {
           />
           {notifications.enabled && (
             <SettingsRow
-              label="Reminder time"
+              label={t('reminder_time')}
               value={notifications.time}
               onPress={() => setShowTimePicker(true)}
             />
           )}
           <SettingsRow
-            label="Haptics"
+            label={t('haptics')}
             right={
               <Toggle
                 value={hapticsEnabled}
@@ -191,18 +193,18 @@ export default function SettingsScreen() {
             }
           />
           <SettingsRow
-            label="Language"
+            label={t('ui_language')}
             value={language === 'tr' ? 'Türkçe' : 'English'}
             onPress={() => {
-              Alert.alert('Language', 'Select language', [
+              Alert.alert(t('ui_language'), t('select_language'), [
                 { text: 'English', onPress: () => setLanguage('en') },
                 { text: 'Türkçe', onPress: () => setLanguage('tr') },
-                { text: 'Cancel', style: 'cancel' },
+                { text: t('cancel'), style: 'cancel' },
               ]);
             }}
           />
           <SettingsRow
-            label="Rate us"
+            label={t('rate_us')}
             onPress={() => {
               const appStoreId = process.env.EXPO_PUBLIC_APP_STORE_ID;
               const androidPackage = process.env.EXPO_PUBLIC_ANDROID_PACKAGE;
@@ -214,28 +216,27 @@ export default function SettingsScreen() {
               });
               if (url) {
                 Linking.openURL(url).catch(() => {
-                  // market:// may fail on emulators — fall back to browser
                   const webUrl = Platform.select({
                     android: `https://play.google.com/store/apps/details?id=${androidPackage}`,
                   });
                   if (webUrl) Linking.openURL(webUrl).catch(() => {});
                 });
               } else {
-                Alert.alert('Coming Soon', 'The App Store listing is not available yet.');
+                Alert.alert(t('coming_soon'), t('app_store_pending'));
               }
             }}
           />
-          <SettingsRow label="Delete all data" onPress={handleDeleteData} danger />
+          <SettingsRow label={t('delete_data')} onPress={handleDeleteData} danger />
         </Section>
 
         {/* Legal */}
-        <Section title="Legal & Support">
-          <SettingsRow label="Terms & Conditions" onPress={() => router.push('/legal/terms')} />
-          <SettingsRow label="Privacy Policy" onPress={() => router.push('/legal/privacy')} />
-          <SettingsRow label="Contact Support" onPress={() => router.push('/legal/support')} />
+        <Section title={t('section_legal')}>
+          <SettingsRow label={t('terms')} onPress={() => router.push('/legal/terms')} />
+          <SettingsRow label={t('privacy')} onPress={() => router.push('/legal/privacy')} />
+          <SettingsRow label={t('contact_support')} onPress={() => router.push('/legal/support')} />
         </Section>
 
-        <Text style={styles.version}>App Version {version}</Text>
+        <Text style={styles.version}>{t('app_version')} {version}</Text>
 
         {/* Android: renders inline as a native dialog */}
         {showTimePicker && Platform.OS === 'android' && (
@@ -260,9 +261,9 @@ export default function SettingsScreen() {
           <Pressable style={styles.modalBackdrop} onPress={() => setShowTimePicker(false)} />
           <View style={styles.modalSheet}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Reminder Time</Text>
+              <Text style={styles.modalTitle}>{t('reminder_modal_title')}</Text>
               <Pressable onPress={() => setShowTimePicker(false)} style={styles.modalDone}>
-                <Text style={styles.modalDoneText}>Done</Text>
+                <Text style={styles.modalDoneText}>{t('done')}</Text>
               </Pressable>
             </View>
             <DateTimePicker

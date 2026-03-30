@@ -17,10 +17,12 @@ import {
 import { Button } from '../../../src/components/ui/Button';
 import { Input } from '../../../src/components/ui/Input';
 import { borderRadius, colors, FREE_CARDS_PER_DECK_LIMIT, spacing, typography } from '../../../src/constants';
+import { useTranslation } from '../../../src/i18n';
 import { useStudyStore } from '../../../src/stores/useStudyStore';
 import { useSubscriptionStore } from '../../../src/stores/useSubscriptionStore';
 
 export default function CreateCardScreen() {
+  const { t } = useTranslation();
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
   const { createCard, deckCards } = useStudyStore();
   const { isPro } = useSubscriptionStore();
@@ -45,7 +47,7 @@ export default function CreateCardScreen() {
   const handlePickImage = async (side: 'front' | 'back') => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Permission Required', 'Please allow access to your photo library.');
+      Alert.alert(t('permission_required'), t('photo_permission'));
       return;
     }
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -93,7 +95,7 @@ export default function CreateCardScreen() {
         router.back();
       }
     } catch {
-      Alert.alert('Error', 'Failed to save card.');
+      Alert.alert(t('error'), t('failed_save_card'));
     } finally {
       setIsSaving(false);
     }
@@ -107,18 +109,18 @@ export default function CreateCardScreen() {
             <Pressable onPress={() => router.back()}>
               <Ionicons name="chevron-back" size={22} color={colors.primary} />
             </Pressable>
-            <Text style={styles.title}>New Card</Text>
+            <Text style={styles.title}>{t('new_card')}</Text>
             <View style={{ width: 60 }} />
           </View>
 
           {/* Front */}
           <View style={styles.cardSection}>
-            <Text style={styles.cardSectionLabel}>Front (Question)</Text>
+            <Text style={styles.cardSectionLabel}>{t('card_front')}</Text>
             <Input
               value={front}
-              onChangeText={(t) => { setFront(t); setErrors((e) => ({ ...e, front: '' })); }}
+              onChangeText={(v) => { setFront(v); setErrors((e) => ({ ...e, front: '' })); }}
               error={errors.front}
-              placeholder="Type the question or prompt..."
+              placeholder={t('card_front_placeholder')}
               multiline
               numberOfLines={4}
               style={styles.cardInput}
@@ -133,18 +135,18 @@ export default function CreateCardScreen() {
               </View>
             )}
             <Pressable style={styles.imagePickerBtn} onPress={() => handlePickImage('front')}>
-              <Text style={styles.imagePickerText}>📷 Add image to front</Text>
+              <Text style={styles.imagePickerText}>📷 {t('add_image_front')}</Text>
             </Pressable>
           </View>
 
           {/* Back */}
           <View style={styles.cardSection}>
-            <Text style={styles.cardSectionLabel}>Back (Answer)</Text>
+            <Text style={styles.cardSectionLabel}>{t('card_back')}</Text>
             <Input
               value={back}
-              onChangeText={(t) => { setBack(t); setErrors((e) => ({ ...e, back: '' })); }}
+              onChangeText={(v) => { setBack(v); setErrors((e) => ({ ...e, back: '' })); }}
               error={errors.back}
-              placeholder="Type the answer..."
+              placeholder={t('card_back_placeholder')}
               multiline
               numberOfLines={4}
               style={styles.cardInput}
@@ -158,15 +160,15 @@ export default function CreateCardScreen() {
               </View>
             )}
             <Pressable style={styles.imagePickerBtn} onPress={() => handlePickImage('back')}>
-              <Text style={styles.imagePickerText}>📷 Add image to back</Text>
+              <Text style={styles.imagePickerText}>📷 {t('add_image_back')}</Text>
             </Pressable>
           </View>
 
           <Input
-            label="Tags (optional)"
+            label={t('card_tags')}
             value={tags}
             onChangeText={setTags}
-            placeholder="e.g. grammar, verbs, chapter-1"
+            placeholder={t('card_tags_placeholder')}
             containerStyle={styles.tagsInput}
           />
 
@@ -174,20 +176,20 @@ export default function CreateCardScreen() {
             style={[styles.proRow]}
             onPress={() => router.push('/paywall')}
           >
-            <Text style={styles.proRowText}>🎵 Add audio</Text>
-            <View style={styles.proBadge}><Text style={styles.proBadgeText}>PRO</Text></View>
+            <Text style={styles.proRowText}>🎵 {t('add_audio')}</Text>
+            <View style={styles.proBadge}><Text style={styles.proBadgeText}>{t('pro_badge')}</Text></View>
           </Pressable>
 
           <View style={styles.actions}>
             <Button
-              label="Save & Add Another"
+              label={t('save_add_another')}
               onPress={() => handleSave(true)}
               variant="secondary"
               loading={isSaving && addAnother}
               style={styles.saveAnotherBtn}
             />
             <Button
-              label="Save Card"
+              label={t('save_card')}
               onPress={() => handleSave(false)}
               loading={isSaving && !addAnother}
               style={styles.saveBtn}

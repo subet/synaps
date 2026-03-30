@@ -5,10 +5,12 @@ import { Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { BadgeItem } from '../src/components/badges/BadgeItem';
 import { borderRadius, colors, spacing, typography } from '../src/constants';
+import { useTranslation } from '../src/i18n';
 import { useBadgeStore } from '../src/stores/useBadgeStore';
 import { BadgeWithStatus } from '../src/services/badgeService';
 
 export default function BadgesScreen() {
+  const { t } = useTranslation();
   const { badges, loadBadges } = useBadgeStore();
 
   useEffect(() => {
@@ -20,9 +22,9 @@ export default function BadgesScreen() {
   const locked = badges.filter((b) => !b.achieved && b.progress === 0);
 
   const sections = [
-    ...(achieved.length > 0 ? [{ title: `Achieved · ${achieved.length}`, data: achieved }] : []),
-    ...(inProgress.length > 0 ? [{ title: 'In Progress', data: inProgress }] : []),
-    ...(locked.length > 0 ? [{ title: 'Locked', data: locked }] : []),
+    ...(achieved.length > 0 ? [{ title: `${t('achieved')} · ${achieved.length}`, data: achieved }] : []),
+    ...(inProgress.length > 0 ? [{ title: t('in_progress'), data: inProgress }] : []),
+    ...(locked.length > 0 ? [{ title: t('locked'), data: locked }] : []),
   ];
 
   const renderItem = ({ item }: { item: BadgeWithStatus }) => (
@@ -35,7 +37,7 @@ export default function BadgesScreen() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Ionicons name="chevron-back" size={22} color={colors.primary} />
         </Pressable>
-        <Text style={styles.title}>Achievements</Text>
+        <Text style={styles.title}>{t('achievements')}</Text>
         <View style={styles.backBtn} />
       </View>
 

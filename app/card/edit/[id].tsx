@@ -17,11 +17,13 @@ import {
 import { Button } from '../../../src/components/ui/Button';
 import { Input } from '../../../src/components/ui/Input';
 import { borderRadius, colors, spacing, typography } from '../../../src/constants';
+import { useTranslation } from '../../../src/i18n';
 import { getCardById } from '../../../src/services/database';
 import { useStudyStore } from '../../../src/stores/useStudyStore';
 import { Card } from '../../../src/types';
 
 export default function EditCardScreen() {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { updateCard, deleteCard } = useStudyStore();
 
@@ -57,7 +59,7 @@ export default function EditCardScreen() {
 
   const handlePickImage = async (side: 'front' | 'back') => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') { Alert.alert('Permission Required', 'Please allow access to your photo library.'); return; }
+    if (status !== 'granted') { Alert.alert(t('permission_required'), t('photo_permission')); return; }
     const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], quality: 0.8, allowsEditing: true });
     if (!result.canceled && result.assets[0]) {
       if (side === 'front') setFrontImage(result.assets[0].uri);
@@ -78,17 +80,17 @@ export default function EditCardScreen() {
       });
       router.back();
     } catch {
-      Alert.alert('Error', 'Failed to save card.');
+      Alert.alert(t('error'), t('failed_save_card'));
     } finally {
       setIsSaving(false);
     }
   };
 
   const handleDelete = () => {
-    Alert.alert('Delete Card', 'Are you sure you want to delete this card?', [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert(t('delete_card'), t('delete_card_confirm'), [
+      { text: t('cancel'), style: 'cancel' },
       {
-        text: 'Delete',
+        text: t('delete'),
         style: 'destructive',
         onPress: async () => {
           await deleteCard(id);
@@ -101,7 +103,7 @@ export default function EditCardScreen() {
   if (!card) {
     return (
       <SafeAreaView style={styles.safe}>
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text style={styles.loadingText}>{t('loading')}</Text>
       </SafeAreaView>
     );
   }
@@ -114,15 +116,15 @@ export default function EditCardScreen() {
             <Pressable onPress={() => router.back()}>
               <Ionicons name="chevron-back" size={22} color={colors.primary} />
             </Pressable>
-            <Text style={styles.title}>Edit Card</Text>
+            <Text style={styles.title}>{t('edit_card_title')}</Text>
             <View style={{ width: 60 }} />
           </View>
 
           <View style={styles.cardSection}>
-            <Text style={styles.cardSectionLabel}>Front (Question)</Text>
+            <Text style={styles.cardSectionLabel}>{t('card_front')}</Text>
             <Input
               value={front}
-              onChangeText={(t) => { setFront(t); setErrors((e) => ({ ...e, front: '' })); }}
+              onChangeText={(v) => { setFront(v); setErrors((e) => ({ ...e, front: '' })); }}
               error={errors.front}
               placeholder="Question or prompt..."
               multiline
@@ -138,15 +140,15 @@ export default function EditCardScreen() {
               </View>
             ) : null}
             <Pressable style={styles.imagePickerBtn} onPress={() => handlePickImage('front')}>
-              <Text style={styles.imagePickerText}>📷 {frontImage ? 'Change' : 'Add'} image</Text>
+              <Text style={styles.imagePickerText}>📷 {frontImage ? t('change_image') : t('add_image_front')}</Text>
             </Pressable>
           </View>
 
           <View style={styles.cardSection}>
-            <Text style={styles.cardSectionLabel}>Back (Answer)</Text>
+            <Text style={styles.cardSectionLabel}>{t('card_back')}</Text>
             <Input
               value={back}
-              onChangeText={(t) => { setBack(t); setErrors((e) => ({ ...e, back: '' })); }}
+              onChangeText={(v) => { setBack(v); setErrors((e) => ({ ...e, back: '' })); }}
               error={errors.back}
               placeholder="Answer..."
               multiline
@@ -162,21 +164,21 @@ export default function EditCardScreen() {
               </View>
             ) : null}
             <Pressable style={styles.imagePickerBtn} onPress={() => handlePickImage('back')}>
-              <Text style={styles.imagePickerText}>📷 {backImage ? 'Change' : 'Add'} image</Text>
+              <Text style={styles.imagePickerText}>📷 {backImage ? t('change_image') : t('add_image_back')}</Text>
             </Pressable>
           </View>
 
           <Input
-            label="Tags (optional)"
+            label={t('card_tags')}
             value={tags}
             onChangeText={setTags}
-            placeholder="e.g. grammar, chapter-1"
+            placeholder={t('card_tags_placeholder')}
           />
 
-          <Button label="Save Card" onPress={handleSave} loading={isSaving} />
+          <Button label={t('save_card')} onPress={handleSave} loading={isSaving} />
 
           <Pressable onPress={handleDelete} style={styles.deleteBtn}>
-            <Text style={styles.deleteBtnText}>Delete Card</Text>
+            <Text style={styles.deleteBtnText}>{t('delete_card')}</Text>
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>

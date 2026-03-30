@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
+import { setLocale } from '../i18n';
 import { AppSettings, Language } from '../types';
 
 interface AppState extends AppSettings {
@@ -43,6 +44,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   setLanguage: async (language) => {
+    setLocale(language); // sync — i18n.locale updated before Zustand subscribers re-render
     set({ language });
     await saveSettings({ ...get(), language });
   },

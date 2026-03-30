@@ -15,11 +15,13 @@ import { Button } from '../../src/components/ui/Button';
 import { EmptyState } from '../../src/components/ui/EmptyState';
 import { SearchBar } from '../../src/components/ui/SearchBar';
 import { borderRadius, colors, spacing, typography } from '../../src/constants';
+import { useTranslation } from '../../src/i18n';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStudyStore } from '../../src/stores/useStudyStore';
 import { Card } from '../../src/types';
 
 export default function DeckDetailScreen() {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { getDeckById, deckStats, loadDeckStats } = useDeckStore();
   const { loadDeckCards, deckCards, isLoadingCards } = useStudyStore();
@@ -58,7 +60,7 @@ export default function DeckDetailScreen() {
         <Pressable style={styles.backBtn} onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={22} color={colors.primary} />
         </Pressable>
-        <EmptyState title="Deck not found" subtitle="This deck may have been deleted." />
+        <EmptyState title={t('deck_not_found')} subtitle={t('deck_deleted')} />
       </SafeAreaView>
     );
   }
@@ -85,7 +87,7 @@ export default function DeckDetailScreen() {
       <View style={styles.statsRow}>
         {/* Donut / due today */}
         <View style={[styles.statCard, styles.statCardDue]}>
-          <Text style={styles.statCardTitle}>Cards for today</Text>
+          <Text style={styles.statCardTitle}>{t('cards_due_today')}</Text>
           <DonutChart
             total={stats?.dueToday ?? 0}
             reviewed={stats?.dueToday ?? 0}
@@ -95,12 +97,12 @@ export default function DeckDetailScreen() {
 
         {/* Progress bar */}
         <View style={[styles.statCard, styles.statCardGrow, styles.statCardProgress]}>
-          <Text style={styles.statCardTitle}>{stats?.total ?? 0} cards in deck</Text>
+          <Text style={styles.statCardTitle}>{t('cards_in_deck', { count: stats?.total ?? 0 })}</Text>
           <ProgressBar stats={stats} />
           <View style={styles.legend}>
-            <LegendItem color={colors.notStudied} label={`${stats?.notStudied ?? 0} Not studied`} />
-            <LegendItem color={colors.learning} label={`${stats?.learning ?? 0} Learning`} />
-            <LegendItem color={colors.mastered} label={`${stats?.mastered ?? 0} Mastered`} />
+            <LegendItem color={colors.notStudied} label={`${stats?.notStudied ?? 0} ${t('not_studied')}`} />
+            <LegendItem color={colors.learning} label={`${stats?.learning ?? 0} ${t('learning')}`} />
+            <LegendItem color={colors.mastered} label={`${stats?.mastered ?? 0} ${t('mastered')}`} />
           </View>
         </View>
       </View>
@@ -108,7 +110,7 @@ export default function DeckDetailScreen() {
       {/* Search + add card row */}
       <View style={styles.searchRow}>
         <SearchBar
-          placeholder="Search cards..."
+          placeholder={t('search_cards')}
           value={searchQuery}
           onChangeText={setSearchQuery}
           containerStyle={styles.searchInput}
@@ -121,7 +123,7 @@ export default function DeckDetailScreen() {
         </Pressable>
       </View>
 
-      <Text style={styles.cardsCount}>{filteredCards.length} cards</Text>
+      <Text style={styles.cardsCount}>{t('cards_count', { count: filteredCards.length })}</Text>
     </View>
   );
 
@@ -135,9 +137,9 @@ export default function DeckDetailScreen() {
         ListEmptyComponent={
           !isLoadingCards ? (
             <EmptyState
-              title="No cards yet"
-              subtitle="Add your first card to start studying"
-              ctaLabel="Add card"
+              title={t('no_cards_yet')}
+              subtitle={t('add_first_card')}
+              ctaLabel={t('add_card')}
               onCtaPress={() => router.push(`/card/create/${id}`)}
             />
           ) : null
@@ -152,7 +154,7 @@ export default function DeckDetailScreen() {
       {(stats?.dueToday ?? 0) > 0 && (
         <View style={styles.studyBtnContainer}>
           <Button
-            label={`Study deck (${stats?.dueToday} due)`}
+            label={t('study_button', { count: stats?.dueToday ?? 0 })}
             onPress={() => router.push(`/study/${id}`)}
           />
         </View>

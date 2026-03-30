@@ -17,6 +17,7 @@ import { StreakCard } from '../../src/components/home/StreakCard';
 import { EmptyState } from '../../src/components/ui/EmptyState';
 import { FAB } from '../../src/components/ui/FAB';
 import { borderRadius, colors, spacing, typography } from '../../src/constants';
+import { useTranslation } from '../../src/i18n';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStreakStore } from '../../src/stores/useStreakStore';
 import { useBadgeStore } from '../../src/stores/useBadgeStore';
@@ -24,6 +25,7 @@ import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { Deck } from '../../src/types';
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
   const { decks, deckStats, loadDecks, loadDeckStats } = useDeckStore();
   const { currentStreak, weekDays, loadStreak } = useStreakStore();
   const { isPro } = useSubscriptionStore();
@@ -77,7 +79,7 @@ export default function HomeScreen() {
         <StreakCard currentStreak={currentStreak} weekDays={weekDays} />
         <BadgesRow />
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>My Decks</Text>
+          <Text style={styles.sectionTitle}>{t('my_decks')}</Text>
           <Text style={styles.deckCount}>{decks.length}</Text>
         </View>
       </View>
@@ -94,9 +96,9 @@ export default function HomeScreen() {
         ListHeaderComponent={ListHeader}
         ListEmptyComponent={
           <EmptyState
-            title="No decks yet"
-            subtitle="Create your first deck to start learning"
-            ctaLabel="Create your first deck"
+            title={t('no_decks_title')}
+            subtitle={t('no_decks_subtitle')}
+            ctaLabel={t('create_first_deck')}
             onCtaPress={() => router.push('/deck/create')}
           />
         }

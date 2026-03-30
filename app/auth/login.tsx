@@ -15,9 +15,11 @@ import {
 import { Button } from '../../src/components/ui/Button';
 import { Input } from '../../src/components/ui/Input';
 import { colors, spacing, typography } from '../../src/constants';
+import { useTranslation } from '../../src/i18n';
 import { useAuthStore } from '../../src/stores/useAuthStore';
 
 export default function LoginScreen() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -71,8 +73,8 @@ export default function LoginScreen() {
 
           <View style={styles.header}>
             <Text style={styles.emoji}>🧠</Text>
-            <Text style={styles.title}>Welcome back</Text>
-            <Text style={styles.subtitle}>Sign in to sync your study progress</Text>
+            <Text style={styles.title}>{t('welcome_back')}</Text>
+            <Text style={styles.subtitle}>{t('sign_in_subtitle')}</Text>
           </View>
 
           {error && (
@@ -82,37 +84,35 @@ export default function LoginScreen() {
           )}
 
           <Input
-            label="Email"
+            label={t('email')}
             value={email}
             onChangeText={setEmail}
             error={emailError}
-            placeholder="your@email.com"
+            placeholder={t('email_placeholder')}
             keyboardType="email-address"
             autoCapitalize="none"
             autoComplete="email"
           />
 
           <Input
-            label="Password"
+            label={t('password')}
             value={password}
             onChangeText={setPassword}
             error={passwordError}
-            placeholder="••••••••"
+            placeholder={t('password_placeholder')}
             secureTextEntry
             autoComplete="current-password"
           />
 
           <Button
-            label="Log In"
+            label={t('login')}
             onPress={handleLogin}
             loading={isLoading}
             style={styles.loginBtn}
           />
 
           <Pressable onPress={() => router.push('/auth/register')} style={styles.switchLink}>
-            <Text style={styles.switchText}>
-              Don't have an account? <Text style={styles.switchAction}>Sign up</Text>
-            </Text>
+            <Text style={styles.switchText}>{t('no_account')}</Text>
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>
