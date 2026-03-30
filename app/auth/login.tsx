@@ -12,11 +12,48 @@ import {
   Text,
   View,
 } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 import { Button } from '../../src/components/ui/Button';
 import { Input } from '../../src/components/ui/Input';
 import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
 import { useAuthStore } from '../../src/stores/useAuthStore';
+
+const LOGO_ICON_SVG = `<svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4361EE"/>
+      <stop offset="50%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+    <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4361EE"/>
+      <stop offset="50%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="480" height="480" rx="110" fill="url(#bg)"/>
+  <circle cx="240" cy="240" r="165" fill="#fff" opacity="0.04"/>
+  <line x1="240" y1="240" x2="108" y2="108" stroke="#fff" stroke-width="19" stroke-linecap="round" opacity="0.45"/>
+  <line x1="240" y1="240" x2="372" y2="93" stroke="#fff" stroke-width="16" stroke-linecap="round" opacity="0.4"/>
+  <line x1="240" y1="240" x2="405" y2="262" stroke="#fff" stroke-width="13.5" stroke-linecap="round" opacity="0.3"/>
+  <line x1="240" y1="240" x2="87" y2="312" stroke="#fff" stroke-width="13.5" stroke-linecap="round" opacity="0.3"/>
+  <line x1="240" y1="240" x2="175" y2="394" stroke="#fff" stroke-width="16" stroke-linecap="round" opacity="0.4"/>
+  <line x1="240" y1="240" x2="372" y2="377" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity="0.25"/>
+  <circle cx="174" cy="174" r="15" fill="#fff" opacity="0.85"/>
+  <circle cx="306" cy="166" r="12" fill="#fff" opacity="0.7"/>
+  <circle cx="207" cy="317" r="12" fill="#fff" opacity="0.65"/>
+  <circle cx="306" cy="308" r="10" fill="#fff" opacity="0.45"/>
+  <circle cx="108" cy="108" r="25" fill="#fff" opacity="0.95"/>
+  <circle cx="372" cy="93" r="21" fill="#fff" opacity="0.85"/>
+  <circle cx="405" cy="262" r="19" fill="#fff" opacity="0.7"/>
+  <circle cx="87" cy="312" r="19" fill="#fff" opacity="0.7"/>
+  <circle cx="175" cy="394" r="22" fill="#fff" opacity="0.9"/>
+  <circle cx="372" cy="377" r="17" fill="#fff" opacity="0.6"/>
+  <circle cx="240" cy="240" r="55" fill="#fff"/>
+  <circle cx="240" cy="240" r="34" fill="none" stroke="url(#cg)" stroke-width="10" opacity="0.5"/>
+  <circle cx="240" cy="240" r="17" fill="url(#cg)" opacity="0.35"/>
+</svg>`;
 
 export default function LoginScreen() {
   const { t } = useTranslation();
@@ -72,7 +109,7 @@ export default function LoginScreen() {
           </Pressable>
 
           <View style={styles.header}>
-            <Text style={styles.emoji}>🧠</Text>
+            <SvgXml xml={LOGO_ICON_SVG} width={80} height={80} style={styles.logo} />
             <Text style={styles.title}>{t('welcome_back')}</Text>
             <Text style={styles.subtitle}>{t('sign_in_subtitle')}</Text>
           </View>
@@ -127,7 +164,7 @@ const styles = StyleSheet.create({
   backBtn: { paddingVertical: spacing.sm, marginBottom: spacing.md },
   backText: { ...typography.body, color: colors.primary },
   header: { alignItems: 'center', marginBottom: spacing.xl },
-  emoji: { fontSize: 56, marginBottom: spacing.md },
+  logo: { marginBottom: spacing.md, borderRadius: 18 },
   title: { ...typography.h1, color: colors.textPrimary, marginBottom: spacing.sm },
   subtitle: { ...typography.body, color: colors.textSecondary, textAlign: 'center' },
   errorBanner: {
