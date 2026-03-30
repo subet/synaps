@@ -204,11 +204,25 @@ export default function SettingsScreen() {
           <SettingsRow
             label="Rate us"
             onPress={() => {
+              const appStoreId = process.env.EXPO_PUBLIC_APP_STORE_ID;
+              const androidPackage = process.env.EXPO_PUBLIC_ANDROID_PACKAGE;
               const url = Platform.select({
-                ios: 'itms-apps://itunes.apple.com/app/id000000000?action=write-review',
-                android: 'market://details?id=com.synaps.app',
+                ios: appStoreId && appStoreId !== 'PENDING'
+                  ? `itms-apps://itunes.apple.com/app/id${appStoreId}?action=write-review`
+                  : null,
+                android: `market://details?id=${androidPackage}`,
               });
-              if (url) Linking.openURL(url).catch(() => {});
+              if (url) {
+                Linking.openURL(url).catch(() => {
+                  // market:// may fail on emulators — fall back to browser
+                  const webUrl = Platform.select({
+                    android: `https://play.google.com/store/apps/details?id=${androidPackage}`,
+                  });
+                  if (webUrl) Linking.openURL(webUrl).catch(() => {});
+                });
+              } else {
+                Alert.alert('Coming Soon', 'The App Store listing is not available yet.');
+              }
             }}
           />
           <SettingsRow label="Delete all data" onPress={handleDeleteData} danger />
