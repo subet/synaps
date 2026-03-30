@@ -5,9 +5,9 @@ import React, { useState } from 'react';
 import {
   Alert,
   Linking,
+  Modal,
   Platform,
   Pressable,
-
   ScrollView,
   StyleSheet,
   Text,
@@ -94,7 +94,7 @@ export default function SettingsScreen() {
   };
 
   const handleTimeChange = async (_: any, date?: Date) => {
-    setShowTimePicker(Platform.OS === 'ios');
+    if (Platform.OS === 'android') setShowTimePicker(false);
     if (date) {
       const h = date.getHours().toString().padStart(2, '0');
       const m = date.getMinutes().toString().padStart(2, '0');
@@ -237,16 +237,45 @@ export default function SettingsScreen() {
 
         <Text style={styles.version}>App Version {version}</Text>
 
-        {showTimePicker && (
+        {/* Android: renders inline as a native dialog */}
+        {showTimePicker && Platform.OS === 'android' && (
           <DateTimePicker
             value={timeDate}
             mode="time"
             is24Hour
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            display="default"
             onChange={handleTimeChange}
           />
         )}
       </ScrollView>
+
+      {/* iOS: modal overlay with spinner + Done button */}
+      {Platform.OS === 'ios' && (
+        <Modal
+          visible={showTimePicker}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setShowTimePicker(false)}
+        >
+          <Pressable style={styles.modalBackdrop} onPress={() => setShowTimePicker(false)} />
+          <View style={styles.modalSheet}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Reminder Time</Text>
+              <Pressable onPress={() => setShowTimePicker(false)} style={styles.modalDone}>
+                <Text style={styles.modalDoneText}>Done</Text>
+              </Pressable>
+            </View>
+            <DateTimePicker
+              value={timeDate}
+              mode="time"
+              is24Hour={false}
+              display="spinner"
+              onChange={handleTimeChange}
+              style={styles.picker}
+            />
+          </View>
+        </Modal>
+      )}
     </SafeAreaView>
   );
 }
@@ -288,4 +317,30 @@ const styles = StyleSheet.create({
   proBadge: { backgroundColor: colors.primary, borderRadius: borderRadius.sm, paddingHorizontal: spacing.sm, paddingVertical: 2, alignSelf: 'flex-start', marginTop: 4 },
   proBadgeText: { ...typography.smallBold, color: colors.white },
   version: { ...typography.caption, color: colors.textMuted, textAlign: 'center', marginTop: spacing.md },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+  },
+  modalSheet: {
+    backgroundColor: colors.surface,
+    borderTopLeftRadius: borderRadius.lg,
+    borderTopRightRadius: borderRadius.lg,
+    paddingBottom: 32,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  modalTitle: {
+    ...typography.bodyBold,
+    color: colors.textPrimary,
+    flex: 1,
+  },
+  modalDone: { padding: spacing.sm },
+  modalDoneText: { ...typography.bodyBold, color: colors.primary },
+  picker: { width: '100%' },
 });

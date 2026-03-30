@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { setLocale } from '../src/i18n';
+import { scheduleDailyReminder } from '../src/services/notifications';
 import { useAppStore } from '../src/stores/useAppStore';
 import { useAuthStore } from '../src/stores/useAuthStore';
 import { useSubscriptionStore } from '../src/stores/useSubscriptionStore';
@@ -22,6 +23,14 @@ export default function RootLayout() {
       await loadSettings();
       await initAuth();
       await initSubscription();
+
+      // Re-schedule daily reminder on every cold start in case OS cleared it
+      // (happens after app update, reinstall, or device restart on some OS versions)
+      const { notifications } = useAppStore.getState();
+      if (notifications.enabled) {
+        const [h, m] = notifications.time.split(':').map(Number);
+        scheduleDailyReminder(h, m).catch(() => {});
+      }
     }
     bootstrap();
   }, []);
