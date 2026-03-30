@@ -5,6 +5,7 @@ import {
   createStudySession,
   createCard,
   deleteCard,
+  getDeckById,
   getDueCards,
   getCardsByDeckId,
   recordStudyActivity,
@@ -60,12 +61,19 @@ export const useStudyStore = create<StudyState>((set, get) => ({
   isLoadingCards: false,
 
   startSession: async (deckId) => {
-    const session = await createStudySession(deckId);
-    const dueCards = await getDueCards(deckId);
+    const [session, dueCards, deck] = await Promise.all([
+      createStudySession(deckId),
+      getDueCards(deckId),
+      getDeckById(deckId),
+    ]);
+
+    const queue = deck?.shuffle_cards
+      ? [...dueCards].sort(() => Math.random() - 0.5)
+      : dueCards;
 
     set({
       sessionId: session.id,
-      queue: dueCards,
+      queue,
       currentIndex: 0,
       isFlipped: false,
       sessionStartTime: Date.now(),

@@ -1,6 +1,7 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useMemo } from 'react';
+import { speak, stop as stopSpeech } from 'expo-speech';
 import {
   AppState,
   AppStateStatus,
@@ -25,6 +26,8 @@ import { useBadgeStore } from '../../src/stores/useBadgeStore';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStudyStore } from '../../src/stores/useStudyStore';
 import { useStreakStore } from '../../src/stores/useStreakStore';
+import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
+import { useNetworkStatus } from '../../src/hooks/useNetworkStatus';
 import { SRSGrade, StudySessionResult } from '../../src/types';
 
 const LANGUAGE_CODES: Record<string, string> = {
@@ -58,6 +61,9 @@ export default function StudyScreen() {
     sessionResult,
   } = useStudyStore();
 
+  const { isPro } = useSubscriptionStore();
+  const { isOffline } = useNetworkStatus();
+
   const deck = getDeckById(deckId);
   const speakLanguage = deck?.source_id ? LANGUAGE_CODES[deck.source_id] : undefined;
   const currentCard = queue[currentIndex];
@@ -67,8 +73,17 @@ export default function StudyScreen() {
   useEffect(() => {
     startSession(deckId);
     loadDeckStats(deckId);
-    return () => { resetSession(); };
+    return () => { resetSession(); stopSpeech(); };
   }, [deckId]);
+
+  // Kick free users back to deck screen when they go offline mid-session
+  useEffect(() => {
+    if (isOffline && !isPro) {
+      stopSpeech();
+      resetSession();
+      router.back();
+    }
+  }, [isOffline, isPro]);
 
   useEffect(() => {
     const handleAppStateChange = (nextState: AppStateStatus) => {
@@ -81,6 +96,26 @@ export default function StudyScreen() {
     const sub = AppState.addEventListener('change', handleAppStateChange);
     return () => sub.remove();
   }, []);
+
+  // Auto-play: speak front text when a new card appears
+  useEffect(() => {
+    if (!deck?.auto_play_audio || !currentCard) return;
+    stopSpeech();
+    const text = deck.reverse_cards ? currentCard.back : currentCard.front;
+    try {
+      speak(text, speakLanguage ? { language: speakLanguage } : undefined);
+    } catch {}
+  }, [currentCard?.id]);
+
+  // Auto-play: speak back text when card is flipped
+  useEffect(() => {
+    if (!deck?.auto_play_audio || !currentCard || !isFlipped) return;
+    stopSpeech();
+    const text = deck.reverse_cards ? currentCard.front : currentCard.back;
+    try {
+      speak(text, speakLanguage ? { language: speakLanguage } : undefined);
+    } catch {}
+  }, [isFlipped]);
 
   // Overall deck progress: studied (learning + mastered) / total
   useEffect(() => {

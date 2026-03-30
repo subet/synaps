@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { useNetworkStatus } from '../../src/hooks/useNetworkStatus';
 import { Ionicons } from '@expo/vector-icons';
 import { CardListItem } from '../../src/components/deck/CardListItem';
 import { DonutChart } from '../../src/components/deck/DonutChart';
@@ -18,6 +19,7 @@ import { borderRadius, colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStudyStore } from '../../src/stores/useStudyStore';
+import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { Card } from '../../src/types';
 
 export default function DeckDetailScreen() {
@@ -25,6 +27,9 @@ export default function DeckDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { getDeckById, deckStats, loadDeckStats } = useDeckStore();
   const { loadDeckCards, deckCards, isLoadingCards } = useStudyStore();
+  const { isPro } = useSubscriptionStore();
+  const { isOffline } = useNetworkStatus();
+  const isLocked = isOffline && !isPro;
   const [searchQuery, setSearchQuery] = useState('');
 
   const deck = getDeckById(id);
@@ -151,12 +156,24 @@ export default function DeckDetailScreen() {
         getItemLayout={(_, index) => ({ length: 58, offset: 58 * index, index })}
       />
 
-      {(stats?.dueToday ?? 0) > 0 && (
+      {(isLocked || (stats?.dueToday ?? 0) > 0) && (
         <View style={styles.studyBtnContainer}>
-          <Button
-            label={t('study_button', { count: stats?.dueToday ?? 0 })}
-            onPress={() => router.push(`/study/${id}`)}
-          />
+          {isLocked ? (
+            <Pressable
+              style={({ pressed }) => [styles.offlineBtn, pressed && styles.offlineBtnPressed]}
+              onPress={() => router.push('/paywall')}
+            >
+              <View style={styles.proBadge}>
+                <Text style={styles.proBadgeText}>PRO</Text>
+              </View>
+              <Text style={styles.offlineBtnLabel}>{t('offline_study')}</Text>
+            </Pressable>
+          ) : (
+            <Button
+              label={t('study_button', { count: stats?.dueToday ?? 0 })}
+              onPress={() => router.push(`/study/${id}`)}
+            />
+          )}
         </View>
       )}
     </SafeAreaView>
@@ -254,5 +271,32 @@ const styles = StyleSheet.create({
     paddingTop: spacing.sm,
     borderTopWidth: 1,
     borderTopColor: colors.border,
+  },
+  offlineBtn: {
+    height: 52,
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.primary,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+  },
+  offlineBtnPressed: { opacity: 0.85 },
+  offlineBtnLabel: {
+    color: colors.white,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  proBadge: {
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  proBadgeText: {
+    color: colors.white,
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 0.5,
   },
 });

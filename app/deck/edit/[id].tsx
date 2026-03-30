@@ -180,7 +180,7 @@ export default function EditDeckScreen() {
             />
             <SettingsRow
               label={t('shuffle_cards')}
-              right={<Toggle value={shuffleCards} onValueChange={setShuffleCards} />}
+              right={<Toggle value={shuffleCards} onValueChange={(v) => { setShuffleCards(v); if (v) setReverseCards(false); }} />}
             />
             <SettingsRow
               label={t('auto_play_audio')}
@@ -196,7 +196,7 @@ export default function EditDeckScreen() {
             />
             <SettingsRow
               label={t('reverse_cards')}
-              right={<Toggle value={reverseCards} onValueChange={setReverseCards} />}
+              right={<Toggle value={reverseCards} onValueChange={(v) => { setReverseCards(v); if (v) setShuffleCards(false); }} />}
             />
             <SettingsRow label={t('reset_progress')} onPress={handleResetProgress} danger />
             <SettingsRow label={t('delete')} onPress={handleDelete} danger />

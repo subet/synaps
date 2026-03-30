@@ -257,20 +257,47 @@ export async function deleteCard(id: string): Promise<void> {
   await database.runAsync('DELETE FROM cards WHERE id = ?', [id]);
 }
 
-export async function getDueCards(deckId: string, limit?: number): Promise<Card[]> {
+export async function getDueCards(deckId: string): Promise<Card[]> {
   const database = await getDatabase();
-  const limitClause = limit ? `LIMIT ${limit}` : '';
-  const rows = await database.getAllAsync<Card>(
-    `SELECT * FROM cards
-     WHERE deck_id = ?
-       AND (status = 'new' OR due_date IS NULL OR due_date <= datetime('now'))
-     ORDER BY
-       CASE status WHEN 'new' THEN 1 WHEN 'learning' THEN 0 WHEN 'review' THEN 2 ELSE 3 END,
-       due_date ASC
-     ${limitClause}`,
+
+  // Get deck's daily new-card limit
+  const deckRow = await database.getFirstAsync<{ new_cards_per_day: number }>(
+    'SELECT new_cards_per_day FROM decks WHERE id = ?',
     [deckId]
   );
-  return rows.map(mapCard);
+  const newCardsPerDay = deckRow?.new_cards_per_day ?? 20;
+
+  // Count new cards already introduced today (first review happened today: repetitions <= 1)
+  const introducedRow = await database.getFirstAsync<{ count: number }>(
+    `SELECT COUNT(*) as count FROM cards
+     WHERE deck_id = ? AND status != 'new'
+       AND date(last_reviewed) = date('now') AND repetitions <= 1`,
+    [deckId]
+  );
+  const newSeenToday = introducedRow?.count ?? 0;
+  const newAllowed = Math.max(0, newCardsPerDay - newSeenToday);
+
+  // Always include all due review/learning cards
+  const reviewCards = await database.getAllAsync<Card>(
+    `SELECT * FROM cards
+     WHERE deck_id = ? AND status != 'new'
+       AND (due_date IS NULL OR due_date <= datetime('now'))
+     ORDER BY
+       CASE status WHEN 'learning' THEN 0 WHEN 'review' THEN 1 ELSE 2 END,
+       due_date ASC`,
+    [deckId]
+  );
+
+  // New cards up to the remaining daily allowance
+  const newCards = newAllowed > 0
+    ? await database.getAllAsync<Card>(
+        `SELECT * FROM cards WHERE deck_id = ? AND status = 'new'
+         ORDER BY created_at ASC LIMIT ?`,
+        [deckId, newAllowed]
+      )
+    : [];
+
+  return [...reviewCards, ...newCards].map(mapCard);
 }
 
 export async function getDeckStats(deckId: string) {
