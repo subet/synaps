@@ -317,4 +317,13 @@ export const en = {
   unlocked_count: '%{count} Unlocked',
   cards_mastered_label: 'Cards Mastered',
   avg_daily_focus: 'Average Daily Focus',
+
+  // Greeting
+  good_morning: 'Good morning',
+  good_afternoon: 'Good afternoon',
+  good_evening: 'Good evening',
+  good_night: 'Good night',
+  greeting_not_studied: 'Your cognitive sanctuary is ready for today\'s session.',
+  greeting_studied: 'Keep the momentum going. You\'re doing great!',
+  greeting_great_day: 'Amazing! You\'ve surpassed yesterday. Keep it up!',
 };

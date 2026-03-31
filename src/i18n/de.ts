@@ -317,4 +317,13 @@ export const de = {
   unlocked_count: '%{count} Freigeschaltet',
   cards_mastered_label: 'Beherrschte Karten',
   avg_daily_focus: 'Durchschn. täglicher Fokus',
+
+  // Greeting
+  good_morning: 'Guten Morgen',
+  good_afternoon: 'Guten Nachmittag',
+  good_evening: 'Guten Abend',
+  good_night: 'Gute Nacht',
+  greeting_not_studied: 'Dein kognitives Heiligtum ist bereit für die heutige Sitzung.',
+  greeting_studied: 'Behalte den Schwung bei. Du machst das großartig!',
+  greeting_great_day: 'Fantastisch! Du hast gestern übertroffen. Weiter so!',
 };

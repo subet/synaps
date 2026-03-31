@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { BadgesRow } from '../../src/components/home/BadgesRow';
 import { DeckListItem } from '../../src/components/home/DeckListItem';
+import { GreetingHeader } from '../../src/components/home/GreetingHeader';
 import { StatBoxes } from '../../src/components/home/StatBoxes';
 import { StreakCard } from '../../src/components/home/StreakCard';
 import { EmptyState } from '../../src/components/ui/EmptyState';
@@ -70,6 +71,7 @@ export default function HomeScreen() {
   const ListHeader = useMemo(
     () => (
       <View>
+        <GreetingHeader weekDays={weekDays} />
         <StreakCard currentStreak={currentStreak} weekDays={weekDays} />
         <BadgesRow />
         <StatBoxes cardsMastered={cardsMastered} avgDailyFocusMinutes={avgDailyFocusMinutes} />

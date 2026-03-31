@@ -317,4 +317,13 @@ export const ru = {
   unlocked_count: '%{count} Открыто',
   cards_mastered_label: 'Освоено карточек',
   avg_daily_focus: 'Среднее время фокуса в день',
+
+  // Greeting
+  good_morning: 'Доброе утро',
+  good_afternoon: 'Добрый день',
+  good_evening: 'Добрый вечер',
+  good_night: 'Спокойной ночи',
+  greeting_not_studied: 'Твоё когнитивное убежище готово к сегодняшней сессии.',
+  greeting_studied: 'Сохраняй темп. Ты справляешься отлично!',
+  greeting_great_day: 'Потрясающе! Ты превзошёл вчерашний результат. Так держать!',
 };

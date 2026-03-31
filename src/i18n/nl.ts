@@ -317,4 +317,13 @@ export const nl = {
   unlocked_count: '%{count} Ontgrendeld',
   cards_mastered_label: 'Beheerste kaarten',
   avg_daily_focus: 'Gem. dagelijkse focus',
+
+  // Greeting
+  good_morning: 'Goedemorgen',
+  good_afternoon: 'Goedemiddag',
+  good_evening: 'Goedenavond',
+  good_night: 'Goedenacht',
+  greeting_not_studied: 'Je cognitieve toevluchtsoord is klaar voor de sessie van vandaag.',
+  greeting_studied: 'Houd het momentum vast. Je doet het geweldig!',
+  greeting_great_day: 'Geweldig! Je hebt gisteren overtroffen. Ga zo door!',
 };

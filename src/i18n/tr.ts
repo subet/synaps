@@ -317,4 +317,13 @@ export const tr = {
   unlocked_count: '%{count} Kazanıldı',
   cards_mastered_label: 'Öğrenilen Kartlar',
   avg_daily_focus: 'Ortalama Günlük Odak',
+
+  // Greeting
+  good_morning: 'Günaydın',
+  good_afternoon: 'İyi öğleden sonralar',
+  good_evening: 'İyi akşamlar',
+  good_night: 'İyi geceler',
+  greeting_not_studied: 'Bilişsel sığınağın bugünkü seans için hazır.',
+  greeting_studied: 'Momentumu devam ettir. Harika gidiyorsun!',
+  greeting_great_day: 'Muhteşem! Dünü geçtin. Öyle devam et!',
 };

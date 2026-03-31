@@ -317,4 +317,13 @@ export const pt_PT = {
   unlocked_count: '%{count} Desbloqueado(s)',
   cards_mastered_label: 'Cartões Dominados',
   avg_daily_focus: 'Foco Diário Médio',
+
+  // Greeting
+  good_morning: 'Bom dia',
+  good_afternoon: 'Boa tarde',
+  good_evening: 'Boa noite',
+  good_night: 'Boa madrugada',
+  greeting_not_studied: 'O teu santuário cognitivo está pronto para a sessão de hoje.',
+  greeting_studied: 'Mantém o ímpeto. Estás a ir muito bem!',
+  greeting_great_day: 'Incrível! Superaste ontem. Continua assim!',
 };

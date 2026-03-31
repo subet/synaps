@@ -317,4 +317,13 @@ export const fr = {
   unlocked_count: '%{count} Débloqué(s)',
   cards_mastered_label: 'Cartes maîtrisées',
   avg_daily_focus: 'Concentration journalière moy.',
+
+  // Greeting
+  good_morning: 'Bonjour',
+  good_afternoon: 'Bon après-midi',
+  good_evening: 'Bonsoir',
+  good_night: 'Bonne nuit',
+  greeting_not_studied: 'Ton sanctuaire cognitif est prêt pour la session d\'aujourd\'hui.',
+  greeting_studied: 'Garde l\'élan. Tu te débrouilles très bien !',
+  greeting_great_day: 'Incroyable ! Tu as dépassé hier. Continue comme ça !',
 };

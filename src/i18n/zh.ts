@@ -317,4 +317,13 @@ export const zh = {
   unlocked_count: '已解锁 %{count} 个',
   cards_mastered_label: '已掌握卡片',
   avg_daily_focus: '平均每日专注时间',
+
+  // Greeting
+  good_morning: '早上好',
+  good_afternoon: '下午好',
+  good_evening: '晚上好',
+  good_night: '晚安',
+  greeting_not_studied: '你的认知圣地已为今天的学习准备就绪。',
+  greeting_studied: '保持动力，你做得很棒！',
+  greeting_great_day: '太棒了！你已经超越了昨天，继续加油！',
 };
