@@ -35,6 +35,14 @@ export const tr = {
   onboarding_create_account: 'Hesap Oluştur',
   onboarding_continue_without: 'Hesapsız Devam Et',
   onboarding_later_note: 'Verilerinizi senkronize etmek için her zaman sonradan kaydolabilirsiniz',
+  att_title: 'Deneyiminizi Kişiselleştirin',
+  att_subtitle: 'Synaps kişiselleştirilmiş içerik için verilerinizi kullanabilir.',
+  att_allow: 'Takibe İzin Ver',
+  notifications_onboarding_title: 'Çalışma Seansını Kaçırma',
+  notifications_onboarding_subtitle: 'Günlük hatırlatıcılar alın ve streakınızı koruyun.',
+  notifications_enable: 'Bildirimleri Etkinleştir',
+  maybe_later: 'Belki Sonra',
+  paywall_skip: 'Ücretsiz Planla Devam Et',
 
   // Home
   my_decks: 'Destelerim',

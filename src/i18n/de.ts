@@ -36,6 +36,14 @@ export const de = {
   onboarding_create_account: 'Konto erstellen',
   onboarding_continue_without: 'Ohne Konto fortfahren',
   onboarding_later_note: 'Du kannst dich jederzeit später anmelden, um deine Daten zu synchronisieren',
+  att_title: 'Personalize Your Experience',
+  att_subtitle: 'Allow Synaps to use your data to provide personalized content.',
+  att_allow: 'Allow Tracking',
+  notifications_onboarding_title: 'Never Miss a Study Session',
+  notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
+  notifications_enable: 'Enable Notifications',
+  maybe_later: 'Maybe Later',
+  paywall_skip: 'Continue with Free Plan',
 
   // Home
   my_decks: 'Meine Stapel',

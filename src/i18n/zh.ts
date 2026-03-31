@@ -36,6 +36,14 @@ export const zh = {
   onboarding_create_account: '创建账号',
   onboarding_continue_without: '不创建账号继续',
   onboarding_later_note: '您随时可以注册以同步数据',
+  att_title: 'Personalize Your Experience',
+  att_subtitle: 'Allow Synaps to use your data to provide personalized content.',
+  att_allow: 'Allow Tracking',
+  notifications_onboarding_title: 'Never Miss a Study Session',
+  notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
+  notifications_enable: 'Enable Notifications',
+  maybe_later: 'Maybe Later',
+  paywall_skip: 'Continue with Free Plan',
 
   // Home
   my_decks: '我的牌组',

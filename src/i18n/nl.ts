@@ -36,6 +36,14 @@ export const nl = {
   onboarding_create_account: 'Account aanmaken',
   onboarding_continue_without: 'Doorgaan zonder account',
   onboarding_later_note: 'Je kunt je altijd later aanmelden om je gegevens te synchroniseren',
+  att_title: 'Personalize Your Experience',
+  att_subtitle: 'Allow Synaps to use your data to provide personalized content.',
+  att_allow: 'Allow Tracking',
+  notifications_onboarding_title: 'Never Miss a Study Session',
+  notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
+  notifications_enable: 'Enable Notifications',
+  maybe_later: 'Maybe Later',
+  paywall_skip: 'Continue with Free Plan',
 
   // Home
   my_decks: 'Mijn stapels',

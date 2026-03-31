@@ -11,8 +11,10 @@ import {
   Text,
   View,
 } from 'react-native';
+import { Stack } from 'expo-router';
 import { borderRadius, colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
+import { useAppStore } from '../../src/stores/useAppStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 
 const PRO_FEATURE_KEYS = [
@@ -38,14 +40,19 @@ export default function PaywallScreen() {
   const { t } = useTranslation();
   const [selectedPlan, setSelectedPlan] = useState('monthly');
   const { offerings, loadOfferings, purchase, restore, isLoading, isPro } = useSubscriptionStore();
+  const { hasSeenOnboarding } = useAppStore();
+  const inOnboarding = !hasSeenOnboarding;
 
   useEffect(() => {
     loadOfferings();
   }, []);
 
   useEffect(() => {
-    if (isPro) router.back();
+    if (isPro && !inOnboarding) router.back();
+    if (isPro && inOnboarding) router.replace('/auth/register');
   }, [isPro]);
+
+  const goNext = () => router.replace(inOnboarding ? '/auth/register' : '/(tabs)');
 
   const handleSubscribe = async () => {
     if (!offerings) {
@@ -63,7 +70,7 @@ export default function PaywallScreen() {
       const success = await purchase(pkg);
       if (success) {
         Alert.alert(t('welcome_pro_title'), t('welcome_pro_message'), [
-          { text: t('get_started'), onPress: () => router.back() },
+          { text: t('get_started'), onPress: goNext },
         ]);
       }
     } catch (e: any) {
@@ -76,7 +83,9 @@ export default function PaywallScreen() {
   const handleRestore = async () => {
     const success = await restore();
     if (success) {
-      Alert.alert(t('restored_title'), t('restored_message'));
+      Alert.alert(t('restored_title'), t('restored_message'), [
+        { text: t('done'), onPress: goNext },
+      ]);
     } else {
       Alert.alert(t('no_purchases_title'), t('no_purchases_message'));
     }
@@ -84,11 +93,14 @@ export default function PaywallScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
+      {inOnboarding && <Stack.Screen options={{ gestureEnabled: false }} />}
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Close button */}
-        <Pressable style={styles.closeBtn} onPress={() => router.back()}>
-          <Ionicons name="close" size={22} color={colors.textSecondary} />
-        </Pressable>
+        {/* Close button — hidden during onboarding */}
+        {!inOnboarding && (
+          <Pressable style={styles.closeBtn} onPress={() => router.back()}>
+            <Ionicons name="close" size={22} color={colors.textSecondary} />
+          </Pressable>
+        )}
 
         {/* Header */}
         <View style={styles.header}>
@@ -171,6 +183,12 @@ export default function PaywallScreen() {
         </Pressable>
 
         <Text style={styles.finePrint}>{t('paywall_fine_print')}</Text>
+
+        {inOnboarding && (
+          <Pressable onPress={goNext} style={styles.restoreBtn}>
+            <Text style={styles.restoreText}>{t('paywall_skip')}</Text>
+          </Pressable>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

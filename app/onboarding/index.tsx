@@ -20,7 +20,6 @@ import Animated, {
 import { Button } from '../../src/components/ui/Button';
 import { borderRadius, colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
-import { requestNotificationPermissions } from '../../src/services/notifications';
 import { useAppStore } from '../../src/stores/useAppStore';
 
 const { width } = Dimensions.get('window');
@@ -51,21 +50,12 @@ export default function OnboardingScreen() {
     }
   };
 
-  const handleSkip = async () => {
-    await markOnboardingComplete();
-    router.replace('/(tabs)');
+  const handleSkip = () => {
+    router.replace('/onboarding/att');
   };
 
-  const handleGetStarted = async () => {
-    await requestNotificationPermissions();
-    await markOnboardingComplete();
-    router.replace('/auth/register');
-  };
-
-  const handleContinueWithout = async () => {
-    await requestNotificationPermissions();
-    await markOnboardingComplete();
-    router.replace('/(tabs)');
+  const handleGetStarted = () => {
+    router.replace('/onboarding/att');
   };
 
   const isLastSlide = currentIndex === SLIDES.length - 1;
@@ -104,14 +94,7 @@ export default function OnboardingScreen() {
             )}
             {item.key === 'start' && (
               <View style={styles.startButtons}>
-                <Button label={t('onboarding_create_account')} onPress={handleGetStarted} />
-                <Button
-                  label={t('onboarding_continue_without')}
-                  onPress={handleContinueWithout}
-                  variant="secondary"
-                  style={{ marginTop: spacing.sm }}
-                />
-                <Text style={styles.lateNote}>{t('onboarding_later_note')}</Text>
+                <Button label={t('get_started')} onPress={handleGetStarted} />
               </View>
             )}
           </View>

@@ -36,6 +36,14 @@ export const fr = {
   onboarding_create_account: 'Créer un compte',
   onboarding_continue_without: 'Continuer sans compte',
   onboarding_later_note: 'Tu peux toujours t\'inscrire plus tard pour synchroniser tes données',
+  att_title: 'Personalize Your Experience',
+  att_subtitle: 'Allow Synaps to use your data to provide personalized content.',
+  att_allow: 'Allow Tracking',
+  notifications_onboarding_title: 'Never Miss a Study Session',
+  notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
+  notifications_enable: 'Enable Notifications',
+  maybe_later: 'Maybe Later',
+  paywall_skip: 'Continue with Free Plan',
 
   // Home
   my_decks: 'Mes paquets',

@@ -18,6 +18,7 @@ import { Input } from '../../src/components/ui/Input';
 import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
 import { useAuthStore } from '../../src/stores/useAuthStore';
+import { useAppStore } from '../../src/stores/useAppStore';
 
 const LOGO_ICON_SVG = `<svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -63,6 +64,8 @@ export default function LoginScreen() {
   const [passwordError, setPasswordError] = useState('');
 
   const { login, isLoading, error, clearError } = useAuthStore();
+  const { hasSeenOnboarding } = useAppStore();
+  const inOnboarding = !hasSeenOnboarding;
 
   const validate = () => {
     let valid = true;
@@ -91,7 +94,7 @@ export default function LoginScreen() {
 
     try {
       await login(email.trim(), password);
-      router.replace('/(tabs)');
+      router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
     } catch {
       // Error is already set in store
     }
