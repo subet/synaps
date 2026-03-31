@@ -129,8 +129,8 @@ export const useStudyStore = create<StudyState>((set, get) => ({
     const isLast = nextIndex >= queue.length;
 
     if (isLast) {
-      await get().endSession();
       set({ gradeDistribution: newDist });
+      await get().endSession();
     } else {
       set({ currentIndex: nextIndex, isFlipped: false, gradeDistribution: newDist, cardShownAt: Date.now(), accumulatedCardSeconds: 0 });
     }

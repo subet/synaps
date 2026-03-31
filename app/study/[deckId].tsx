@@ -1,4 +1,5 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useMemo } from 'react';
 import { speak, stop as stopSpeech } from 'expo-speech';
@@ -226,14 +227,20 @@ function SessionComplete({
 
   return (
     <SafeAreaView style={styles.safe}>
+      <LinearGradient
+        colors={['#FFFFFF', colors.primaryLight, '#C7D2FF']}
+        style={StyleSheet.absoluteFill}
+      />
       <View style={styles.completeContainer}>
-        <Text style={styles.celebEmoji}>🎉</Text>
+        <View style={styles.celebIconContainer}>
+          <Ionicons name="trophy" size={48} color="#F59E0B" />
+        </View>
         <Text style={styles.completeTitle}>{t('session_complete_title')}</Text>
 
         <View style={styles.statsGrid}>
-          <StatItem emoji="📚" label={t('cards_studied_label')} value={String(result.cardsStudied)} />
-          <StatItem emoji="⏱️" label={t('time_spent_label')} value={timeStr} />
-          <StatItem emoji="🎯" label={t('accuracy_label')} value={`${accuracy}%`} />
+          <StatItem icon="albums-outline" label={t('cards_studied_label')} value={String(result.cardsStudied)} />
+          <StatItem icon="time-outline" label={t('time_spent_label')} value={timeStr} />
+          <StatItem icon="checkmark-circle-outline" label={t('accuracy_label')} value={`${accuracy}%`} iconColor={colors.primary} />
         </View>
 
         {/* Grade breakdown */}
@@ -276,10 +283,12 @@ function SessionComplete({
   );
 }
 
-function StatItem({ emoji, label, value }: { emoji: string; label: string; value: string }) {
+function StatItem({ icon, label, value, iconColor }: { icon: keyof typeof Ionicons.glyphMap; label: string; value: string; iconColor?: string }) {
   return (
     <View style={styles.statItem}>
-      <Text style={styles.statEmoji}>{emoji}</Text>
+      <View style={styles.statIconContainer}>
+        <Ionicons name={icon} size={26} color={iconColor ?? colors.textSecondary} />
+      </View>
       <Text style={styles.statValue}>{value}</Text>
       <Text style={styles.statLabel}>{label}</Text>
     </View>
@@ -335,11 +344,19 @@ const styles = StyleSheet.create({
   backBtn: { marginTop: spacing.sm },
   // Session complete
   completeContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.xl },
-  celebEmoji: { fontSize: 72, marginBottom: spacing.md },
+  celebIconContainer: {
+    width: 88,
+    height: 88,
+    borderRadius: 28,
+    backgroundColor: '#FEF3C7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
   completeTitle: { ...typography.h1, color: colors.textPrimary, marginBottom: spacing.xl, textAlign: 'center' },
   statsGrid: { flexDirection: 'row', gap: spacing.md, marginBottom: spacing.xl, width: '100%', justifyContent: 'center' },
   statItem: { alignItems: 'center', flex: 1 },
-  statEmoji: { fontSize: 28, marginBottom: spacing.xs },
+  statIconContainer: { marginBottom: spacing.xs },
   statValue: { ...typography.h2, color: colors.textPrimary, marginBottom: 2 },
   statLabel: { ...typography.small, color: colors.textSecondary, textAlign: 'center' },
   gradeBreakdown: { width: '100%', gap: spacing.sm, marginBottom: spacing.xl },

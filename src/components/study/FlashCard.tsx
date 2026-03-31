@@ -26,6 +26,14 @@ const LANGUAGE_META: Record<string, { color: string; flag: string }> = {
 
 const DEFAULT_COLOR = '#4361EE';
 
+function dynamicFontSize(text: string, max: number, min: number): number {
+  const len = text.length;
+  if (len <= 30) return max;
+  if (len >= 200) return min;
+  // Linear interpolation between max and min
+  return Math.round(max - ((max - min) * (len - 30)) / 170);
+}
+
 interface FlashCardProps {
   card: Card;
   isFlipped: boolean;
@@ -115,7 +123,7 @@ export function FlashCard({
           <Image source={{ uri: frontImage }} style={styles.image} resizeMode="contain" />
         ) : null}
 
-        <Text style={styles.frontText}>{frontText}</Text>
+        <Text style={[styles.frontText, { fontSize: dynamicFontSize(frontText, 32, 26) }]}>{frontText}</Text>
 
         <View style={styles.tapHint}>
           <Text style={styles.tapHintText}>Tap to reveal</Text>
@@ -152,7 +160,7 @@ export function FlashCard({
           <Image source={{ uri: backImage }} style={styles.image} resizeMode="contain" />
         ) : null}
 
-        <Text style={styles.backText}>{backText}</Text>
+        <Text style={[styles.backText, { fontSize: dynamicFontSize(backText, 34, 26) }]}>{backText}</Text>
       </Animated.View>
     </Pressable>
   );
