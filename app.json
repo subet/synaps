@@ -11,7 +11,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "cover",
-      "backgroundColor": "#4361EE"
+      "backgroundColor": "#0F0A1E"
     },
     "ios": {
       "supportsTablet": false,
@@ -25,7 +25,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#4361EE"
+        "backgroundColor": "#0F0A1E"
       },
       "package": "com.synaps.app",
       "permissions": [
