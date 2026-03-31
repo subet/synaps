@@ -1,7 +1,7 @@
 import { useLocales } from 'expo-localization';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { scheduleDailyReminder } from '../src/services/notifications';
@@ -10,6 +10,7 @@ import { useAppStore } from '../src/stores/useAppStore';
 import { Language } from '../src/types';
 import { useAuthStore } from '../src/stores/useAuthStore';
 import { useSubscriptionStore } from '../src/stores/useSubscriptionStore';
+import AnimatedSplash from '../src/components/AnimatedSplash';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,6 +30,8 @@ export default function RootLayout() {
   const { initialize: initAuth, isInitialized } = useAuthStore();
   const { initialize: initSubscription } = useSubscriptionStore();
   const locales = useLocales();
+  const [animationDone, setAnimationDone] = useState(false);
+  const appReady = !isLoading && isInitialized;
 
   useEffect(() => {
     async function bootstrap() {
@@ -60,14 +63,13 @@ export default function RootLayout() {
     bootstrap();
   }, []);
 
+  // Hide native splash immediately — our animated splash takes over
   useEffect(() => {
-    if (!isLoading && isInitialized) {
-      SplashScreen.hideAsync();
-    }
-  }, [isLoading, isInitialized]);
+    SplashScreen.hideAsync();
+  }, []);
 
-  if (isLoading || !isInitialized) {
-    return null;
+  if (!appReady || !animationDone) {
+    return <AnimatedSplash onAnimationComplete={() => setAnimationDone(true)} />;
   }
 
   return (
