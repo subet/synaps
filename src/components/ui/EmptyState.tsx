@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { colors, spacing, typography } from '../../constants';
@@ -14,7 +15,9 @@ interface EmptyStateProps {
 export function EmptyState({ title, subtitle, ctaLabel, onCtaPress, style }: EmptyStateProps) {
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.emoji}>📚</Text>
+      <View style={styles.iconContainer}>
+        <Ionicons name="layers-outline" size={40} color={colors.primary} />
+      </View>
       <Text style={styles.title}>{title}</Text>
       {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
       {ctaLabel && onCtaPress && (
@@ -36,8 +39,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.xl,
   },
-  emoji: {
-    fontSize: 56,
+  iconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 24,
+    backgroundColor: colors.primaryLight,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: spacing.lg,
   },
   title: {

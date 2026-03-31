@@ -85,7 +85,7 @@ export default function HomeScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <SafeAreaView style={styles.safe} edges={['top']}>
       <TabHeader />
       <FlatList
         data={decks}
@@ -100,11 +100,10 @@ export default function HomeScreen() {
             onCtaPress={() => router.push('/deck/create')}
           />
         }
-        contentContainerStyle={decks.length === 0 ? { flex: 1 } : { paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 32 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
         }
-        getItemLayout={(_, index) => ({ length: 76, offset: 76 * index, index })}
       />
       <FAB
         onPress={() => router.push('/deck/create')}
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    bottom: 24,
+    bottom: 16,
     right: 16,
   },
 });

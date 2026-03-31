@@ -96,8 +96,8 @@ export default function RegisterScreen() {
     <SafeAreaView style={styles.safe}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.flex}>
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-          <Pressable style={styles.backBtn} onPress={() => router.back()}>
-            <Ionicons name="chevron-back" size={22} color={colors.primary} />
+          <Pressable style={styles.backBtn} onPress={() => inOnboarding ? router.replace('/onboarding/notifications') : router.replace('/(tabs)')}>
+            <Ionicons name="close" size={24} color={colors.textSecondary} />
           </Pressable>
 
           <View style={styles.header}>
@@ -144,6 +144,12 @@ export default function RegisterScreen() {
           <Pressable onPress={() => router.push('/auth/login')} style={styles.switchLink}>
             <Text style={styles.switchText}>{t('has_account')}</Text>
           </Pressable>
+
+          {inOnboarding && (
+            <Pressable onPress={() => router.replace('/onboarding/notifications')} style={styles.switchLink}>
+              <Text style={[styles.switchText, { color: colors.textMuted }]}>{t('onboarding_continue_without')}</Text>
+            </Pressable>
+          )}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

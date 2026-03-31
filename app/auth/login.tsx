@@ -107,8 +107,8 @@ export default function LoginScreen() {
         style={styles.flex}
       >
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-          <Pressable style={styles.backBtn} onPress={() => router.back()}>
-            <Ionicons name="chevron-back" size={22} color={colors.primary} />
+          <Pressable style={styles.backBtn} onPress={() => inOnboarding ? router.replace('/onboarding/notifications') : router.replace('/(tabs)')}>
+            <Ionicons name="close" size={24} color={colors.textSecondary} />
           </Pressable>
 
           <View style={styles.header}>
