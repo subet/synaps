@@ -91,6 +91,10 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
   } catch {
     // Column already exists
   }
+  try { await database.execAsync(`ALTER TABLE cards ADD COLUMN front_translations TEXT`); } catch {}
+  try { await database.execAsync(`ALTER TABLE cards ADD COLUMN back_translations TEXT`); } catch {}
+  try { await database.execAsync(`ALTER TABLE decks ADD COLUMN name_translations TEXT`); } catch {}
+  try { await database.execAsync(`ALTER TABLE decks ADD COLUMN description_translations TEXT`); } catch {}
 }
 
 // ─── Decks ────────────────────────────────────────────────────────────────────
@@ -122,8 +126,8 @@ export async function createDeck(data: Omit<Deck, 'id' | 'created_at' | 'updated
   await database.runAsync(
     `INSERT INTO decks (id, name, description, parent_deck_id, icon, color,
       new_cards_per_day, shuffle_cards, auto_play_audio, reverse_cards,
-      is_public_download, source_id)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      is_public_download, source_id, name_translations, description_translations)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       id,
       data.name,
@@ -137,6 +141,8 @@ export async function createDeck(data: Omit<Deck, 'id' | 'created_at' | 'updated
       data.reverse_cards ? 1 : 0,
       data.is_public_download ? 1 : 0,
       data.source_id ?? null,
+      data.name_translations ? JSON.stringify(data.name_translations) : null,
+      data.description_translations ? JSON.stringify(data.description_translations) : null,
     ]
   );
   const deck = await getDeckById(id);
@@ -474,8 +480,8 @@ export async function bulkInsertCards(cards: Omit<Card, 'id' | 'created_at' | 'u
       const id = uuid();
       await database.runAsync(
         `INSERT INTO cards (id, deck_id, front, back, front_image, back_image, audio_url, tags,
-          status, ease_factor, interval, repetitions)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'new', 2.5, 0, 0)`,
+          front_translations, back_translations, status, ease_factor, interval, repetitions)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', 2.5, 0, 0)`,
         [
           id,
           card.deck_id,
@@ -485,6 +491,8 @@ export async function bulkInsertCards(cards: Omit<Card, 'id' | 'created_at' | 'u
           card.back_image ?? null,
           card.audio_url ?? null,
           card.tags ?? null,
+          card.front_translations ? JSON.stringify(card.front_translations) : null,
+          card.back_translations ? JSON.stringify(card.back_translations) : null,
         ]
       );
     }
@@ -552,6 +560,11 @@ export async function getBadgeStats(): Promise<BadgeStats> {
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 
+function tryParseJSON(s: string | null | undefined) {
+  if (!s) return null;
+  try { return JSON.parse(s); } catch { return null; }
+}
+
 function mapDeck(row: any): Deck {
   return {
     ...row,
@@ -559,6 +572,8 @@ function mapDeck(row: any): Deck {
     auto_play_audio: Boolean(row.auto_play_audio),
     reverse_cards: Boolean(row.reverse_cards),
     is_public_download: Boolean(row.is_public_download),
+    name_translations: tryParseJSON(row.name_translations),
+    description_translations: tryParseJSON(row.description_translations),
   };
 }
 
@@ -566,5 +581,51 @@ function mapCard(row: any): Card {
   return {
     ...row,
     status: (row.status as CardStatus) ?? 'new',
+    front_translations: tryParseJSON(row.front_translations),
+    back_translations: tryParseJSON(row.back_translations),
   };
+}
+
+// ─── Repair migration ──────────────────────────────────────────────────────────
+
+export async function repairPublicDeckTranslations(): Promise<void> {
+  // Import lazily to avoid circular dependency at module load time
+  const { getStaticDeckCards } = await import('../data/publicDecks');
+
+  const database = await getDatabase();
+
+  // Fast check: are there any public-deck cards still missing translations?
+  const missing = await database.getFirstAsync<{ count: number }>(
+    `SELECT COUNT(*) as count FROM cards c
+     JOIN decks d ON c.deck_id = d.id
+     WHERE d.is_public_download = 1 AND c.front_translations IS NULL`
+  );
+  if (!missing || missing.count === 0) return;
+
+  const publicDecks = await database.getAllAsync<{ id: string; source_id: string }>(
+    `SELECT id, source_id FROM decks WHERE is_public_download = 1 AND source_id IS NOT NULL`
+  );
+
+  for (const deck of publicDecks) {
+    const staticCards = getStaticDeckCards(deck.source_id);
+    if (staticCards.length === 0) continue;
+
+    await database.withTransactionAsync(async () => {
+      for (const sc of staticCards) {
+        if (!sc.front_translations && !sc.back_translations) continue;
+        await database.runAsync(
+          `UPDATE cards
+           SET front_translations = COALESCE(front_translations, ?),
+               back_translations  = COALESCE(back_translations, ?)
+           WHERE deck_id = ? AND front = ?`,
+          [
+            sc.front_translations ? JSON.stringify(sc.front_translations) : null,
+            sc.back_translations ? JSON.stringify(sc.back_translations) : null,
+            deck.id,
+            sc.front,
+          ]
+        );
+      }
+    });
+  }
 }

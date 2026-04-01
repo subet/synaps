@@ -10,17 +10,23 @@
     "scheme": "synaps",
     "splash": {
       "image": "./assets/splash-icon.png",
-      "resizeMode": "cover",
+      "resizeMode": "contain",
       "backgroundColor": "#0F0A1E"
     },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.synaps.app",
+      "splash": {
+        "image": "./assets/splash-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#0F0A1E"
+      },
       "infoPlist": {
         "NSUserTrackingUsageDescription": "Synaps uses tracking to provide personalized content and improve your experience.",
         "NSCameraUsageDescription": "Synaps uses the camera to add images to your flashcards.",
         "NSPhotoLibraryUsageDescription": "Synaps accesses your photo library to add images to your flashcards.",
-        "NSMicrophoneUsageDescription": "Synaps uses the microphone to record audio for your flashcards."
+        "NSMicrophoneUsageDescription": "Synaps uses the microphone to record audio for your flashcards.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -58,6 +64,15 @@
         "expo-image-picker",
         {
           "photosPermission": "Synaps accesses your photo library to add images to flashcards."
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#0F0A1E"
         }
       ]
     ],

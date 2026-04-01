@@ -1,5 +1,10 @@
 export type CardStatus = 'new' | 'learning' | 'review' | 'mastered';
 
+export type Language = 'en' | 'tr' | 'de' | 'fr' | 'nl' | 'ru' | 'zh' | 'pt_BR' | 'pt_PT';
+
+/** Sparse map of locale → translated string. English is stored as the canonical `front`/`back` fallback. */
+export type TranslationMap = Partial<Record<Language, string>>;
+
 export interface Deck {
   id: string;
   name: string;
@@ -13,6 +18,8 @@ export interface Deck {
   reverse_cards: boolean;
   is_public_download: boolean;
   source_id?: string;
+  name_translations?: TranslationMap | null;
+  description_translations?: TranslationMap | null;
   created_at: string;
   updated_at: string;
 }
@@ -22,6 +29,8 @@ export interface Card {
   deck_id: string;
   front: string;
   back: string;
+  front_translations?: TranslationMap | null;
+  back_translations?: TranslationMap | null;
   front_image?: string;
   back_image?: string;
   audio_url?: string;
@@ -64,6 +73,8 @@ export interface PublicDeck {
   download_count: number;
   is_editors_choice: boolean;
   is_featured: boolean;
+  name_translations?: TranslationMap;
+  description_translations?: TranslationMap;
   created_at: string;
 }
 
@@ -72,6 +83,8 @@ export interface PublicCard {
   deck_id: string;
   front: string;
   back: string;
+  front_translations?: TranslationMap;
+  back_translations?: TranslationMap;
   audio_url?: string;
   sort_order: number;
 }
@@ -122,8 +135,6 @@ export interface NotificationSettings {
   enabled: boolean;
   time: string; // HH:MM format
 }
-
-export type Language = 'en' | 'tr' | 'de' | 'fr' | 'nl' | 'ru' | 'zh' | 'pt_BR' | 'pt_PT';
 
 export interface AppSettings {
   language: Language;

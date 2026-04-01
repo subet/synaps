@@ -1,4 +1,5 @@
-import { PublicCard, PublicDeck } from '../../types';
+import { Language, PublicCard, PublicDeck } from '../../types';
+import { resolveTranslation } from '../../utils/translations';
 import { ALL_DECKS } from './decks';
 
 // Languages
@@ -60,14 +61,17 @@ export function getStaticDeckCards(deckId: string): PublicCard[] {
   return CARDS_MAP[deckId] ?? [];
 }
 
-export function searchStaticDecks(query: string): PublicDeck[] {
+export function searchStaticDecks(query: string, locale: Language = 'en'): PublicDeck[] {
   const q = query.toLowerCase().trim();
   if (!q) return [];
-  return ALL_DECKS.filter(
-    (d) =>
-      d.name.toLowerCase().includes(q) ||
-      d.description?.toLowerCase().includes(q) ||
+  return ALL_DECKS.filter((d) => {
+    const name = resolveTranslation(d.name_translations, d.name, locale).toLowerCase();
+    const description = resolveTranslation(d.description_translations, d.description ?? '', locale).toLowerCase();
+    return (
+      name.includes(q) ||
+      description.includes(q) ||
       d.category.toLowerCase().includes(q) ||
       d.subcategory?.toLowerCase().includes(q)
-  );
+    );
+  });
 }

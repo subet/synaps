@@ -5,6 +5,7 @@ import { borderRadius, colors, spacing, typography } from '../../constants';
 import { tap } from '../../utils/haptics';
 import { useTranslation } from '../../i18n';
 import { Deck, DeckStats } from '../../types';
+import { useResolvedDeckDescription, useResolvedDeckName } from '../../utils/translations';
 
 interface DeckListItemProps {
   deck: Deck;
@@ -14,6 +15,8 @@ interface DeckListItemProps {
 
 export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
   const { t } = useTranslation();
+  const resolvedName = useResolvedDeckName(deck);
+  const resolvedDescription = useResolvedDeckDescription(deck);
   const dueCount = stats?.dueToday ?? 0;
   const accentColor = deck.color ?? colors.primary;
 
@@ -21,7 +24,7 @@ export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
     <Pressable
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
       onPress={() => { tap(); onPress(); }}
-      accessibilityLabel={`${deck.name}, ${dueCount} cards due today`}
+      accessibilityLabel={`${resolvedName}, ${dueCount} cards due today`}
     >
       {/* Icon */}
       <View style={[styles.iconContainer, { backgroundColor: `${accentColor}20` }]}>
@@ -34,9 +37,9 @@ export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
 
       {/* Name + description */}
       <View style={styles.info}>
-        <Text style={styles.name} numberOfLines={1}>{deck.name}</Text>
-        {deck.description ? (
-          <Text style={styles.description} numberOfLines={1}>{deck.description}</Text>
+        <Text style={styles.name} numberOfLines={1}>{resolvedName}</Text>
+        {resolvedDescription ? (
+          <Text style={styles.description} numberOfLines={1}>{resolvedDescription}</Text>
         ) : null}
       </View>
 

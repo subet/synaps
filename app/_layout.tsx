@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { scheduleDailyReminder } from '../src/services/notifications';
+import { repairPublicDeckTranslations } from '../src/services/database';
 import { setLocale } from '../src/i18n';
 import { useAppStore } from '../src/stores/useAppStore';
 import { Language } from '../src/types';
@@ -51,6 +52,9 @@ export default function RootLayout() {
 
       await initAuth();
       await initSubscription();
+
+      // Backfill translation columns for previously-downloaded public decks
+      repairPublicDeckTranslations().catch(() => {});
 
       // Re-schedule daily reminder on every cold start in case OS cleared it
       // (happens after app update, reinstall, or device restart on some OS versions)

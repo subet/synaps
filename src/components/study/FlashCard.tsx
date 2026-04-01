@@ -11,6 +11,7 @@ import { speak as speechSpeak } from 'expo-speech';
 import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { Card } from '../../types';
+import { useResolvedBack, useResolvedFront } from '../../utils/translations';
 
 // Per-language card colors & flags
 const LANGUAGE_META: Record<string, { color: string; flag: string }> = {
@@ -86,8 +87,10 @@ export function FlashCard({
     };
   });
 
-  const frontText = reversed ? card.back : card.front;
-  const backText = reversed ? card.front : card.back;
+  const resolvedFront = useResolvedFront(card);
+  const resolvedBack = useResolvedBack(card);
+  const frontText = reversed ? resolvedBack : resolvedFront;
+  const backText = reversed ? resolvedFront : resolvedBack;
   const frontImage = reversed ? card.back_image : card.front_image;
   const backImage = reversed ? card.front_image : card.back_image;
 
@@ -115,7 +118,11 @@ export function FlashCard({
 
         {cornerIcon ? (
           <View style={styles.flagBadge}>
-            <Text style={styles.flagText}>{cornerIcon}</Text>
+            {/^[a-z]/.test(cornerIcon) ? (
+              <Ionicons name={cornerIcon as any} size={22} color="#fff" />
+            ) : (
+              <Text style={styles.flagText}>{cornerIcon}</Text>
+            )}
           </View>
         ) : null}
 
@@ -135,7 +142,11 @@ export function FlashCard({
         {/* Flag + speak — top-right, absolute */}
         <View style={styles.topRight}>
           {cornerIcon ? (
-            <Text style={styles.flagText}>{cornerIcon}</Text>
+            /^[a-z]/.test(cornerIcon) ? (
+              <Ionicons name={cornerIcon as any} size={22} color={colors.text} />
+            ) : (
+              <Text style={styles.flagText}>{cornerIcon}</Text>
+            )
           ) : null}
           {speakLanguage ? (
             <Pressable

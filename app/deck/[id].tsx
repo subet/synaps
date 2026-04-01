@@ -21,6 +21,7 @@ import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStudyStore } from '../../src/stores/useStudyStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { Card } from '../../src/types';
+import { useResolvedDeckName } from '../../src/utils/translations';
 
 export default function DeckDetailScreen() {
   const { t } = useTranslation();
@@ -33,6 +34,7 @@ export default function DeckDetailScreen() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const deck = getDeckById(id);
+  const resolvedDeckName = useResolvedDeckName(deck ?? { name: '' });
   const stats = deckStats[id];
 
   useFocusEffect(
@@ -77,7 +79,7 @@ export default function DeckDetailScreen() {
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Ionicons name="chevron-back" size={22} color={colors.primary} />
         </Pressable>
-        <Text style={styles.deckName} numberOfLines={1}>{deck.name}</Text>
+        <Text style={styles.deckName} numberOfLines={1}>{resolvedDeckName}</Text>
         <View style={styles.headerActions}>
           <Pressable onPress={() => router.push(`/card/create/${id}`)} style={styles.headerBtn}>
             <Ionicons name="add-circle-outline" size={22} color={colors.primary} />

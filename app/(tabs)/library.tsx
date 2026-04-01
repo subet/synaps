@@ -54,7 +54,7 @@ export default function LibraryScreen() {
   const [searchResults, setSearchResults] = useState<PublicDeck[]>([]);
   const [downloading, setDownloading] = useState<string | null>(null);
   const { loadDecks, decks } = useDeckStore();
-  const { freeDownloadsUsed, incrementFreeDownloads } = useAppStore();
+  const { freeDownloadsUsed, incrementFreeDownloads, language } = useAppStore();
   const { isPro } = useSubscriptionStore();
 
   const downloadedIds = useMemo<Set<string>>(
@@ -73,7 +73,7 @@ export default function LibraryScreen() {
       return;
     }
     const timer = setTimeout(() => {
-      setSearchResults(searchStaticDecks(searchQuery));
+      setSearchResults(searchStaticDecks(searchQuery, language));
     }, 400);
     return () => clearTimeout(timer);
   }, [searchQuery]);
@@ -91,6 +91,8 @@ export default function LibraryScreen() {
       const newDeck = await createDeck({
         name: deck.name,
         description: deck.description,
+        name_translations: deck.name_translations,
+        description_translations: deck.description_translations,
         icon: deck.icon_url ?? '📚',
         color: colors.primary,
         new_cards_per_day: 20,
@@ -105,6 +107,8 @@ export default function LibraryScreen() {
           deck_id: newDeck.id,
           front: c.front,
           back: c.back,
+          front_translations: c.front_translations,
+          back_translations: c.back_translations,
           audio_url: c.audio_url,
           status: 'new' as const,
           ease_factor: 2.5,

@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { Card } from '../../types';
+import { useResolvedBack, useResolvedFront } from '../../utils/translations';
 
 interface CardListItemProps {
   card: Card;
@@ -17,6 +18,8 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 export function CardListItem({ card, onPress }: CardListItemProps) {
+  const resolvedFront = useResolvedFront(card);
+  const resolvedBack = useResolvedBack(card);
   const accentColor = STATUS_COLOR[card.status] ?? colors.notStudied;
 
   return (
@@ -29,13 +32,13 @@ export function CardListItem({ card, onPress }: CardListItemProps) {
       <View style={[styles.stripe, { backgroundColor: accentColor }]} />
 
       {/* Front */}
-      <Text style={styles.front} numberOfLines={1}>{card.front}</Text>
+      <Text style={styles.front} numberOfLines={1}>{resolvedFront}</Text>
 
       {/* Divider arrow */}
       <Ionicons name="arrow-forward" size={13} color={colors.textMuted} style={styles.arrow} />
 
       {/* Back */}
-      <Text style={styles.back} numberOfLines={1}>{card.back}</Text>
+      <Text style={styles.back} numberOfLines={1}>{resolvedBack}</Text>
 
       {/* Edit chevron */}
       <Ionicons name="chevron-forward" size={16} color={colors.borderLight} />
