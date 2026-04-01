@@ -32,7 +32,7 @@ export const zh = {
   onboarding_srs_subtitle: 'Synaps 采用间隔重复——在您快要遗忘之前及时复习卡片。',
   onboarding_library_title: '数千套现成牌组',
   onboarding_library_subtitle: '浏览社区牌组库——语言、医学、科学、历史等应有尽有。',
-  onboarding_start_title: '准备好增强您的记忆力了吗？',
+  onboarding_start_title: '养成每日学习习惯',
   onboarding_create_account: '创建账号',
   onboarding_continue_without: '不创建账号继续',
   onboarding_later_note: '您随时可以注册以同步数据',
@@ -334,4 +334,17 @@ export const zh = {
   greeting_not_studied: '你的认知圣地已为今天的学习准备就绪。',
   greeting_studied: '保持动力，你做得很棒！',
   greeting_great_day: '太棒了！你已经超越了昨天，继续加油！',
+
+  // Hardcoded string fixes
+  deck_name_required: "卡组名称不能为空。",
+  deck_update_failed: "更新卡组失败。",
+  download_success_title: "已下载！",
+  download_success_message: "%{name}已添加到您的卡组。",
+  download_failed: "下载卡组失败，请重试。",
+  available: "可用",
+  new_cards_prompt: "输入每天最大新卡片数",
+
+  // Badge celebration
+  badge_unlocked: "徽章已解锁！",
+  awesome: "太棒了！",
 };

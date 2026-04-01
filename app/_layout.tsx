@@ -4,8 +4,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { scheduleDailyReminder } from '../src/services/notifications';
+import { scheduleDailyReminder, scheduleInactivityNudge } from '../src/services/notifications';
 import { repairPublicDeckTranslations } from '../src/services/database';
+import { ErrorBoundary } from '../src/components/ui/ErrorBoundary';
 import { setLocale } from '../src/i18n';
 import { useAppStore } from '../src/stores/useAppStore';
 import { Language } from '../src/types';
@@ -62,6 +63,8 @@ export default function RootLayout() {
       if (notifications.enabled) {
         const [h, m] = notifications.time.split(':').map(Number);
         scheduleDailyReminder(h, m).catch(() => {});
+        // Schedule inactivity nudge (fires 3 days from now; resets each cold start)
+        scheduleInactivityNudge().catch(() => {});
       }
     }
     bootstrap();
@@ -77,6 +80,7 @@ export default function RootLayout() {
   }
 
   return (
+    <ErrorBoundary>
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <Stack screenOptions={{ headerShown: false }}>
@@ -113,5 +117,6 @@ export default function RootLayout() {
         </Stack>
       </SafeAreaProvider>
     </GestureHandlerRootView>
+    </ErrorBoundary>
   );
 }

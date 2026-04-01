@@ -74,7 +74,7 @@ export default function EditDeckScreen() {
 
   const handleSave = async () => {
     if (!name.trim()) {
-      Alert.alert(t('error'), 'Deck name is required');
+      Alert.alert(t('error'), t('deck_name_required'));
       return;
     }
     setIsSaving(true);
@@ -89,7 +89,7 @@ export default function EditDeckScreen() {
       });
       router.back();
     } catch {
-      Alert.alert(t('error'), 'Failed to update deck.');
+      Alert.alert(t('error'), t('deck_update_failed'));
     } finally {
       setIsSaving(false);
     }
@@ -161,16 +161,12 @@ export default function EditDeckScreen() {
 
           <View style={styles.sectionCard}>
             <SettingsRow
-              label={t('add_subdeck')}
-              onPress={isPro ? () => Alert.alert('Subdecks', t('coming_soon')) : () => router.push('/paywall')}
-            />
-            <SettingsRow
               label={t('new_cards_per_day')}
               value={newCardsPerDay}
               onPress={() => {
                 Alert.prompt(
                   t('new_cards_per_day'),
-                  'Enter the maximum number of new cards per day',
+                  t('new_cards_prompt'),
                   (text) => { if (text) setNewCardsPerDay(text); },
                   'plain-text',
                   newCardsPerDay,
@@ -207,7 +203,7 @@ export default function EditDeckScreen() {
               label={t('offline_study')}
               right={
                 isPro ? (
-                  <Text style={styles.availableText}>Available</Text>
+                  <Text style={styles.availableText}>{t('available')}</Text>
                 ) : (
                   <Pressable onPress={() => router.push('/paywall')} style={styles.proBadge}>
                     <Text style={styles.proBadgeText}>{t('pro_badge')}</Text>

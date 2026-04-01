@@ -31,7 +31,7 @@ export const tr = {
   onboarding_srs_subtitle: 'Synaps aralıklı tekrar kullanır — kartları tam unutmak üzereyken tekrar edersiniz.',
   onboarding_library_title: 'Binlerce Hazır Deste',
   onboarding_library_subtitle: 'Dil, tıp, bilim, tarih ve daha fazlasında topluluk destelerini keşfedin.',
-  onboarding_start_title: 'Hafızanızı güçlendirmeye hazır mısınız?',
+  onboarding_start_title: 'Günlük Bir Öğrenme Alışkanlığı Oluşturun',
   onboarding_create_account: 'Hesap Oluştur',
   onboarding_continue_without: 'Hesapsız Devam Et',
   onboarding_later_note: 'Verilerinizi senkronize etmek için her zaman sonradan kaydolabilirsiniz',
@@ -334,4 +334,17 @@ export const tr = {
   greeting_not_studied: 'Bilişsel sığınağın bugünkü seans için hazır.',
   greeting_studied: 'Momentumu devam ettir. Harika gidiyorsun!',
   greeting_great_day: 'Muhteşem! Dünü geçtin. Öyle devam et!',
+
+  // Hardcoded string fixes
+  deck_name_required: "Deste adı gereklidir.",
+  deck_update_failed: "Deste güncellenemedi.",
+  download_success_title: "İndirildi!",
+  download_success_message: "\"%{name}\" destelerinize eklendi.",
+  download_failed: "Deste indirilemedi. Lütfen tekrar deneyin.",
+  available: "Mevcut",
+  new_cards_prompt: "Günlük maksimum yeni kart sayısını girin",
+
+  // Badge celebration
+  badge_unlocked: "Rozet Kazanıldı!",
+  awesome: "Harika!",
 };

@@ -8,19 +8,9 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "scheme": "synaps",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#0F0A1E"
-    },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.synaps.app",
-      "splash": {
-        "image": "./assets/splash-icon.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#0F0A1E"
-      },
+      "bundleIdentifier": "com.mudimedia.synaps",
       "infoPlist": {
         "NSUserTrackingUsageDescription": "Synaps uses tracking to provide personalized content and improve your experience.",
         "NSCameraUsageDescription": "Synaps uses the camera to add images to your flashcards.",
@@ -34,7 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0F0A1E"
       },
-      "package": "com.synaps.app",
+      "package": "com.mudimedia.synaps",
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.READ_EXTERNAL_STORAGE",

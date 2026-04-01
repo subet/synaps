@@ -27,6 +27,7 @@ import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useAppStore } from '../../src/stores/useAppStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { PublicDeck } from '../../src/types';
+import { resolveTranslation, useResolvedDeckName } from '../../src/utils/translations';
 
 type Tab = 'discover' | 'browse';
 
@@ -118,9 +119,9 @@ export default function LibraryScreen() {
       );
       if (!isPro) await incrementFreeDownloads();
       await loadDecks();
-      Alert.alert('Downloaded!', `"${deck.name}" has been added to your decks.`);
+      Alert.alert(t('download_success_title'), t('download_success_message', { name: resolveTranslation(deck.name_translations, deck.name, language) }));
     } catch {
-      Alert.alert('Error', 'Failed to download deck. Please try again.');
+      Alert.alert(t('error'), t('download_failed'));
     } finally {
       setDownloading(null);
     }
@@ -369,12 +370,13 @@ function FeaturedDeckCard({
   isDownloaded: boolean;
 }) {
   const { t } = useTranslation();
+  const name = useResolvedDeckName(deck);
   return (
     <View style={styles.featuredCard}>
       <View style={styles.featuredIcon}>
         <Text style={styles.featuredIconText}>{deck.icon_url ?? getCategoryEmoji(deck.category)}</Text>
       </View>
-      <Text style={styles.featuredName} numberOfLines={2}>{deck.name}</Text>
+      <Text style={styles.featuredName} numberOfLines={2}>{name}</Text>
       <Text style={styles.featuredCount}>{t('cards_count', { count: deck.card_count })}</Text>
       {isDownloaded ? (
         <View style={styles.downloadedBadge}>
@@ -408,13 +410,14 @@ function EditorsChoiceDeckCard({
   isDownloaded: boolean;
 }) {
   const { t } = useTranslation();
+  const name = useResolvedDeckName(deck);
   return (
     <View style={[styles.editorsCard, { backgroundColor: getCategoryBg(deck.category) }]}>
       <View style={styles.editorsCardLeft}>
         <View style={styles.editorsBadge}>
           <Text style={styles.editorsBadgeText}>{t('editors_choice_badge')}</Text>
         </View>
-        <Text style={styles.editorsName}>{deck.name}</Text>
+        <Text style={styles.editorsName}>{name}</Text>
         <Text style={styles.editorsCount}>{deck.card_count} cards</Text>
       </View>
       <View style={styles.editorsCardRight}>
@@ -451,13 +454,14 @@ function BrowseDeckCard({
   isDownloaded: boolean;
 }) {
   const { t } = useTranslation();
+  const name = useResolvedDeckName(deck);
   return (
     <View style={styles.browseCard}>
       <View style={[styles.browseIcon, { backgroundColor: getCategoryBg(deck.category) }]}>
         <Text style={styles.browseIconText}>{deck.icon_url ?? getCategoryEmoji(deck.category)}</Text>
       </View>
       <View style={styles.browseInfo}>
-        <Text style={styles.browseName} numberOfLines={1}>{deck.name}</Text>
+        <Text style={styles.browseName} numberOfLines={1}>{name}</Text>
         <Text style={styles.browseCount}>{t('cards_count', { count: deck.card_count })}</Text>
       </View>
       {isDownloaded ? (

@@ -13,6 +13,8 @@ import {
   updateCard,
 } from '../services/database';
 import { calculateSM2 } from '../services/srs';
+import { scheduleStreakAtRiskNotification, scheduleWeeklyProgress } from '../services/notifications';
+import { getStreakData } from '../services/database';
 import { Card, SRSGrade, StudySessionResult } from '../types';
 
 interface StudyState {
@@ -162,6 +164,15 @@ export const useStudyStore = create<StudyState>((set, get) => ({
         gradeDistribution,
       },
     });
+
+    // Schedule streak-at-risk and weekly progress notifications
+    try {
+      const streakData = await getStreakData();
+      if (streakData.currentStreak > 0) {
+        scheduleStreakAtRiskNotification(streakData.currentStreak).catch(() => {});
+      }
+      scheduleWeeklyProgress(cardsStudied, 1).catch(() => {});
+    } catch { /* non-critical */ }
   },
 
   pauseCardTimer: () => {

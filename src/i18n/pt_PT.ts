@@ -32,7 +32,7 @@ export const pt_PT = {
   onboarding_srs_subtitle: 'O Synaps usa repetição espaçada — irá rever os cartões exactamente antes de os esquecer.',
   onboarding_library_title: 'Milhares de Baralhos Prontos',
   onboarding_library_subtitle: 'Explore a nossa biblioteca de baralhos da comunidade — idiomas, medicina, ciências, história e muito mais.',
-  onboarding_start_title: 'Pronto para potenciar a sua memória?',
+  onboarding_start_title: 'Crie um Hábito Diário de Aprendizagem',
   onboarding_create_account: 'Criar Conta',
   onboarding_continue_without: 'Continuar sem conta',
   onboarding_later_note: 'Pode sempre registar-se mais tarde para sincronizar os seus dados',
@@ -334,4 +334,17 @@ export const pt_PT = {
   greeting_not_studied: 'O teu santuário cognitivo está pronto para a sessão de hoje.',
   greeting_studied: 'Mantém o ímpeto. Estás a ir muito bem!',
   greeting_great_day: 'Incrível! Superaste ontem. Continua assim!',
+
+  // Hardcoded string fixes
+  deck_name_required: "O nome do baralho é obrigatório.",
+  deck_update_failed: "Falha ao atualizar o baralho.",
+  download_success_title: "Transferido!",
+  download_success_message: "\"%{name}\" foi adicionado aos seus baralhos.",
+  download_failed: "Falha ao transferir o baralho. Tente novamente.",
+  available: "Disponível",
+  new_cards_prompt: "Insira o número máximo de novos cartões por dia",
+
+  // Badge celebration
+  badge_unlocked: "Emblema Desbloqueado!",
+  awesome: "Fantástico!",
 };

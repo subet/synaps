@@ -24,12 +24,15 @@ import { useStreakStore } from '../../src/stores/useStreakStore';
 import { useBadgeStore } from '../../src/stores/useBadgeStore';
 import { useAppStore } from '../../src/stores/useAppStore';
 import { Deck } from '../../src/types';
+import { BadgeCelebration } from '../../src/components/badges/BadgeCelebration';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
   const { decks, deckStats, loadDecks, loadDeckStats } = useDeckStore();
   const { currentStreak, weekDays, cardsMastered, avgDailyFocusMinutes, loadStreak } = useStreakStore();
-  const { checkBadges } = useBadgeStore();
+  const { badges, checkBadges, newlyAwardedIds, clearNewlyAwarded } = useBadgeStore();
+  const [celebrationBadge, setCelebrationBadge] = React.useState<typeof badges[number] | null>(null);
+  const celebrationQueue = React.useRef<string[]>([]);
   const language = useAppStore((s) => s.language);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -43,6 +46,28 @@ export default function HomeScreen() {
       loadStreak();
     }, [])
   );
+
+  // Badge celebration queue
+  useEffect(() => {
+    if (newlyAwardedIds.length > 0 && celebrationQueue.current.length === 0) {
+      celebrationQueue.current = [...newlyAwardedIds];
+      clearNewlyAwarded();
+      const nextId = celebrationQueue.current.shift();
+      if (nextId) {
+        const badge = badges.find((b) => b.id === nextId);
+        if (badge) setCelebrationBadge(badge);
+      }
+    }
+  }, [newlyAwardedIds]);
+
+  const handleDismissCelebration = () => {
+    const nextId = celebrationQueue.current.shift();
+    if (nextId) {
+      const badge = badges.find((b) => b.id === nextId);
+      if (badge) { setCelebrationBadge(badge); return; }
+    }
+    setCelebrationBadge(null);
+  };
 
   useEffect(() => {
     decks.forEach((deck) => {
@@ -109,6 +134,9 @@ export default function HomeScreen() {
         onPress={() => router.push('/deck/create')}
         style={styles.fab}
       />
+      {celebrationBadge && (
+        <BadgeCelebration badge={celebrationBadge} onDismiss={handleDismissCelebration} />
+      )}
     </SafeAreaView>
   );
 }

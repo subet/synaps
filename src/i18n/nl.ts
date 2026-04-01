@@ -32,7 +32,7 @@ export const nl = {
   onboarding_srs_subtitle: 'Synaps gebruikt gespreide herhaling – je herhaalt kaarten precies voordat je ze vergeet.',
   onboarding_library_title: 'Duizenden kant-en-klare stapels',
   onboarding_library_subtitle: 'Blader door onze bibliotheek met community-stapels – talen, geneeskunde, wetenschap, geschiedenis en meer.',
-  onboarding_start_title: 'Klaar om je geheugen te turbochargen?',
+  onboarding_start_title: 'Bouw een dagelijkse leergewoonte op',
   onboarding_create_account: 'Account aanmaken',
   onboarding_continue_without: 'Doorgaan zonder account',
   onboarding_later_note: 'Je kunt je altijd later aanmelden om je gegevens te synchroniseren',
@@ -334,4 +334,17 @@ export const nl = {
   greeting_not_studied: 'Je cognitieve toevluchtsoord is klaar voor de sessie van vandaag.',
   greeting_studied: 'Houd het momentum vast. Je doet het geweldig!',
   greeting_great_day: 'Geweldig! Je hebt gisteren overtroffen. Ga zo door!',
+
+  // Hardcoded string fixes
+  deck_name_required: "Decknaam is verplicht.",
+  deck_update_failed: "Deck kon niet worden bijgewerkt.",
+  download_success_title: "Gedownload!",
+  download_success_message: "\"%{name}\" is toegevoegd aan je decks.",
+  download_failed: "Deck kon niet worden gedownload. Probeer het opnieuw.",
+  available: "Beschikbaar",
+  new_cards_prompt: "Voer het maximale aantal nieuwe kaarten per dag in",
+
+  // Badge celebration
+  badge_unlocked: "Badge ontgrendeld!",
+  awesome: "Geweldig!",
 };

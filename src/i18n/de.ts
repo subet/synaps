@@ -32,7 +32,7 @@ export const de = {
   onboarding_srs_subtitle: 'Synaps nutzt Spaced Repetition – du wiederholst Karten genau dann, bevor du sie vergisst.',
   onboarding_library_title: 'Tausende vorgefertigte Stapel',
   onboarding_library_subtitle: 'Stöbere in unserer Bibliothek mit Community-Stapeln – Sprachen, Medizin, Wissenschaft, Geschichte und mehr.',
-  onboarding_start_title: 'Bereit, dein Gedächtnis zu optimieren?',
+  onboarding_start_title: 'Baue eine tägliche Lerngewohnheit auf',
   onboarding_create_account: 'Konto erstellen',
   onboarding_continue_without: 'Ohne Konto fortfahren',
   onboarding_later_note: 'Du kannst dich jederzeit später anmelden, um deine Daten zu synchronisieren',
@@ -334,4 +334,17 @@ export const de = {
   greeting_not_studied: 'Dein kognitives Heiligtum ist bereit für die heutige Sitzung.',
   greeting_studied: 'Behalte den Schwung bei. Du machst das großartig!',
   greeting_great_day: 'Fantastisch! Du hast gestern übertroffen. Weiter so!',
+
+  // Hardcoded string fixes
+  deck_name_required: "Deckname ist erforderlich.",
+  deck_update_failed: "Deck konnte nicht aktualisiert werden.",
+  download_success_title: "Heruntergeladen!",
+  download_success_message: "\"%{name}\" wurde zu deinen Decks hinzugefügt.",
+  download_failed: "Deck konnte nicht heruntergeladen werden. Bitte versuche es erneut.",
+  available: "Verfügbar",
+  new_cards_prompt: "Gib die maximale Anzahl neuer Karten pro Tag ein",
+
+  // Badge celebration
+  badge_unlocked: "Badge freigeschaltet!",
+  awesome: "Super!",
 };

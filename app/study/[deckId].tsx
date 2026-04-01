@@ -30,6 +30,7 @@ import { useStreakStore } from '../../src/stores/useStreakStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { useNetworkStatus } from '../../src/hooks/useNetworkStatus';
 import { SRSGrade, StudySessionResult } from '../../src/types';
+import { BadgeCelebration } from '../../src/components/badges/BadgeCelebration';
 
 const LANGUAGE_CODES: Record<string, string> = {
   'deck-german-vocab': 'de',
@@ -138,7 +139,8 @@ export default function StudyScreen() {
 
   const handleGrade = async (grade: SRSGrade) => {
     await gradeCard(grade);
-    if (isSessionComplete) {
+    // Check store directly — the closure's isSessionComplete is stale
+    if (useStudyStore.getState().isSessionComplete) {
       loadDeckStats(deckId);
       loadStreak();
       checkBadges();
@@ -213,6 +215,10 @@ function SessionComplete({
 }) {
   const { t } = useTranslation();
   const { loadStreak } = useStreakStore();
+  const { badges, newlyAwardedIds, clearNewlyAwarded } = useBadgeStore();
+  const [celebrationBadge, setCelebrationBadge] = React.useState<typeof badges[number] | null>(null);
+  const celebrationQueue = React.useRef<string[]>([]);
+
   const accuracy = result.cardsStudied > 0
     ? Math.round((result.cardsCorrect / result.cardsStudied) * 100)
     : 0;
@@ -224,6 +230,31 @@ function SessionComplete({
   const total = result.cardsStudied;
 
   useEffect(() => { loadStreak(); }, []);
+
+  // Show badge celebrations one at a time
+  useEffect(() => {
+    if (newlyAwardedIds.length > 0 && celebrationQueue.current.length === 0) {
+      celebrationQueue.current = [...newlyAwardedIds];
+      clearNewlyAwarded();
+      showNextCelebration();
+    }
+  }, [newlyAwardedIds]);
+
+  const showNextCelebration = () => {
+    const nextId = celebrationQueue.current.shift();
+    if (nextId) {
+      const badge = badges.find((b) => b.id === nextId);
+      if (badge) {
+        setCelebrationBadge(badge);
+        return;
+      }
+    }
+    setCelebrationBadge(null);
+  };
+
+  const handleDismissCelebration = () => {
+    showNextCelebration();
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -279,6 +310,10 @@ function SessionComplete({
 
         <Button label={t('back_to_deck')} onPress={() => router.replace(`/deck/${deckId}`)} style={styles.backBtn} />
       </View>
+
+      {celebrationBadge && (
+        <BadgeCelebration badge={celebrationBadge} onDismiss={handleDismissCelebration} />
+      )}
     </SafeAreaView>
   );
 }

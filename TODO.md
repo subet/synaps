@@ -6,6 +6,3 @@ Edit Deck ekrnındaki seçenekler çalışıyor mu test et.
 
 # USER DECKS
 Kullanıcılar oluşturdukları deckleri paylaşabilsinler. Öyle bir library olsun, diğerleri indirebilsinler bu deckleri.
-
-# TEXT CHANGE
-Ready to Supercharge... -> Build a Daily Learning Habit

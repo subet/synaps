@@ -32,7 +32,7 @@ export const ru = {
   onboarding_srs_subtitle: 'Synaps использует интервальное повторение — карточки появляются прямо перед тем, как вы их забудете.',
   onboarding_library_title: 'Тысячи готовых колод',
   onboarding_library_subtitle: 'Просматривайте библиотеку колод сообщества — языки, медицина, наука, история и многое другое.',
-  onboarding_start_title: 'Готовы прокачать свою память?',
+  onboarding_start_title: 'Выработайте ежедневную привычку учиться',
   onboarding_create_account: 'Создать аккаунт',
   onboarding_continue_without: 'Продолжить без аккаунта',
   onboarding_later_note: 'Вы всегда можете зарегистрироваться позже для синхронизации данных',
@@ -334,4 +334,17 @@ export const ru = {
   greeting_not_studied: 'Твоё когнитивное убежище готово к сегодняшней сессии.',
   greeting_studied: 'Сохраняй темп. Ты справляешься отлично!',
   greeting_great_day: 'Потрясающе! Ты превзошёл вчерашний результат. Так держать!',
+
+  // Hardcoded string fixes
+  deck_name_required: "Название колоды обязательно.",
+  deck_update_failed: "Не удалось обновить колоду.",
+  download_success_title: "Загружено!",
+  download_success_message: "\"%{name}\" добавлена в ваши колоды.",
+  download_failed: "Не удалось загрузить колоду. Попробуйте ещё раз.",
+  available: "Доступно",
+  new_cards_prompt: "Введите максимальное количество новых карточек в день",
+
+  // Badge celebration
+  badge_unlocked: "Значок получен!",
+  awesome: "Отлично!",
 };
