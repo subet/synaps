@@ -347,4 +347,9 @@ export const tr = {
   // Badge celebration
   badge_unlocked: "Rozet Kazanıldı!",
   awesome: "Harika!",
+
+  // Social auth
+  continue_with_apple: "Apple ile devam et",
+  continue_with_google: "Google ile devam et",
+  or_divider: "veya",
 };

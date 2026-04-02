@@ -347,4 +347,9 @@ export const en = {
   // Badge celebration
   badge_unlocked: "Badge Unlocked!",
   awesome: "Awesome!",
+
+  // Social auth
+  continue_with_apple: "Continue with Apple",
+  continue_with_google: "Continue with Google",
+  or_divider: "or",
 };

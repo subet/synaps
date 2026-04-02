@@ -19,6 +19,7 @@ import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
 import { useAuthStore } from '../../src/stores/useAuthStore';
 import { useAppStore } from '../../src/stores/useAppStore';
+import { SocialAuthButtons } from '../../src/components/auth/SocialAuthButtons';
 
 const LOGO_ICON_SVG = `<svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -63,7 +64,7 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({ displayName: '', email: '', password: '' });
 
-  const { register, isLoading, error, clearError } = useAuthStore();
+  const { register, loginWithGoogle, loginWithApple, isLoading, error, clearError } = useAuthStore();
   const { hasSeenOnboarding } = useAppStore();
   const inOnboarding = !hasSeenOnboarding;
 
@@ -140,6 +141,24 @@ export default function RegisterScreen() {
           />
 
           <Button label={t('register')} onPress={handleRegister} loading={isLoading} style={styles.registerBtn} />
+
+          <SocialAuthButtons
+            onApple={async () => {
+              clearError();
+              try {
+                await loginWithApple();
+                router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+              } catch {}
+            }}
+            onGoogle={async () => {
+              clearError();
+              try {
+                await loginWithGoogle();
+                router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+              } catch {}
+            }}
+            isLoading={isLoading}
+          />
 
           <Pressable onPress={() => router.push('/auth/login')} style={styles.switchLink}>
             <Text style={styles.switchText}>{t('has_account')}</Text>

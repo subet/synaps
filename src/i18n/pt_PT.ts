@@ -347,4 +347,9 @@ export const pt_PT = {
   // Badge celebration
   badge_unlocked: "Emblema Desbloqueado!",
   awesome: "Fantástico!",
+
+  // Social auth
+  continue_with_apple: "Continuar com Apple",
+  continue_with_google: "Continuar com Google",
+  or_divider: "ou",
 };

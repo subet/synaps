@@ -44,6 +44,13 @@
       "expo-sqlite",
       "expo-localization",
       "expo-secure-store",
+      "expo-apple-authentication",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.1021926903745-ofhv4oampsfgc8ikhauqjghqfgc7a1io"
+        }
+      ],
       [
         "expo-notifications",
         {

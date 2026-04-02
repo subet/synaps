@@ -347,4 +347,9 @@ export const de = {
   // Badge celebration
   badge_unlocked: "Badge freigeschaltet!",
   awesome: "Super!",
+
+  // Social auth
+  continue_with_apple: "Mit Apple fortfahren",
+  continue_with_google: "Mit Google fortfahren",
+  or_divider: "oder",
 };

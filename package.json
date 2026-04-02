@@ -11,10 +11,13 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-native-community/datetimepicker": "^9.1.0",
+    "@react-native-google-signin/google-signin": "^16.1.2",
     "@supabase/supabase-js": "^2.100.1",
     "expo": "~54.0.33",
+    "expo-apple-authentication": "~8.0.8",
     "expo-av": "~16.0.8",
     "expo-constants": "~18.0.13",
+    "expo-crypto": "~15.0.8",
     "expo-haptics": "~15.0.8",
     "expo-image-picker": "~17.0.10",
     "expo-linear-gradient": "~15.0.8",
@@ -45,6 +48,7 @@
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
     "@types/react": "~19.1.0",
+    "jsonwebtoken": "^9.0.3",
     "typescript": "~5.9.2"
   },
   "private": true

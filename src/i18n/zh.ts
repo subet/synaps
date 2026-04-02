@@ -347,4 +347,9 @@ export const zh = {
   // Badge celebration
   badge_unlocked: "徽章已解锁！",
   awesome: "太棒了！",
+
+  // Social auth
+  continue_with_apple: "通过 Apple 继续",
+  continue_with_google: "通过 Google 继续",
+  or_divider: "或",
 };

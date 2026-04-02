@@ -347,4 +347,9 @@ export const nl = {
   // Badge celebration
   badge_unlocked: "Badge ontgrendeld!",
   awesome: "Geweldig!",
+
+  // Social auth
+  continue_with_apple: "Doorgaan met Apple",
+  continue_with_google: "Doorgaan met Google",
+  or_divider: "of",
 };

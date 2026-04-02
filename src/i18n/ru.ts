@@ -347,4 +347,9 @@ export const ru = {
   // Badge celebration
   badge_unlocked: "Значок получен!",
   awesome: "Отлично!",
+
+  // Social auth
+  continue_with_apple: "Продолжить с Apple",
+  continue_with_google: "Продолжить с Google",
+  or_divider: "или",
 };

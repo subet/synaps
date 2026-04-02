@@ -11,6 +11,7 @@ import {
   updateAuthEmail,
   updateAuthPassword,
 } from '../services/supabase';
+import { signInWithApple, signInWithGoogle } from '../services/socialAuth';
 import { UserProfile } from '../types';
 
 interface AuthState {
@@ -23,6 +24,8 @@ interface AuthState {
   initialize: () => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, displayName: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
+  loginWithApple: () => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
   loadProfile: (userId: string) => Promise<void>;
@@ -93,6 +96,38 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       ].filter(Boolean);
       console.error('[register error]', e);
       set({ error: parts.join(' · ') || 'Registration failed', isLoading: false });
+      throw e;
+    }
+  },
+
+  loginWithGoogle: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const data = await signInWithGoogle();
+      set({ user: data.user, isLoading: false });
+    } catch (e: any) {
+      // User cancelled = not an error
+      if (e?.code === 'SIGN_IN_CANCELLED' || e?.message?.includes('cancel')) {
+        set({ isLoading: false });
+        return;
+      }
+      set({ error: e.message ?? 'Google sign-in failed', isLoading: false });
+      throw e;
+    }
+  },
+
+  loginWithApple: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const data = await signInWithApple();
+      set({ user: data.user, isLoading: false });
+    } catch (e: any) {
+      // ERR_CANCELED = user dismissed the Apple sheet
+      if (e?.code === 'ERR_CANCELED') {
+        set({ isLoading: false });
+        return;
+      }
+      set({ error: e.message ?? 'Apple sign-in failed', isLoading: false });
       throw e;
     }
   },
