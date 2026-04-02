@@ -1,44 +1,35 @@
 import { createClient } from '@supabase/supabase-js';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../constants';
 
-// Custom storage adapter for Supabase that uses SecureStore on native
-// and falls back to localStorage on web
-const ExpoSecureStoreAdapter = {
+// Storage adapter using AsyncStorage (no size limit, unlike SecureStore's 2KB cap)
+const StorageAdapter = {
   getItem: async (key: string) => {
     if (Platform.OS === 'web') {
       return localStorage.getItem(key);
     }
-    try {
-      return await SecureStore.getItemAsync(key);
-    } catch {
-      return null;
-    }
+    return await AsyncStorage.getItem(key);
   },
   setItem: async (key: string, value: string) => {
     if (Platform.OS === 'web') {
       localStorage.setItem(key, value);
       return;
     }
-    try {
-      await SecureStore.setItemAsync(key, value);
-    } catch {}
+    await AsyncStorage.setItem(key, value);
   },
   removeItem: async (key: string) => {
     if (Platform.OS === 'web') {
       localStorage.removeItem(key);
       return;
     }
-    try {
-      await SecureStore.deleteItemAsync(key);
-    } catch {}
+    await AsyncStorage.removeItem(key);
   },
 };
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
-    storage: ExpoSecureStoreAdapter,
+    storage: StorageAdapter,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,

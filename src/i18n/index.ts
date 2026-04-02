@@ -8,7 +8,6 @@ import { ru } from './ru';
 import { zh } from './zh';
 import { pt_BR } from './pt_BR';
 import { pt_PT } from './pt_PT';
-import { useAppStore } from '../stores/useAppStore';
 
 export const i18n = new I18n({ en, tr, de, fr, nl, ru, zh, pt_BR, pt_PT });
 
@@ -27,6 +26,8 @@ export function t(key: string, options?: Record<string, string | number>): strin
 /** Hook that subscribes to language changes — components using this will
  *  automatically re-render when the user switches locale. */
 export function useTranslation() {
-  useAppStore((s) => s.language); // reactive: triggers re-render on locale change
+  // Lazy import to break require cycle (i18n -> useAppStore -> i18n)
+  const { useAppStore } = require('../stores/useAppStore');
+  useAppStore((s: any) => s.language); // reactive: triggers re-render on locale change
   return { t };
 }
