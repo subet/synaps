@@ -6,25 +6,33 @@ import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../constants';
 // Custom storage adapter for Supabase that uses SecureStore on native
 // and falls back to localStorage on web
 const ExpoSecureStoreAdapter = {
-  getItem: (key: string) => {
+  getItem: async (key: string) => {
     if (Platform.OS === 'web') {
-      return Promise.resolve(localStorage.getItem(key));
+      return localStorage.getItem(key);
     }
-    return SecureStore.getItemAsync(key);
+    try {
+      return await SecureStore.getItemAsync(key);
+    } catch {
+      return null;
+    }
   },
-  setItem: (key: string, value: string) => {
+  setItem: async (key: string, value: string) => {
     if (Platform.OS === 'web') {
       localStorage.setItem(key, value);
-      return Promise.resolve();
+      return;
     }
-    return SecureStore.setItemAsync(key, value);
+    try {
+      await SecureStore.setItemAsync(key, value);
+    } catch {}
   },
-  removeItem: (key: string) => {
+  removeItem: async (key: string) => {
     if (Platform.OS === 'web') {
       localStorage.removeItem(key);
-      return Promise.resolve();
+      return;
     }
-    return SecureStore.deleteItemAsync(key);
+    try {
+      await SecureStore.deleteItemAsync(key);
+    } catch {}
   },
 };
 
