@@ -87,7 +87,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export default function SettingsScreen() {
   const { t } = useTranslation();
   const { notifications, language, hapticsEnabled, setNotificationsEnabled, setNotificationTime, setLanguage, setHapticsEnabled } = useAppStore();
-  const { user, logout } = useAuthStore();
+  const { user, profile, logout } = useAuthStore();
   const { isPro } = useSubscriptionStore();
   const [showTimePicker, setShowTimePicker] = useState(false);
 
@@ -164,11 +164,13 @@ export default function SettingsScreen() {
             <View style={[styles.row, styles.profileRow]}>
               <View style={styles.avatar}>
                 <Text style={styles.avatarText}>
-                  {(user.email ?? 'U')[0].toUpperCase()}
+                  {(profile?.display_name?.[0] ?? user.email?.[0] ?? 'U').toUpperCase()}
                 </Text>
               </View>
               <View style={styles.profileInfo}>
-                <Text style={styles.profileName}>{user.email}</Text>
+                <Text style={styles.profileName} numberOfLines={1} ellipsizeMode="tail">
+                  {profile?.display_name || user.email}
+                </Text>
                 {isPro && <View style={styles.proBadge}><Text style={styles.proBadgeText}>{t('pro_badge')}</Text></View>}
               </View>
             </View>

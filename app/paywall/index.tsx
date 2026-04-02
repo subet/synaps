@@ -172,7 +172,7 @@ export default function PaywallScreen() {
             <ActivityIndicator color={colors.white} />
           ) : (
             <Text style={styles.subscribeBtnText}>
-              {selectedPlan === 'lifetime' ? t('buy_lifetime') : t('start_free_trial')}
+              {selectedPlan === 'lifetime' ? t('buy_lifetime') : t('subscribe_now')}
             </Text>
           )}
         </Pressable>

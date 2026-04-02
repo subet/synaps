@@ -219,6 +219,7 @@ export const nl = {
   unlock_pro: 'Synaps PRO ontgrendelen',
   paywall_subtitle: 'Geef je leerproces een boost met onbeperkte toegang',
   start_free_trial: 'Gratis proefperiode starten',
+  subscribe_now: 'Nu abonneren',
   subscribe: 'Abonneren',
   restore_purchases: 'Aankopen herstellen',
   cancel_anytime: 'Op elk moment opzegbaar. Abonnement verlengt automatisch.',

@@ -12,7 +12,6 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.mudimedia.synaps",
       "infoPlist": {
-        "NSUserTrackingUsageDescription": "Synaps uses tracking to provide personalized content and improve your experience.",
         "NSCameraUsageDescription": "Synaps uses the camera to add images to your flashcards.",
         "NSPhotoLibraryUsageDescription": "Synaps accesses your photo library to add images to your flashcards.",
         "NSMicrophoneUsageDescription": "Synaps uses the microphone to record audio for your flashcards.",
@@ -66,9 +65,6 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
           "backgroundColor": "#0F0A1E"
         }
       ]

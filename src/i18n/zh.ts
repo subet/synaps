@@ -219,6 +219,7 @@ export const zh = {
   unlock_pro: '解锁 Synaps PRO',
   paywall_subtitle: '无限访问，让您的学习更上一层楼',
   start_free_trial: '开始免费试用',
+  subscribe_now: '立即订阅',
   subscribe: '立即订阅',
   restore_purchases: '恢复购买',
   cancel_anytime: '随时取消。订阅自动续订。',

@@ -219,6 +219,7 @@ export const en = {
   unlock_pro: 'Unlock Synaps PRO',
   paywall_subtitle: 'Supercharge your learning with unlimited access',
   start_free_trial: 'Start Free Trial',
+  subscribe_now: 'Subscribe Now',
   buy_lifetime: 'Buy Lifetime Access',
   subscribe: 'Subscribe',
   restore_purchases: 'Restore Purchases',

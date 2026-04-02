@@ -219,6 +219,7 @@ export const de = {
   unlock_pro: 'Synaps PRO freischalten',
   paywall_subtitle: 'Superpowere dein Lernen mit unbegrenztem Zugang',
   start_free_trial: 'Kostenlose Testversion starten',
+  subscribe_now: 'Jetzt abonnieren',
   subscribe: 'Abonnieren',
   restore_purchases: 'Käufe wiederherstellen',
   cancel_anytime: 'Jederzeit kündbar. Abonnement verlängert sich automatisch.',

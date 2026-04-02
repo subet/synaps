@@ -219,6 +219,7 @@ export const pt_PT = {
   unlock_pro: 'Desbloqueie o Synaps PRO',
   paywall_subtitle: 'Potencie a sua aprendizagem com acesso ilimitado',
   start_free_trial: 'Iniciar Período de Avaliação Gratuito',
+  subscribe_now: 'Subscrever Agora',
   subscribe: 'Subscrever',
   restore_purchases: 'Restaurar Compras',
   cancel_anytime: 'Cancele quando quiser. A subscrição renova automaticamente.',

@@ -72,15 +72,15 @@ export async function signInWithApple() {
 
   if (error) throw error;
 
-  // Apple only sends name on first sign-in — persist it if available
+  // Apple only sends name on first sign-in — persist it (fire-and-forget)
   if (credential.fullName?.givenName && data.user) {
     const displayName = [credential.fullName.givenName, credential.fullName.familyName]
       .filter(Boolean)
       .join(' ');
     if (displayName) {
-      await supabase.auth.updateUser({
+      supabase.auth.updateUser({
         data: { display_name: displayName },
-      });
+      }).catch(() => {});
     }
   }
 

@@ -219,6 +219,7 @@ export const tr = {
   unlock_pro: "Synaps PRO'yu Aç",
   paywall_subtitle: 'Sınırsız erişimle öğrenmenizi güçlendirin',
   start_free_trial: 'Ücretsiz Denemeyi Başlat',
+  subscribe_now: 'Şimdi Abone Ol',
   buy_lifetime: 'Ömür Boyu Erişim Satın Al',
   subscribe: 'Abone Ol',
   restore_purchases: 'Satın Alımları Geri Yükle',

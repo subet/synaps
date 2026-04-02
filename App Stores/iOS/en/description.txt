@@ -1,0 +1,33 @@
+Synaps is a flashcard app built around spaced repetition — the scientifically proven method that shows you cards right before you forget them. Study smarter, build streaks, and watch your knowledge grow.
+
+STUDY SMARTER WITH SPACED REPETITION
+Synaps uses the SM-2 algorithm to schedule your reviews at the perfect time. Cards you struggle with appear more often. Cards you know well fade into the background. Every session is efficient and focused.
+
+19 READY-MADE DECKS
+Jump straight into learning with our curated deck library:
+- Languages: German, Spanish, French, Turkish, Chinese, Russian, Arabic, Dutch
+- Science: Biology, Chemistry, Physics, Anatomy
+- Professional: Medical Terminology, MCAT Prep, Business & Finance
+- More: Psychology, Mathematics, Computer Science, World History
+
+All decks are translated into 9 languages so you can study in your native tongue.
+
+CREATE YOUR OWN DECKS
+Build custom flashcards with text, images, and audio. Organize your study material exactly how you want it.
+
+TRACK YOUR PROGRESS
+- Daily streak tracking to build consistent habits
+- Session stats: cards studied, time spent, accuracy
+- Achievement badges to celebrate milestones
+- Visual progress for every deck
+
+DAILY REMINDERS
+Set a study reminder so you never break your streak. Synaps sends smart notifications to keep you on track.
+
+MULTILINGUAL
+Full UI support in English, German, French, Turkish, Dutch, Russian, Chinese, Brazilian Portuguese, and European Portuguese.
+
+SYNAPS PRO
+Unlock unlimited deck downloads, cloud sync across devices, audio cards, advanced insights, offline study mode, and more.
+
+Download Synaps and start building a daily learning habit today.

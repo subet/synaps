@@ -219,6 +219,7 @@ export const ru = {
   unlock_pro: 'Открыть Synaps PRO',
   paywall_subtitle: 'Прокачайте обучение с неограниченным доступом',
   start_free_trial: 'Начать бесплатный период',
+  subscribe_now: 'Подписаться сейчас',
   subscribe: 'Оформить подписку',
   restore_purchases: 'Восстановить покупки',
   cancel_anytime: 'Отмена в любое время. Подписка продлевается автоматически.',

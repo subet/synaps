@@ -157,14 +157,18 @@ export default function LoginScreen() {
               clearError();
               try {
                 await loginWithApple();
-                router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+                if (useAuthStore.getState().user) {
+                  router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+                }
               } catch {}
             }}
             onGoogle={async () => {
               clearError();
               try {
                 await loginWithGoogle();
-                router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+                if (useAuthStore.getState().user) {
+                  router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+                }
               } catch {}
             }}
             isLoading={isLoading}

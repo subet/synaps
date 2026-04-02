@@ -36,6 +36,8 @@ export default function ProfileScreen() {
   const [savingPassword, setSavingPassword] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
+  const isSocialLogin = user?.app_metadata?.provider === 'apple' || user?.app_metadata?.provider === 'google';
+
   const initial = (
     profile?.display_name?.[0] ??
     user?.email?.[0] ??
@@ -169,54 +171,58 @@ export default function ProfileScreen() {
             />
           </View>
 
-          {/* Email section */}
-          <View style={styles.sectionDivider}>
-            <Text style={styles.sectionLabel}>{t('email')}</Text>
-          </View>
-          <View style={styles.section}>
-            <Input
-              label={t('email')}
-              value={email}
-              onChangeText={setEmail}
-              placeholder={t('email_placeholder')}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoComplete="email"
-            />
-            <Button
-              label={t('update_email')}
-              onPress={handleUpdateEmail}
-              loading={savingEmail}
-              style={styles.sectionBtn}
-            />
-          </View>
+          {!isSocialLogin && (
+            <>
+              {/* Email section */}
+              <View style={styles.sectionDivider}>
+                <Text style={styles.sectionLabel}>{t('email')}</Text>
+              </View>
+              <View style={styles.section}>
+                <Input
+                  label={t('email')}
+                  value={email}
+                  onChangeText={setEmail}
+                  placeholder={t('email_placeholder')}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                />
+                <Button
+                  label={t('update_email')}
+                  onPress={handleUpdateEmail}
+                  loading={savingEmail}
+                  style={styles.sectionBtn}
+                />
+              </View>
 
-          {/* Password section */}
-          <View style={styles.sectionDivider}>
-            <Text style={styles.sectionLabel}>{t('password')}</Text>
-          </View>
-          <View style={styles.section}>
-            <Input
-              label={t('new_password')}
-              value={newPassword}
-              onChangeText={setNewPassword}
-              placeholder="••••••••"
-              secureTextEntry
-            />
-            <Input
-              label={t('confirm_password')}
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              placeholder="••••••••"
-              secureTextEntry
-            />
-            <Button
-              label={t('update_password')}
-              onPress={handleUpdatePassword}
-              loading={savingPassword}
-              style={styles.sectionBtn}
-            />
-          </View>
+              {/* Password section */}
+              <View style={styles.sectionDivider}>
+                <Text style={styles.sectionLabel}>{t('password')}</Text>
+              </View>
+              <View style={styles.section}>
+                <Input
+                  label={t('new_password')}
+                  value={newPassword}
+                  onChangeText={setNewPassword}
+                  placeholder="••••••••"
+                  secureTextEntry
+                />
+                <Input
+                  label={t('confirm_password')}
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  placeholder="••••••••"
+                  secureTextEntry
+                />
+                <Button
+                  label={t('update_password')}
+                  onPress={handleUpdatePassword}
+                  loading={savingPassword}
+                  style={styles.sectionBtn}
+                />
+              </View>
+            </>
+          )}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
