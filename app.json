@@ -69,7 +69,15 @@
           "backgroundColor": "#0F0A1E"
         }
       ],
-      "@sentry/react-native"
+      "@sentry/react-native",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "react-native",
+          "organization": "mudimedia-software"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
