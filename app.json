@@ -66,9 +66,11 @@
       [
         "expo-splash-screen",
         {
+          "image": "./assets/splash-transparent.png",
+          "imageWidth": 1,
           "backgroundColor": "#0F0A1E"
         }
-      ],
+      ]
     ],
     "experiments": {
       "typedRoutes": true
