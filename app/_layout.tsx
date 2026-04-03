@@ -13,14 +13,6 @@ import { Language } from '../src/types';
 import { useAuthStore } from '../src/stores/useAuthStore';
 import { useSubscriptionStore } from '../src/stores/useSubscriptionStore';
 import AnimatedSplash from '../src/components/AnimatedSplash';
-import * as Sentry from '@sentry/react-native';
-
-Sentry.init({
-  dsn: 'https://467b08dfa2b52dce481d48849019fb2c@o4511151254339584.ingest.de.sentry.io/4511151256567888',
-  tracesSampleRate: 0.2,
-  enabled: !__DEV__,
-});
-
 SplashScreen.preventAutoHideAsync();
 
 const SUPPORTED: Language[] = ['en', 'tr', 'de', 'fr', 'nl', 'ru', 'zh', 'pt_BR', 'pt_PT'];
@@ -34,7 +26,7 @@ function detectLocale(languageTag: string, languageCode: string): Language {
   return match ?? 'en';
 }
 
-export default Sentry.wrap(function RootLayout() {
+export default function RootLayout() {
   const { loadSettings, hasSeenOnboarding, language, isLoading } = useAppStore();
   const { initialize: initAuth, isInitialized } = useAuthStore();
   const { initialize: initSubscription } = useSubscriptionStore();
@@ -126,4 +118,4 @@ export default Sentry.wrap(function RootLayout() {
     </GestureHandlerRootView>
     </ErrorBoundary>
   );
-});
+}
