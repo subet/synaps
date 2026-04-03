@@ -8,6 +8,12 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "scheme": "synaps",
+    "splash": {
+      "image": "./assets/icon.png",
+      "imageWidth": 200,
+      "resizeMode": "contain",
+      "backgroundColor": "#0F0A1E"
+    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.mudimedia.synaps",
@@ -63,14 +69,7 @@
           "photosPermission": "Synaps accesses your photo library to add images to flashcards."
         }
       ],
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/splash-transparent.png",
-          "imageWidth": 1,
-          "backgroundColor": "#0F0A1E"
-        }
-      ]
+      "expo-splash-screen"
     ],
     "experiments": {
       "typedRoutes": true
