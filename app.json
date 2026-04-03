@@ -9,7 +9,7 @@
     "newArchEnabled": true,
     "scheme": "synaps",
     "splash": {
-      "image": "./assets/icon.png",
+      "image": "./assets/splash-blank.png",
       "imageWidth": 200,
       "resizeMode": "contain",
       "backgroundColor": "#0F0A1E"
