@@ -176,7 +176,16 @@ export default function SettingsScreen() {
                 {isPro && <View style={styles.proBadge}><Text style={styles.proBadgeText}>{t('pro_badge')}</Text></View>}
               </View>
             </View>
-            <SettingsRow label={t('manage_subscription')} onPress={() => router.push('/paywall')} />
+            <SettingsRow label={t('manage_subscription')} onPress={() => {
+              if (isPro) {
+                const url = Platform.OS === 'ios'
+                  ? 'https://apps.apple.com/account/subscriptions'
+                  : 'https://play.google.com/store/account/subscriptions';
+                Linking.openURL(url);
+              } else {
+                router.push('/paywall');
+              }
+            }} />
             <SettingsRow label={t('sync_data')} onPress={() => {
               if (!isPro) {
                 Alert.alert('Sync', t('sync_requires_pro'));
