@@ -1,6 +1,6 @@
 export type CardStatus = 'new' | 'learning' | 'review' | 'mastered';
 
-export type Language = 'en' | 'tr' | 'de' | 'fr' | 'nl' | 'ru' | 'zh' | 'pt_BR' | 'pt_PT';
+export type Language = 'en' | 'es' | 'tr' | 'de' | 'fr' | 'nl' | 'ru' | 'zh' | 'pt_BR' | 'pt_PT';
 
 /** Sparse map of locale → translated string. English is stored as the canonical `front`/`back` fallback. */
 export type TranslationMap = Partial<Record<Language, string>>;

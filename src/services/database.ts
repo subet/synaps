@@ -590,23 +590,30 @@ function mapCard(row: any): Card {
 
 export async function repairPublicDeckTranslations(): Promise<void> {
   // Import lazily to avoid circular dependency at module load time
-  const { getStaticDeckCards } = await import('../data/publicDecks');
+  const { getStaticDeckCards, ALL_DECKS } = await import('../data/publicDecks');
 
   const database = await getDatabase();
-
-  // Fast check: are there any public-deck cards still missing translations?
-  const missing = await database.getFirstAsync<{ count: number }>(
-    `SELECT COUNT(*) as count FROM cards c
-     JOIN decks d ON c.deck_id = d.id
-     WHERE d.is_public_download = 1 AND c.front_translations IS NULL`
-  );
-  if (!missing || missing.count === 0) return;
 
   const publicDecks = await database.getAllAsync<{ id: string; source_id: string }>(
     `SELECT id, source_id FROM decks WHERE is_public_download = 1 AND source_id IS NOT NULL`
   );
+  if (publicDecks.length === 0) return;
 
   for (const deck of publicDecks) {
+    // ── Refresh deck-level translations (name, description) ──
+    const staticDeck = ALL_DECKS.find((d) => d.id === deck.source_id);
+    if (staticDeck) {
+      await database.runAsync(
+        `UPDATE decks SET name_translations = ?, description_translations = ? WHERE id = ?`,
+        [
+          JSON.stringify(staticDeck.name_translations ?? {}),
+          JSON.stringify(staticDeck.description_translations ?? {}),
+          deck.id,
+        ]
+      );
+    }
+
+    // ── Refresh card-level translations ──
     const staticCards = getStaticDeckCards(deck.source_id);
     if (staticCards.length === 0) continue;
 
@@ -615,8 +622,8 @@ export async function repairPublicDeckTranslations(): Promise<void> {
         if (!sc.front_translations && !sc.back_translations) continue;
         await database.runAsync(
           `UPDATE cards
-           SET front_translations = COALESCE(front_translations, ?),
-               back_translations  = COALESCE(back_translations, ?)
+           SET front_translations = ?,
+               back_translations  = ?
            WHERE deck_id = ? AND front = ?`,
           [
             sc.front_translations ? JSON.stringify(sc.front_translations) : null,

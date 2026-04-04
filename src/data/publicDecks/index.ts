@@ -27,6 +27,26 @@ import { mcatCards } from './subjects/mcat';
 
 export { ALL_DECKS };
 
+/**
+ * Maps a UI language code to the vocabulary deck that teaches that language.
+ * When the user's UI is set to a given language, they already speak it —
+ * showing the corresponding vocab deck is pointless.
+ */
+const LANG_TO_VOCAB_DECK: Partial<Record<Language, string>> = {
+  de: 'deck-german-vocab',
+  es: 'deck-spanish-vocab',
+  fr: 'deck-french-vocab',
+  tr: 'deck-turkish-vocab',
+  nl: 'deck-dutch-vocab',
+  ru: 'deck-russian-vocab',
+  zh: 'deck-chinese-vocab',
+};
+
+/** Returns the vocab deck ID that should be hidden for the given UI language, or undefined. */
+export function getHiddenVocabDeckId(lang: Language): string | undefined {
+  return LANG_TO_VOCAB_DECK[lang];
+}
+
 const CARDS_MAP: Record<string, PublicCard[]> = {
   'deck-german-vocab': germanVocabCards,
   'deck-spanish-vocab': spanishVocabCards,

@@ -21,7 +21,8 @@ import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStudyStore } from '../../src/stores/useStudyStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { Card } from '../../src/types';
-import { useResolvedDeckName } from '../../src/utils/translations';
+import { resolveTranslation, useResolvedDeckName } from '../../src/utils/translations';
+import { useAppStore } from '../../src/stores/useAppStore';
 
 export default function DeckDetailScreen() {
   const { t } = useTranslation();
@@ -33,6 +34,7 @@ export default function DeckDetailScreen() {
   const isLocked = isOffline && !isPro;
   const [searchQuery, setSearchQuery] = useState('');
 
+  const language = useAppStore((s) => s.language);
   const deck = getDeckById(id);
   const resolvedDeckName = useResolvedDeckName(deck ?? { name: '' });
   const stats = deckStats[id];
@@ -49,10 +51,12 @@ export default function DeckDetailScreen() {
   const filteredCards = useMemo(() => {
     if (!searchQuery.trim()) return deckCards;
     const q = searchQuery.toLowerCase();
-    return deckCards.filter(
-      (c) => c.front.toLowerCase().includes(q) || c.back.toLowerCase().includes(q)
-    );
-  }, [deckCards, searchQuery]);
+    return deckCards.filter((c) => {
+      const front = resolveTranslation(c.front_translations, c.front, language).toLowerCase();
+      const back = resolveTranslation(c.back_translations, c.back, language).toLowerCase();
+      return front.includes(q) || back.includes(q);
+    });
+  }, [deckCards, searchQuery, language]);
 
   const renderCard = useCallback(
     ({ item }: { item: Card }) => (

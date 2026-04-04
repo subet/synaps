@@ -33,6 +33,7 @@ import { Language } from '../../src/types';
 const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'en',    label: 'English' },
   { code: 'de',    label: 'Deutsch' },
+  { code: 'es',    label: 'Español' },
   { code: 'fr',    label: 'Français' },
   { code: 'nl',    label: 'Nederlands' },
   { code: 'pt_BR', label: 'Português (Brasil)' },

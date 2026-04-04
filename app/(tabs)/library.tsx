@@ -18,6 +18,7 @@ import {
   getStaticDeckCards,
   getStaticEditorsChoiceDecks,
   getStaticFeaturedDecks,
+  getHiddenVocabDeckId,
   searchStaticDecks,
 } from '../../src/data/publicDecks';
 import { bulkInsertCards, createDeck } from '../../src/services/database';
@@ -63,10 +64,14 @@ export default function LibraryScreen() {
     [decks]
   );
 
+  const hiddenDeckId = getHiddenVocabDeckId(language);
+
   useEffect(() => {
-    setFeaturedDecks(getStaticFeaturedDecks());
-    setEditorsChoiceDecks(getStaticEditorsChoiceDecks());
-  }, []);
+    const filterHidden = (decks: PublicDeck[]) =>
+      hiddenDeckId ? decks.filter((d) => d.id !== hiddenDeckId) : decks;
+    setFeaturedDecks(filterHidden(getStaticFeaturedDecks()));
+    setEditorsChoiceDecks(filterHidden(getStaticEditorsChoiceDecks()));
+  }, [hiddenDeckId]);
 
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -74,10 +79,11 @@ export default function LibraryScreen() {
       return;
     }
     const timer = setTimeout(() => {
-      setSearchResults(searchStaticDecks(searchQuery, language));
+      const results = searchStaticDecks(searchQuery, language);
+      setSearchResults(hiddenDeckId ? results.filter((d) => d.id !== hiddenDeckId) : results);
     }, 400);
     return () => clearTimeout(timer);
-  }, [searchQuery]);
+  }, [searchQuery, hiddenDeckId]);
 
   const handleDownload = async (deck: PublicDeck) => {
     if (!isPro && freeDownloadsUsed >= FREE_DOWNLOAD_LIMIT) {
@@ -128,9 +134,10 @@ export default function LibraryScreen() {
   };
 
   const browseDecks = useMemo(() => {
-    if (selectedCategory === 'all') return ALL_DECKS;
-    return ALL_DECKS.filter((d) => d.category === selectedCategory);
-  }, [selectedCategory]);
+    const base = hiddenDeckId ? ALL_DECKS.filter((d) => d.id !== hiddenDeckId) : ALL_DECKS;
+    if (selectedCategory === 'all') return base;
+    return base.filter((d) => d.category === selectedCategory);
+  }, [selectedCategory, hiddenDeckId]);
 
   const isSearching = searchQuery.trim().length > 0;
 

@@ -17,6 +17,7 @@ import { StreakCard } from '../../src/components/home/StreakCard';
 import { EmptyState } from '../../src/components/ui/EmptyState';
 import { FAB } from '../../src/components/ui/FAB';
 import { colors, spacing, typography } from '../../src/constants';
+import { getHiddenVocabDeckId } from '../../src/data/publicDecks';
 import { useTranslation } from '../../src/i18n';
 import { TabHeader } from '../../src/components/ui/TabHeader';
 import { useDeckStore } from '../../src/stores/useDeckStore';
@@ -31,6 +32,11 @@ export default function HomeScreen() {
   const { currentStreak, weekDays, cardsMastered, avgDailyFocusMinutes, loadStreak } = useStreakStore();
   const { checkBadges } = useBadgeStore();
   const language = useAppStore((s) => s.language);
+  const hiddenDeckId = getHiddenVocabDeckId(language);
+  const visibleDecks = useMemo(
+    () => (hiddenDeckId ? decks.filter((d) => d.source_id !== hiddenDeckId) : decks),
+    [decks, hiddenDeckId]
+  );
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -78,18 +84,18 @@ export default function HomeScreen() {
         <StatBoxes cardsMastered={cardsMastered} avgDailyFocusMinutes={avgDailyFocusMinutes} />
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{t('my_decks')}</Text>
-          <Text style={styles.deckCount}>{decks.length}</Text>
+          <Text style={styles.deckCount}>{visibleDecks.length}</Text>
         </View>
       </View>
     ),
-    [currentStreak, weekDays, cardsMastered, avgDailyFocusMinutes, decks.length, language]
+    [currentStreak, weekDays, cardsMastered, avgDailyFocusMinutes, visibleDecks.length, language]
   );
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <TabHeader />
       <FlatList
-        data={decks}
+        data={visibleDecks}
         keyExtractor={(item) => item.id}
         renderItem={renderDeck}
         ListHeaderComponent={ListHeader}
