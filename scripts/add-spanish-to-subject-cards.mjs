@@ -1886,7 +1886,7 @@ function processFile(filePath) {
     }
 
     // FRONT
-    if (modified.includes('front_translations:') && !/front_translations:\s*\{"es"/.test(modified)) {
+    if (modified.includes('front_translations:')) {
       modified = modified.replace(
         /front_translations:\s*\{([^}]+)\}/,
         (match, inner) => {
@@ -1894,7 +1894,11 @@ function processFile(filePath) {
           if (!ptMatch) return match;
           const es = ptToEs(ptMatch[1]);
           frontCount++;
-          return `front_translations: {"es":"${es}",${inner}}`;
+          // Remove existing "es":"..." if present
+          let cleanInner = inner.replace(/"es"\s*:\s*"(?:[^"\\]|\\.)*"\s*,?\s*/, '');
+          // Clean up any leading comma
+          cleanInner = cleanInner.replace(/^,\s*/, '');
+          return `front_translations: {"es":"${es}",${cleanInner}}`;
         }
       );
     }
