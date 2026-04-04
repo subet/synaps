@@ -1,0 +1,49 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4361EE"/>
+      <stop offset="50%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+    <linearGradient id="center-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4361EE"/>
+      <stop offset="50%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect x="0" y="0" width="1024" height="1024" rx="228" fill="url(#bg)"/>
+
+  <!-- Subtle inner glow -->
+  <circle cx="512" cy="512" r="360" fill="#fff" opacity="0.04"/>
+
+  <!-- Connection lines -->
+  <line x1="512" y1="512" x2="230" y2="230" stroke="#fff" stroke-width="22" stroke-linecap="round" opacity="0.45"/>
+  <line x1="512" y1="512" x2="794" y2="200" stroke="#fff" stroke-width="18" stroke-linecap="round" opacity="0.4"/>
+  <line x1="512" y1="512" x2="860" y2="560" stroke="#fff" stroke-width="15" stroke-linecap="round" opacity="0.3"/>
+  <line x1="512" y1="512" x2="185" y2="660" stroke="#fff" stroke-width="15" stroke-linecap="round" opacity="0.3"/>
+  <line x1="512" y1="512" x2="370" y2="830" stroke="#fff" stroke-width="18" stroke-linecap="round" opacity="0.4"/>
+  <line x1="512" y1="512" x2="794" y2="800" stroke="#fff" stroke-width="14" stroke-linecap="round" opacity="0.25"/>
+
+  <!-- Spark dots on connections -->
+  <circle cx="371" cy="371" r="16" fill="#fff" opacity="0.85"/>
+  <circle cx="653" cy="356" r="13" fill="#fff" opacity="0.7"/>
+  <circle cx="441" cy="671" r="13" fill="#fff" opacity="0.65"/>
+  <circle cx="653" cy="656" r="11" fill="#fff" opacity="0.45"/>
+
+  <!-- Outer nodes -->
+  <circle cx="230" cy="230" r="54" fill="#fff" opacity="0.95"/>
+  <circle cx="794" cy="200" r="44" fill="#fff" opacity="0.85"/>
+  <circle cx="860" cy="560" r="40" fill="#fff" opacity="0.7"/>
+  <circle cx="185" cy="660" r="40" fill="#fff" opacity="0.7"/>
+  <circle cx="370" cy="830" r="48" fill="#fff" opacity="0.9"/>
+  <circle cx="794" cy="800" r="36" fill="#fff" opacity="0.6"/>
+
+  <!-- Central node (large, main synapse) -->
+  <circle cx="512" cy="512" r="116" fill="#fff"/>
+  <!-- Inner ring with gradient -->
+  <circle cx="512" cy="512" r="72" fill="none" stroke="url(#center-grad)" stroke-width="12" opacity="0.5"/>
+  <!-- Inner dot -->
+  <circle cx="512" cy="512" r="36" fill="url(#center-grad)" opacity="0.35"/>
+</svg>
