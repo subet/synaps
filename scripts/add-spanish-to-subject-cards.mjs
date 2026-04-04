@@ -1904,7 +1904,7 @@ function processFile(filePath) {
     }
 
     // BACK
-    if (modified.includes('back_translations:') && !/back_translations:\s*\{"es"/.test(modified)) {
+    if (modified.includes('back_translations:')) {
       const btIdx = modified.indexOf('back_translations:');
       if (btIdx >= 0) {
         const before = modified.substring(0, btIdx);
@@ -1917,7 +1917,10 @@ function processFile(filePath) {
             const ptPTMatch = afterBt.match(ptPTPattern);
             if (ptPTMatch) {
               const endOfObj = afterBt.indexOf(ptPTMatch[0]) + ptPTMatch[0].length;
-              const objContent = afterBt.substring(braceStart + 1, endOfObj);
+              let objContent = afterBt.substring(braceStart + 1, endOfObj);
+              // Remove existing "es":"..." if present
+              objContent = objContent.replace(/"es"\s*:\s*"(?:[^"\\]|\\.)*"\s*,?\s*/, '');
+              objContent = objContent.replace(/^,\s*/, '');
               const es = ptToEs(ptMatch[1]);
               const newBt = `back_translations: {"es":"${es}",${objContent}`;
               modified = before + newBt + afterBt.substring(endOfObj);
