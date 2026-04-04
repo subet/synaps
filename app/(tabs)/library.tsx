@@ -48,6 +48,7 @@ const CATEGORY_KEYS = [
   { key: 'technology', labelKey: 'categories.technology', icon: '💻' },
   { key: 'psychology', labelKey: 'categories.psychology', icon: '🧠' },
   { key: 'exams', labelKey: 'categories.exams', icon: '🎓' },
+  { key: 'make_money', labelKey: 'categories.make_money', icon: '💰' },
 ];
 
 export default function LibraryScreen() {

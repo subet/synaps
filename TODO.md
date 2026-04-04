@@ -5,15 +5,20 @@ Kullanıcılar oluşturdukları deckleri paylaşabilsinler. Öyle bir library ol
 Show locked decks (Let user unlock the second part if he downloads the first part)
 Show “X students downloaded” (sort by most downloaded in library)
 
+# PRO -> FREE
+What happens when a PRO user's subscription expires? If he downloaded 10 decks, which ones will be disabled? Or will they be disabled at all? What is the best sales strategy to convert them back into paying users?
+
 # NEW DECKS
 ## BUSINESS
-- Startups
-- Business
-- Dropshipping
-- Amazon selling
-- Youtube
-- Instagram
-- TikTok
+- Startups: Startup Fundamentals – From Idea to Launch
+- Business: Business Basics – How Companies Actually Work
+- Dropshipping: Dropshipping Essentials – From Store to First Sale
+- Amazon selling: Amazon FBA Basics – Product to Profit
+- Youtube: YouTube Growth Basics – From 0 to First 10K Views
+- Instagram: Instagram Growth Essentials – Reach, Followers, Content
+- TikTok: TikTok Growth Basics – Go Viral & Build Audience
+
+## ENTERTAINMENT
 - Movies
 
 ## COUNTRY BASED

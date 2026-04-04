@@ -164,6 +164,7 @@ export const pt_PT = {
     technology: 'Tecnologia',
     psychology: 'Psicologia',
     exams: 'Exames',
+    make_money: 'Ganhar Dinheiro',
   },
 
   // Settings

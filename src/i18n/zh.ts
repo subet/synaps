@@ -164,6 +164,7 @@ export const zh = {
     technology: '技术',
     psychology: '心理学',
     exams: '考试',
+    make_money: '赚钱',
   },
 
   // Settings

@@ -164,6 +164,7 @@ export const tr = {
     technology: 'Teknoloji',
     psychology: 'Psikoloji',
     exams: 'Sınavlar',
+    make_money: 'Para Kazanma',
   },
 
   // Settings

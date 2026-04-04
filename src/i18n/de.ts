@@ -164,6 +164,7 @@ export const de = {
     technology: 'Technologie',
     psychology: 'Psychologie',
     exams: 'Prüfungen',
+    make_money: 'Geld verdienen',
   },
 
   // Settings

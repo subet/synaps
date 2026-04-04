@@ -27,6 +27,10 @@ import { mcatCards } from './subjects/mcat';
 
 // Exams
 import { yksMathCards } from './exams/yks_math';
+import { yksBioCards } from './exams/yks_bio';
+
+// Make Money
+import { startupFundamentalsCards } from './make_money/startup_fundamentals';
 
 export { ALL_DECKS };
 
@@ -71,6 +75,8 @@ const CARDS_MAP: Record<string, PublicCard[]> = {
   'deck-psychology': psychologyCards,
   'deck-mcat': mcatCards,
   'deck-yks-math': yksMathCards,
+  'deck-yks-bio': yksBioCards,
+  'deck-startup-fundamentals': startupFundamentalsCards,
 };
 
 export function getStaticFeaturedDecks(): PublicDeck[] {
