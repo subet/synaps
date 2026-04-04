@@ -110,6 +110,10 @@ function ptToEs(pt) {
     ['devido a', 'debido a'],
     ['devido ao', 'debido al'],
     ['devido à', 'debido a la'],
+    ['duas ou mais', 'dos o más'],
+    ['dois ou mais', 'dos o más'],
+    ['uma ou mais', 'una o más'],
+    ['um ou mais', 'uno o más'],
 
     // Scientific compound terms
     ['corpo humano', 'cuerpo humano'],
@@ -1689,6 +1693,14 @@ function ptToEs(pt) {
   for (const [from, to] of wordPairs) {
     if (from === to) continue;
     s = s.replace(wb(from), to);
+    // Also try capitalized version if the pair is lowercase
+    if (from[0] === from[0].toLowerCase() && from[0] !== from[0].toUpperCase()) {
+      const capFrom = from.charAt(0).toUpperCase() + from.slice(1);
+      const capTo = to.charAt(0).toUpperCase() + to.slice(1);
+      if (capFrom !== capTo) {
+        s = s.replace(wb(capFrom), capTo);
+      }
+    }
   }
 
   // ═══════════════════════════════════════════════════════
