@@ -1780,8 +1780,12 @@ function ptToEs(pt) {
     ['num', 'en un'], ['numa', 'en una'],
     ['dele', 'de él'], ['dela', 'de ella'], ['nele', 'en él'], ['nela', 'en ella'],
 
-    // Articles
-    ['O', 'El'], ['o', 'el'], ['Os', 'Los'], ['os', 'los'],
+    // Articles - ONLY uppercase or specific patterns
+    // Do NOT convert lowercase 'o' → 'el' because it conflicts with Spanish 'o' (or)
+    // Do NOT convert lowercase 'a' → 'la' because it conflicts with Spanish 'a' (to)
+    // Do NOT convert lowercase 'e' → 'y' because it conflicts with many Spanish words
+    // Contractions (do/da/no/na etc.) handle most article cases already
+    ['O', 'El'], ['Os', 'Los'], ['os', 'los'],
     ['as', 'las'],
     ['Um', 'Un'], ['um', 'un'], ['Uma', 'Una'], ['uma', 'una'],
 
@@ -1798,7 +1802,7 @@ function ptToEs(pt) {
     ['com', 'con'], ['Com', 'Con'],
     ['sem', 'sin'], ['Sem', 'Sin'],
     ['mas', 'pero'], ['Mas', 'Pero'],
-    ['ou', 'o'], ['Ou', 'O'],
+    ['ou', 'o'], ['Ou', 'O'],  // Portuguese 'or' → Spanish 'or'
 
     // Function words with accents (must use wb for safety)
     ['onde', 'donde'], ['Onde', 'Donde'],
