@@ -27,6 +27,7 @@ import { tap } from '../../src/utils/haptics';
 import { useAuthStore } from '../../src/stores/useAuthStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import Constants from 'expo-constants';
+import * as StoreReview from 'expo-store-review';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Language } from '../../src/types';
 
@@ -244,24 +245,26 @@ export default function SettingsScreen() {
           />
           <SettingsRow
             label={t('rate_us')}
-            onPress={() => {
-              const appStoreId = process.env.EXPO_PUBLIC_APP_STORE_ID;
-              const androidPackage = process.env.EXPO_PUBLIC_ANDROID_PACKAGE;
+            onPress={async () => {
+              try {
+                if (await StoreReview.hasAction()) {
+                  await StoreReview.requestReview();
+                  return;
+                }
+              } catch {}
+              // Fallback: open store page directly
               const url = Platform.select({
-                ios: appStoreId && appStoreId !== 'PENDING'
-                  ? `itms-apps://itunes.apple.com/app/id${appStoreId}?action=write-review`
-                  : null,
-                android: `market://details?id=${androidPackage}`,
+                ios: 'itms-apps://itunes.apple.com/app/id6761515969?action=write-review',
+                android: 'market://details?id=com.mudimedia.synaps',
               });
               if (url) {
                 Linking.openURL(url).catch(() => {
                   const webUrl = Platform.select({
-                    android: `https://play.google.com/store/apps/details?id=${androidPackage}`,
+                    ios: 'https://apps.apple.com/app/id6761515969',
+                    android: 'https://play.google.com/store/apps/details?id=com.mudimedia.synaps',
                   });
                   if (webUrl) Linking.openURL(webUrl).catch(() => {});
                 });
-              } else {
-                Alert.alert(t('coming_soon'), t('app_store_pending'));
               }
             }}
           />
