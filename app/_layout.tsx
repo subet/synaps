@@ -51,7 +51,8 @@ export default function RootLayout() {
       }
 
       await initAuth();
-      await initSubscription();
+      const { user } = useAuthStore.getState();
+      await initSubscription(user?.id);
 
       // Backfill translation columns for previously-downloaded public decks
       repairPublicDeckTranslations().catch(() => {});
