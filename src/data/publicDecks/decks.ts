@@ -304,4 +304,23 @@ export const ALL_DECKS: PublicDeck[] = [
     name_translations: {"de":"MCAT-Vorbereitung","es":"Preparación MCAT","it":"Preparazione MCAT","fr":"Préparation MCAT","tr":"MCAT Hazırlık","nl":"MCAT-voorbereiding","ru":"Подготовка к MCAT","zh":"MCAT备考","pt_BR":"Preparação para o MCAT","pt_PT":"Preparação para o MCAT"},
     description_translations: {"de":"Prüfungsrelevante MCAT-Konzepte aus Biologie, Chemie, Physik und Psychologie.","es":"Conceptos de alto rendimiento para el MCAT que cubren biología, química, física y psicología.","it":"Concetti ad alto rendimento per l'MCAT che coprono biologia, chimica, fisica e psicologia.","fr":"Concepts MCAT à haut rendement couvrant biologie, chimie, physique et psychologie.","tr":"Biyoloji, kimya, fizik ve psikolojiyi kapsayan yüksek verimli MCAT kavramları.","nl":"Belangrijke MCAT-concepten over biologie, scheikunde, natuurkunde en psychologie.","ru":"Ключевые концепции MCAT по биологии, химии, физике и психологии.","zh":"高频MCAT考点，涵盖生物、化学、物理和心理学。","pt_BR":"Conceitos de alto rendimento para o MCAT cobrindo biologia, química, física e psicologia.","pt_PT":"Conceitos de alto rendimento para o MCAT cobrindo biologia, química, física e psicologia."},
   },
+
+  // Exams
+  {
+    id: 'deck-yks-math',
+    name: 'YKS Matematik',
+    description: 'TYT ve AYT matematik konularini kapsayan 500 soru karti. Temel kavramlar, formuller ve cozum teknikleri.',
+    category: 'exams',
+    subcategory: 'yks',
+    language: 'tr',
+    icon_url: '🇹🇷',
+    card_count: 500,
+    download_count: 0,
+    is_featured: true,
+    is_editors_choice: false,
+    created_at: '2024-01-01T00:00:00Z',
+    supported_languages: ['tr'],
+    name_translations: {"tr":"YKS Matematik"},
+    description_translations: {"tr":"TYT ve AYT matematik konularini kapsayan 500 soru karti. Temel kavramlar, formuller ve cozum teknikleri."},
+  },
 ];

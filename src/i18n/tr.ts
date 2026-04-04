@@ -163,6 +163,7 @@ export const tr = {
     medical: 'Tıp',
     technology: 'Teknoloji',
     psychology: 'Psikoloji',
+    exams: 'Sınavlar',
   },
 
   // Settings

@@ -163,6 +163,7 @@ export const ru = {
     medical: 'Медицина',
     technology: 'Технологии',
     psychology: 'Психология',
+    exams: 'Экзамены',
   },
 
   // Settings

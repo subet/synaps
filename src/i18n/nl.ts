@@ -163,6 +163,7 @@ export const nl = {
     medical: 'Medisch',
     technology: 'Technologie',
     psychology: 'Psychologie',
+    exams: 'Examens',
   },
 
   // Settings

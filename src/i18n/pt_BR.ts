@@ -163,6 +163,7 @@ export const pt_BR = {
     medical: 'Medicina',
     technology: 'Tecnologia',
     psychology: 'Psicologia',
+    exams: 'Vestibulares',
   },
 
   // Settings

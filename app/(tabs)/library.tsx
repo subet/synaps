@@ -30,6 +30,8 @@ import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { PublicDeck } from '../../src/types';
 import { resolveTranslation, useResolvedDeckName } from '../../src/utils/translations';
 import { LanguageBadge } from '../../src/components/ui/LanguageBadge';
+import { isMultilingual, LANGUAGE_FLAGS } from '../../src/utils/languages';
+import { Language } from '../../src/types';
 
 type Tab = 'discover' | 'browse';
 
@@ -45,6 +47,7 @@ const CATEGORY_KEYS = [
   { key: 'medical', labelKey: 'categories.medical', icon: '💊' },
   { key: 'technology', labelKey: 'categories.technology', icon: '💻' },
   { key: 'psychology', labelKey: 'categories.psychology', icon: '🧠' },
+  { key: 'exams', labelKey: 'categories.exams', icon: '🎓' },
 ];
 
 export default function LibraryScreen() {
@@ -52,6 +55,7 @@ export default function LibraryScreen() {
   const [activeTab, setActiveTab] = useState<Tab>('discover');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('all');
   const [featuredDecks, setFeaturedDecks] = useState<PublicDeck[]>([]);
   const [editorsChoiceDecks, setEditorsChoiceDecks] = useState<PublicDeck[]>([]);
   const [searchResults, setSearchResults] = useState<PublicDeck[]>([]);
@@ -135,11 +139,29 @@ export default function LibraryScreen() {
     }
   };
 
+  // Compute language filter options from deck data
+  const languageFilters = useMemo(() => {
+    const langs = new Set<string>();
+    for (const d of ALL_DECKS) {
+      if (d.supported_languages && !isMultilingual(d.supported_languages)) {
+        d.supported_languages.forEach((l) => langs.add(l));
+      }
+    }
+    return Array.from(langs) as Language[];
+  }, []);
+
   const browseDecks = useMemo(() => {
-    const base = hiddenDeckId ? ALL_DECKS.filter((d) => d.id !== hiddenDeckId) : ALL_DECKS;
+    let base = hiddenDeckId ? ALL_DECKS.filter((d) => d.id !== hiddenDeckId) : [...ALL_DECKS];
+    if (selectedLanguage !== 'all') {
+      base = base.filter((d) =>
+        d.supported_languages &&
+        !isMultilingual(d.supported_languages) &&
+        d.supported_languages.includes(selectedLanguage as Language)
+      );
+    }
     if (selectedCategory === 'all') return base;
     return base.filter((d) => d.category === selectedCategory);
-  }, [selectedCategory, hiddenDeckId]);
+  }, [selectedCategory, selectedLanguage, hiddenDeckId]);
 
   const isSearching = searchQuery.trim().length > 0;
 
@@ -210,6 +232,9 @@ export default function LibraryScreen() {
           decks={browseDecks}
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
+          selectedLanguage={selectedLanguage}
+          onSelectLanguage={setSelectedLanguage}
+          languageFilters={languageFilters}
           downloading={downloading}
           downloadedIds={downloadedIds}
           onDownload={handleDownload}
@@ -313,6 +338,9 @@ function BrowseTab({
   decks,
   selectedCategory,
   onSelectCategory,
+  selectedLanguage,
+  onSelectLanguage,
+  languageFilters,
   downloading,
   downloadedIds,
   onDownload,
@@ -320,6 +348,9 @@ function BrowseTab({
   decks: PublicDeck[];
   selectedCategory: string;
   onSelectCategory: (key: string) => void;
+  selectedLanguage: string;
+  onSelectLanguage: (key: string) => void;
+  languageFilters: Language[];
   downloading: string | null;
   downloadedIds: Set<string>;
   onDownload: (d: PublicDeck) => void;
@@ -327,26 +358,54 @@ function BrowseTab({
   const { t } = useTranslation();
   return (
     <View style={styles.flex}>
-      {/* Category chips — sticky above the deck list */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.chipsRow}
-        style={styles.chipsScroll}
-      >
-        {CATEGORY_KEYS.map((cat) => (
-          <Pressable
-            key={cat.key}
-            style={[styles.chip, selectedCategory === cat.key && styles.chipActive]}
-            onPress={() => onSelectCategory(cat.key)}
+      {/* Language filter + Category chips */}
+      <View style={styles.filterRows}>
+        {/* Language filter — only show when there are language-specific decks */}
+        {languageFilters.length > 0 && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.langRow}
           >
-            <Text style={styles.chipIcon}>{cat.icon}</Text>
-            <Text style={[styles.chipLabel, selectedCategory === cat.key && styles.chipLabelActive]}>
-              {t(cat.labelKey)}
-            </Text>
-          </Pressable>
-        ))}
-      </ScrollView>
+            <Pressable
+              style={[styles.langChip, selectedLanguage === 'all' && styles.langChipActive]}
+              onPress={() => onSelectLanguage('all')}
+            >
+              <Ionicons name="globe-outline" size={16} color={selectedLanguage === 'all' ? colors.white : colors.textSecondary} />
+            </Pressable>
+            {languageFilters.map((lang) => (
+              <Pressable
+                key={lang}
+                style={[styles.langChip, selectedLanguage === lang && styles.langChipActive]}
+                onPress={() => onSelectLanguage(lang)}
+              >
+                <Text style={styles.langFlag}>{LANGUAGE_FLAGS[lang]}</Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        )}
+
+        {/* Category chips */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.chipsRow}
+          style={styles.chipsScroll}
+        >
+          {CATEGORY_KEYS.map((cat) => (
+            <Pressable
+              key={cat.key}
+              style={[styles.chip, selectedCategory === cat.key && styles.chipActive]}
+              onPress={() => onSelectCategory(cat.key)}
+            >
+              <Text style={styles.chipIcon}>{cat.icon}</Text>
+              <Text style={[styles.chipLabel, selectedCategory === cat.key && styles.chipLabelActive]}>
+                {t(cat.labelKey)}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      </View>
 
       {/* Deck list */}
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.tabContent}>
@@ -508,7 +567,7 @@ function getCategoryEmoji(category: string): string {
   const map: Record<string, string> = {
     languages: '🗣️', anatomy: '🫀', mcat: '🩺', science: '🔬',
     history: '📜', business: '💼', math: '📐', medical: '💊',
-    technology: '💻', psychology: '🧠', default: '📚',
+    technology: '💻', psychology: '🧠', exams: '🎓', default: '📚',
   };
   return map[category.toLowerCase()] ?? map.default;
 }
@@ -517,7 +576,8 @@ function getCategoryBg(category: string): string {
   const map: Record<string, string> = {
     languages: colors.languageBg, medical: colors.medicalBg, mcat: colors.medicalBg,
     anatomy: colors.medicalBg, science: colors.scienceBg, history: colors.historyBg,
-    math: colors.mathBg, technology: colors.techBg, default: colors.primaryLight,
+    math: colors.mathBg, technology: colors.techBg, exams: colors.mathBg,
+    default: colors.primaryLight,
   };
   return map[category.toLowerCase()] ?? map.default;
 }
@@ -577,6 +637,28 @@ const styles = StyleSheet.create({
   },
   downloadBannerText: { ...typography.caption, color: colors.primary, flex: 1, flexWrap: 'wrap' },
   upgradeLink: { ...typography.captionBold, color: colors.primary, flexShrink: 0 },
+  filterRows: { flexGrow: 0, flexShrink: 0 },
+  langRow: {
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.xs,
+    gap: spacing.sm,
+  },
+  langChip: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: colors.surface,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: colors.border,
+  },
+  langChipActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  langFlag: { fontSize: 18 },
   chipsScroll: { flexGrow: 0, flexShrink: 0 },
   chipsRow: {
     paddingHorizontal: spacing.md,

@@ -163,6 +163,7 @@ export const pt_PT = {
     medical: 'Medicina',
     technology: 'Tecnologia',
     psychology: 'Psicologia',
+    exams: 'Exames',
   },
 
   // Settings

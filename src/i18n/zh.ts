@@ -163,6 +163,7 @@ export const zh = {
     medical: '医学',
     technology: '技术',
     psychology: '心理学',
+    exams: '考试',
   },
 
   // Settings

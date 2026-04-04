@@ -25,6 +25,9 @@ import { technologyCards } from './subjects/technology';
 import { psychologyCards } from './subjects/psychology';
 import { mcatCards } from './subjects/mcat';
 
+// Exams
+import { yksMathCards } from './exams/yks_math';
+
 export { ALL_DECKS };
 
 /**
@@ -67,6 +70,7 @@ const CARDS_MAP: Record<string, PublicCard[]> = {
   'deck-technology': technologyCards,
   'deck-psychology': psychologyCards,
   'deck-mcat': mcatCards,
+  'deck-yks-math': yksMathCards,
 };
 
 export function getStaticFeaturedDecks(): PublicDeck[] {

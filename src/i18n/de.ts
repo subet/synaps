@@ -163,6 +163,7 @@ export const de = {
     medical: 'Medizin',
     technology: 'Technologie',
     psychology: 'Psychologie',
+    exams: 'Prüfungen',
   },
 
   // Settings
