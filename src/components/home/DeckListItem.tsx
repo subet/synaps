@@ -6,6 +6,7 @@ import { tap } from '../../utils/haptics';
 import { useTranslation } from '../../i18n';
 import { Deck, DeckStats } from '../../types';
 import { useResolvedDeckDescription, useResolvedDeckName } from '../../utils/translations';
+import { LanguageBadge } from '../ui/LanguageBadge';
 
 interface DeckListItemProps {
   deck: Deck;
@@ -39,7 +40,12 @@ export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={1}>{resolvedName}</Text>
         {resolvedDescription ? (
-          <Text style={styles.description} numberOfLines={1}>{resolvedDescription}</Text>
+          <View style={styles.descRow}>
+            <Text style={styles.description} numberOfLines={1}>{resolvedDescription}</Text>
+            {deck.is_public_download && <LanguageBadge supported_languages={deck.supported_languages} />}
+          </View>
+        ) : deck.is_public_download ? (
+          <LanguageBadge supported_languages={deck.supported_languages} />
         ) : null}
       </View>
 
@@ -90,10 +96,16 @@ const styles = StyleSheet.create({
     ...typography.bodyBold,
     color: colors.textPrimary,
   },
+  descRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 2,
+  },
   description: {
     ...typography.caption,
     color: colors.textSecondary,
-    marginTop: 2,
+    flex: 1,
   },
   // Compact pill badge for due count
   duePill: {

@@ -18,6 +18,7 @@ export interface Deck {
   reverse_cards: boolean;
   is_public_download: boolean;
   source_id?: string;
+  supported_languages?: Language[] | null;
   name_translations?: TranslationMap | null;
   description_translations?: TranslationMap | null;
   created_at: string;
@@ -73,6 +74,7 @@ export interface PublicDeck {
   download_count: number;
   is_editors_choice: boolean;
   is_featured: boolean;
+  supported_languages?: Language[];
   name_translations?: TranslationMap;
   description_translations?: TranslationMap;
   created_at: string;

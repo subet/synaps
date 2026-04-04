@@ -29,6 +29,7 @@ import { useAppStore } from '../../src/stores/useAppStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { PublicDeck } from '../../src/types';
 import { resolveTranslation, useResolvedDeckName } from '../../src/utils/translations';
+import { LanguageBadge } from '../../src/components/ui/LanguageBadge';
 
 type Tab = 'discover' | 'browse';
 
@@ -100,6 +101,7 @@ export default function LibraryScreen() {
         description: deck.description,
         name_translations: deck.name_translations,
         description_translations: deck.description_translations,
+        supported_languages: deck.supported_languages,
         icon: deck.icon_url ?? '📚',
         color: colors.primary,
         new_cards_per_day: 20,
@@ -384,7 +386,10 @@ function FeaturedDeckCard({
         <Text style={styles.featuredIconText}>{deck.icon_url ?? getCategoryEmoji(deck.category)}</Text>
       </View>
       <Text style={styles.featuredName} numberOfLines={2}>{name}</Text>
-      <Text style={styles.featuredCount}>{t('cards_count', { count: deck.card_count })}</Text>
+      <View style={styles.featuredMeta}>
+        <Text style={styles.featuredCount}>{t('cards_count', { count: deck.card_count })}</Text>
+        <LanguageBadge supported_languages={deck.supported_languages} />
+      </View>
       {isDownloaded ? (
         <View style={styles.downloadedBadge}>
           <Ionicons name="checkmark" size={14} color={colors.white} />
@@ -425,7 +430,10 @@ function EditorsChoiceDeckCard({
           <Text style={styles.editorsBadgeText}>{t('editors_choice_badge')}</Text>
         </View>
         <Text style={styles.editorsName}>{name}</Text>
-        <Text style={styles.editorsCount}>{deck.card_count} cards</Text>
+        <View style={styles.editorsMetaRow}>
+          <Text style={styles.editorsCount}>{deck.card_count} cards</Text>
+          <LanguageBadge supported_languages={deck.supported_languages} />
+        </View>
       </View>
       <View style={styles.editorsCardRight}>
         <Text style={styles.editorsEmoji}>{getCategoryEmoji(deck.category)}</Text>
@@ -469,7 +477,10 @@ function BrowseDeckCard({
       </View>
       <View style={styles.browseInfo}>
         <Text style={styles.browseName} numberOfLines={1}>{name}</Text>
-        <Text style={styles.browseCount}>{t('cards_count', { count: deck.card_count })}</Text>
+        <View style={styles.browseMetaRow}>
+          <Text style={styles.browseCount}>{t('cards_count', { count: deck.card_count })}</Text>
+          <LanguageBadge supported_languages={deck.supported_languages} />
+        </View>
       </View>
       {isDownloaded ? (
         <View style={styles.downloadedBadge}>
@@ -616,7 +627,8 @@ const styles = StyleSheet.create({
   },
   featuredIconText: { fontSize: 28 },
   featuredName: { ...typography.captionBold, color: colors.textPrimary, textAlign: 'center', marginBottom: spacing.xs },
-  featuredCount: { ...typography.small, color: colors.textMuted, marginBottom: spacing.sm },
+  featuredMeta: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, marginBottom: spacing.sm },
+  featuredCount: { ...typography.small, color: colors.textMuted },
 
   // Editors choice card
   editorsCard: {
@@ -636,6 +648,7 @@ const styles = StyleSheet.create({
   },
   editorsBadgeText: { ...typography.smallBold, color: colors.white },
   editorsName: { ...typography.bodyBold, color: colors.textPrimary, marginBottom: spacing.xs },
+  editorsMetaRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
   editorsCount: { ...typography.caption, color: colors.textSecondary },
   editorsCardRight: { alignItems: 'center', gap: spacing.sm },
   editorsEmoji: { fontSize: 36 },
@@ -665,7 +678,8 @@ const styles = StyleSheet.create({
   browseIconText: { fontSize: 22 },
   browseInfo: { flex: 1 },
   browseName: { ...typography.bodyBold, color: colors.textPrimary },
-  browseCount: { ...typography.small, color: colors.textMuted, marginTop: 2 },
+  browseMetaRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, marginTop: 2 },
+  browseCount: { ...typography.small, color: colors.textMuted },
 
   // Shared button styles
   downloadBtn: {

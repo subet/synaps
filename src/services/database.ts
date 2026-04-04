@@ -95,6 +95,7 @@ async function initializeDatabase(database: SQLite.SQLiteDatabase): Promise<void
   try { await database.execAsync(`ALTER TABLE cards ADD COLUMN back_translations TEXT`); } catch {}
   try { await database.execAsync(`ALTER TABLE decks ADD COLUMN name_translations TEXT`); } catch {}
   try { await database.execAsync(`ALTER TABLE decks ADD COLUMN description_translations TEXT`); } catch {}
+  try { await database.execAsync(`ALTER TABLE decks ADD COLUMN supported_languages TEXT`); } catch {}
 }
 
 // ─── Decks ────────────────────────────────────────────────────────────────────
@@ -126,8 +127,9 @@ export async function createDeck(data: Omit<Deck, 'id' | 'created_at' | 'updated
   await database.runAsync(
     `INSERT INTO decks (id, name, description, parent_deck_id, icon, color,
       new_cards_per_day, shuffle_cards, auto_play_audio, reverse_cards,
-      is_public_download, source_id, name_translations, description_translations)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      is_public_download, source_id, name_translations, description_translations,
+      supported_languages)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       id,
       data.name,
@@ -143,6 +145,7 @@ export async function createDeck(data: Omit<Deck, 'id' | 'created_at' | 'updated
       data.source_id ?? null,
       data.name_translations ? JSON.stringify(data.name_translations) : null,
       data.description_translations ? JSON.stringify(data.description_translations) : null,
+      data.supported_languages ? JSON.stringify(data.supported_languages) : null,
     ]
   );
   const deck = await getDeckById(id);
@@ -572,6 +575,7 @@ function mapDeck(row: any): Deck {
     auto_play_audio: Boolean(row.auto_play_audio),
     reverse_cards: Boolean(row.reverse_cards),
     is_public_download: Boolean(row.is_public_download),
+    supported_languages: tryParseJSON(row.supported_languages),
     name_translations: tryParseJSON(row.name_translations),
     description_translations: tryParseJSON(row.description_translations),
   };
@@ -604,10 +608,11 @@ export async function repairPublicDeckTranslations(): Promise<void> {
     const staticDeck = ALL_DECKS.find((d) => d.id === deck.source_id);
     if (staticDeck) {
       await database.runAsync(
-        `UPDATE decks SET name_translations = ?, description_translations = ? WHERE id = ?`,
+        `UPDATE decks SET name_translations = ?, description_translations = ?, supported_languages = ? WHERE id = ?`,
         [
           JSON.stringify(staticDeck.name_translations ?? {}),
           JSON.stringify(staticDeck.description_translations ?? {}),
+          staticDeck.supported_languages ? JSON.stringify(staticDeck.supported_languages) : null,
           deck.id,
         ]
       );
