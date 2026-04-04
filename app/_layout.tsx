@@ -15,7 +15,7 @@ import { useSubscriptionStore } from '../src/stores/useSubscriptionStore';
 import AnimatedSplash from '../src/components/AnimatedSplash';
 SplashScreen.preventAutoHideAsync();
 
-const SUPPORTED: Language[] = ['en', 'tr', 'de', 'fr', 'nl', 'ru', 'zh', 'pt_BR', 'pt_PT'];
+const SUPPORTED: Language[] = ['en', 'es', 'it', 'tr', 'de', 'fr', 'nl', 'ru', 'zh', 'pt_BR', 'pt_PT'];
 
 function detectLocale(languageTag: string, languageCode: string): Language {
   // Portuguese needs region to distinguish pt-BR from pt-PT

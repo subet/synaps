@@ -35,6 +35,7 @@ const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'de',    label: 'Deutsch' },
   { code: 'es',    label: 'Español' },
   { code: 'fr',    label: 'Français' },
+  { code: 'it',    label: 'Italiano' },
   { code: 'nl',    label: 'Nederlands' },
   { code: 'pt_BR', label: 'Português (Brasil)' },
   { code: 'pt_PT', label: 'Português (Portugal)' },

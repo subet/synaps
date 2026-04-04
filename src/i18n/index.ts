@@ -1,6 +1,7 @@
 import { I18n } from 'i18n-js';
 import { en } from './en';
 import { es } from './es';
+import { it } from './it';
 import { tr } from './tr';
 import { de } from './de';
 import { fr } from './fr';
@@ -10,7 +11,7 @@ import { zh } from './zh';
 import { pt_BR } from './pt_BR';
 import { pt_PT } from './pt_PT';
 
-export const i18n = new I18n({ en, es, tr, de, fr, nl, ru, zh, pt_BR, pt_PT });
+export const i18n = new I18n({ en, es, it, tr, de, fr, nl, ru, zh, pt_BR, pt_PT });
 
 i18n.defaultLocale = 'en';
 i18n.locale = 'en';
