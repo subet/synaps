@@ -32,9 +32,6 @@ Show “X students downloaded” (sort by most downloaded in library)
 - Flutter
 - React
 
-# TEST PRO FEATURES
-We must check the online field to understand if the user is free or paid.
-
 # EXAM SPECIFI DECKS
 Tier 1 (HIGH ROI — start here)
 🇹🇷 Turkish → YKS, LGS
@@ -88,3 +85,6 @@ Use:
 
 # ILERDE
 Dershanelere, kurslara, etüt merkezlerine, okullara kullandırılabilir. Sınıf oluşturulur, öğrenciler eklenir, herkes birbiriyle yarışır. Düşünelim.
+
+# SYNC
+PRO kullanıcıları "Settings > Sync Data" tıkladığında sync yapalım. 

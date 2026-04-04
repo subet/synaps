@@ -177,7 +177,13 @@ export default function SettingsScreen() {
               </View>
             </View>
             <SettingsRow label={t('manage_subscription')} onPress={() => router.push('/paywall')} />
-            <SettingsRow label={t('sync_data')} onPress={() => Alert.alert('Sync', t('sync_requires_pro'))} />
+            <SettingsRow label={t('sync_data')} onPress={() => {
+              if (!isPro) {
+                Alert.alert('Sync', t('sync_requires_pro'));
+                return;
+              }
+              Alert.alert('Sync', t('sync_coming_soon'));
+            }} />
             <SettingsRow label={t('sign_out')} onPress={handleSignOut} danger />
           </Section>
         ) : (

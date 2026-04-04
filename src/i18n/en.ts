@@ -174,6 +174,7 @@ export const en = {
   manage_subscription: 'Manage Subscription',
   sync_data: 'Sync Data',
   sync_requires_pro: 'Cloud sync requires PRO subscription.',
+  sync_coming_soon: 'Cloud sync is coming soon!',
   reminders: 'Reminders',
   reminder_time: 'Reminder time',
   reminder_modal_title: 'Reminder Time',
