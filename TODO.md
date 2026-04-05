@@ -5,10 +5,6 @@ Kullanıcılar oluşturdukları deckleri paylaşabilsinler. Öyle bir library ol
 Show locked decks (Let user unlock the second part if he downloads the first part)
 Show “X students downloaded” (sort by most downloaded in library)
 
-# WEEKLY PRECAP
-There is a weekly precap push notification coming on Sundays at 10:00. Lets put a toggle for it on the settings tab. By default, it is toggled on, but user will be able to toggle it off, so no weekly push notification.
-
-
 # NEW DECKS
 ## BUSINESS
 - Startups: Startup Fundamentals – From Idea to Launch

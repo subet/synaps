@@ -29,9 +29,9 @@ function Particle({ delay, x, color }: { delay: number; x: number; color: string
   const rotate = useSharedValue(0);
 
   useEffect(() => {
-    translateY.value = withDelay(delay, withTiming(600, { duration: 2500, easing: Easing.out(Easing.quad) }));
-    opacity.value = withDelay(delay + 1500, withTiming(0, { duration: 1000 }));
-    rotate.value = withDelay(delay, withRepeat(withTiming(360, { duration: 1200 }), -1));
+    translateY.value = withDelay(delay, withTiming(400, { duration: 1200, easing: Easing.out(Easing.quad) }));
+    opacity.value = withDelay(delay + 600, withTiming(0, { duration: 600 }));
+    rotate.value = withDelay(delay, withRepeat(withTiming(360, { duration: 800 }), 2));
   }, []);
 
   const style = useAnimatedStyle(() => ({
@@ -63,16 +63,16 @@ export function BadgeCelebration({ badge, onDismiss }: Props) {
   useEffect(() => {
     // Badge icon bounces in
     scale.value = withSequence(
-      withTiming(1.3, { duration: 400, easing: Easing.out(Easing.back(2)) }),
-      withTiming(1, { duration: 200 }),
+      withTiming(1.2, { duration: 300, easing: Easing.out(Easing.back(2)) }),
+      withTiming(1, { duration: 150 }),
     );
-    // Pulsing glow
+    // Pulsing glow — 2 pulses then stop
     glow.value = withRepeat(
       withSequence(
-        withTiming(0.6, { duration: 1000 }),
-        withTiming(0.3, { duration: 1000 }),
+        withTiming(0.6, { duration: 500 }),
+        withTiming(0.3, { duration: 500 }),
       ),
-      -1,
+      2,
       true,
     );
   }, []);
@@ -87,9 +87,9 @@ export function BadgeCelebration({ badge, onDismiss }: Props) {
   }));
 
   // Generate confetti particles
-  const particles = Array.from({ length: 20 }, (_, i) => ({
+  const particles = Array.from({ length: 12 }, (_, i) => ({
     id: i,
-    delay: Math.random() * 800,
+    delay: Math.random() * 400,
     x: Math.random() * 90 + 5,
     color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
   }));
@@ -102,7 +102,7 @@ export function BadgeCelebration({ badge, onDismiss }: Props) {
           <Particle key={p.id} delay={p.delay} x={p.x} color={p.color} />
         ))}
 
-        <Animated.View entering={SlideInDown.springify().damping(15)} style={styles.card}>
+        <Animated.View entering={SlideInDown.springify().damping(20).stiffness(200)} style={styles.card}>
           <LinearGradient
             colors={[badge.color + '20', badge.color + '08']}
             style={styles.gradient}
@@ -116,19 +116,19 @@ export function BadgeCelebration({ badge, onDismiss }: Props) {
             <Text style={styles.icon}>{badge.icon}</Text>
           </Animated.View>
 
-          <Animated.Text entering={FadeIn.delay(300)} style={styles.congratsText}>
+          <Animated.Text entering={FadeIn.delay(200)} style={styles.congratsText}>
             {t('badge_unlocked')}
           </Animated.Text>
 
-          <Animated.Text entering={FadeIn.delay(500)} style={styles.badgeName}>
+          <Animated.Text entering={FadeIn.delay(300)} style={styles.badgeName}>
             {t(badge.nameKey)}
           </Animated.Text>
 
-          <Animated.Text entering={FadeIn.delay(700)} style={styles.badgeDesc}>
+          <Animated.Text entering={FadeIn.delay(400)} style={styles.badgeDesc}>
             {t(badge.descriptionKey)}
           </Animated.Text>
 
-          <Animated.View entering={FadeIn.delay(900)}>
+          <Animated.View entering={FadeIn.delay(500)}>
             <Pressable style={[styles.button, { backgroundColor: badge.color }]} onPress={onDismiss}>
               <Text style={styles.buttonText}>{t('awesome')}</Text>
             </Pressable>
