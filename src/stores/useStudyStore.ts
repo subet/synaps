@@ -15,6 +15,7 @@ import {
 import { calculateSM2 } from '../services/srs';
 import { scheduleStreakAtRiskNotification, scheduleWeeklyProgress } from '../services/notifications';
 import { getStreakData } from '../services/database';
+import { useAppStore } from './useAppStore';
 import { Card, SRSGrade, StudySessionResult } from '../types';
 
 interface StudyState {
@@ -171,7 +172,10 @@ export const useStudyStore = create<StudyState>((set, get) => ({
       if (streakData.currentStreak > 0) {
         scheduleStreakAtRiskNotification(streakData.currentStreak).catch(() => {});
       }
-      scheduleWeeklyProgress(cardsStudied, 1).catch(() => {});
+      const { notifications } = useAppStore.getState();
+      if (notifications.weeklyRecap !== false) {
+        scheduleWeeklyProgress(cardsStudied, 1).catch(() => {});
+      }
     } catch { /* non-critical */ }
   },
 

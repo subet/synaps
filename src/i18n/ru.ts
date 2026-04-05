@@ -179,6 +179,7 @@ export const ru = {
   reminders: 'Напоминания',
   reminder_time: 'Время напоминания',
   reminder_modal_title: 'Время напоминания',
+  weekly_recap: 'Еженедельный отчет',
   haptics: 'Вибрация',
   ui_language: 'Язык интерфейса',
   select_language: 'Выберите язык',

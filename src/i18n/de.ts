@@ -179,6 +179,7 @@ export const de = {
   reminders: 'Erinnerungen',
   reminder_time: 'Erinnerungszeit',
   reminder_modal_title: 'Erinnerungszeit',
+  weekly_recap: 'Wochenbericht',
   haptics: 'Haptik',
   ui_language: 'Sprache der Benutzeroberfläche',
   select_language: 'Sprache auswählen',

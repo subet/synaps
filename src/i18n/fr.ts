@@ -179,6 +179,7 @@ export const fr = {
   reminders: 'Rappels',
   reminder_time: 'Heure du rappel',
   reminder_modal_title: 'Heure du rappel',
+  weekly_recap: 'Bilan hebdomadaire',
   haptics: 'Retour haptique',
   ui_language: 'Langue de l\'interface',
   select_language: 'Sélectionner la langue',

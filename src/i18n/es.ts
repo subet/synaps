@@ -179,6 +179,7 @@ export const es = {
   reminders: 'Recordatorios',
   reminder_time: 'Hora del recordatorio',
   reminder_modal_title: 'Hora del recordatorio',
+  weekly_recap: 'Resumen semanal',
   haptics: 'Vibración',
   ui_language: 'Idioma de la interfaz',
   select_language: 'Seleccionar idioma',

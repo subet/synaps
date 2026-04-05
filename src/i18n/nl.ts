@@ -179,6 +179,7 @@ export const nl = {
   reminders: 'Herinneringen',
   reminder_time: 'Herinneringstijd',
   reminder_modal_title: 'Herinneringstijd',
+  weekly_recap: 'Weekoverzicht',
   haptics: 'Haptics',
   ui_language: 'Taal van de interface',
   select_language: 'Taal selecteren',

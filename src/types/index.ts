@@ -136,6 +136,7 @@ export interface StudySessionResult {
 export interface NotificationSettings {
   enabled: boolean;
   time: string; // HH:MM format
+  weeklyRecap: boolean;
 }
 
 export interface AppSettings {

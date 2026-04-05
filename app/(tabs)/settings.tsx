@@ -89,7 +89,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
-  const { notifications, language, hapticsEnabled, setNotificationsEnabled, setNotificationTime, setLanguage, setHapticsEnabled } = useAppStore();
+  const { notifications, language, hapticsEnabled, setNotificationsEnabled, setNotificationTime, setWeeklyRecapEnabled, setLanguage, setHapticsEnabled } = useAppStore();
   const { user, profile, logout } = useAuthStore();
   const { isPro } = useSubscriptionStore();
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -221,6 +221,15 @@ export default function SettingsScreen() {
               onPress={() => setShowTimePicker(true)}
             />
           )}
+          <SettingsRow
+            label={t('weekly_recap')}
+            right={
+              <Toggle
+                value={notifications.weeklyRecap ?? true}
+                onValueChange={(v) => { tap(); setWeeklyRecapEnabled(v); }}
+              />
+            }
+          />
           <SettingsRow
             label={t('haptics')}
             right={

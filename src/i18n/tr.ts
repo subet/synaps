@@ -179,6 +179,7 @@ export const tr = {
   reminders: 'Hatırlatıcılar',
   reminder_time: 'Hatırlatıcı saati',
   reminder_modal_title: 'Hatırlatıcı Saati',
+  weekly_recap: 'Haftalik Ozet',
   haptics: 'Dokunsal Geri Bildirim',
   ui_language: 'Arayüz Dili',
   select_language: 'Dil seçin',

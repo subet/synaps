@@ -179,6 +179,7 @@ export const pt_PT = {
   reminders: 'Lembretes',
   reminder_time: 'Hora do lembrete',
   reminder_modal_title: 'Hora do Lembrete',
+  weekly_recap: 'Resumo semanal',
   haptics: 'Vibração',
   ui_language: 'Idioma da aplicação',
   select_language: 'Seleccionar idioma',

@@ -180,6 +180,7 @@ export const en = {
   reminders: 'Reminders',
   reminder_time: 'Reminder time',
   reminder_modal_title: 'Reminder Time',
+  weekly_recap: 'Weekly Recap',
   haptics: 'Haptics',
   ui_language: 'UI Language',
   select_language: 'Select language',

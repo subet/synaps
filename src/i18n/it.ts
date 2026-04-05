@@ -179,6 +179,7 @@ export const it = {
   reminders: 'Promemoria',
   reminder_time: 'Orario promemoria',
   reminder_modal_title: 'Orario promemoria',
+  weekly_recap: 'Riepilogo settimanale',
   haptics: 'Vibrazione',
   ui_language: 'Lingua interfaccia',
   select_language: 'Seleziona lingua',

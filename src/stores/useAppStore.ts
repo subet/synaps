@@ -9,6 +9,7 @@ interface AppState extends AppSettings {
   setLanguage: (lang: Language) => Promise<void>;
   setNotificationsEnabled: (enabled: boolean) => Promise<void>;
   setNotificationTime: (time: string) => Promise<void>;
+  setWeeklyRecapEnabled: (enabled: boolean) => Promise<void>;
   setHapticsEnabled: (enabled: boolean) => Promise<void>;
   markOnboardingComplete: () => Promise<void>;
   incrementFreeDownloads: () => Promise<void>;
@@ -19,7 +20,7 @@ const SETTINGS_KEY = '@synaps/settings';
 
 const defaultSettings: AppSettings = {
   language: 'en',
-  notifications: { enabled: false, time: '09:00' },
+  notifications: { enabled: false, time: '09:00', weeklyRecap: true },
   hasSeenOnboarding: false,
   freeDownloadsUsed: 0,
   hapticsEnabled: true,
@@ -57,6 +58,12 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   setNotificationTime: async (time) => {
     const notifications = { ...get().notifications, time };
+    set({ notifications });
+    await saveSettings({ ...get(), notifications });
+  },
+
+  setWeeklyRecapEnabled: async (weeklyRecap) => {
+    const notifications = { ...get().notifications, weeklyRecap };
     set({ notifications });
     await saveSettings({ ...get(), notifications });
   },
