@@ -5,6 +5,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -61,6 +62,7 @@ export default function LibraryScreen() {
   const [editorsChoiceDecks, setEditorsChoiceDecks] = useState<PublicDeck[]>([]);
   const [searchResults, setSearchResults] = useState<PublicDeck[]>([]);
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [selectedDeck, setSelectedDeck] = useState<PublicDeck | null>(null);
   const { loadDecks, decks } = useDeckStore();
   const { freeDownloadsUsed, incrementFreeDownloads, language } = useAppStore();
   const { isPro, wasPro } = useSubscriptionStore();
@@ -93,6 +95,7 @@ export default function LibraryScreen() {
 
   const handleDownload = async (deck: PublicDeck) => {
     if (!isPro && freeDownloadsUsed >= FREE_DOWNLOAD_LIMIT) {
+      setSelectedDeck(null);
       Alert.alert(
         t('limit_downloads_title'),
         t('limit_downloads_message', { limit: FREE_DOWNLOAD_LIMIT }),
@@ -104,6 +107,7 @@ export default function LibraryScreen() {
       return;
     }
     if (downloadedIds.has(deck.id)) return;
+    setSelectedDeck(null);
 
     setDownloading(deck.id);
     try {
@@ -226,6 +230,7 @@ export default function LibraryScreen() {
           downloading={downloading}
           downloadedIds={downloadedIds}
           onDownload={handleDownload}
+          onSelect={setSelectedDeck}
         />
       ) : activeTab === 'discover' ? (
         <DiscoverTab
@@ -234,6 +239,7 @@ export default function LibraryScreen() {
           downloading={downloading}
           downloadedIds={downloadedIds}
           onDownload={handleDownload}
+          onSelect={setSelectedDeck}
         />
       ) : (
         <BrowseTab
@@ -246,6 +252,18 @@ export default function LibraryScreen() {
           downloading={downloading}
           downloadedIds={downloadedIds}
           onDownload={handleDownload}
+          onSelect={setSelectedDeck}
+        />
+      )}
+
+      {/* Deck detail popup */}
+      {selectedDeck && (
+        <DeckDetailModal
+          deck={selectedDeck}
+          isDownloading={downloading === selectedDeck.id}
+          isDownloaded={downloadedIds.has(selectedDeck.id)}
+          onDownload={handleDownload}
+          onDismiss={() => setSelectedDeck(null)}
         />
       )}
     </SafeAreaView>
@@ -259,11 +277,13 @@ function SearchResults({
   downloading,
   downloadedIds,
   onDownload,
+  onSelect,
 }: {
   results: PublicDeck[];
   downloading: string | null;
   downloadedIds: Set<string>;
   onDownload: (d: PublicDeck) => void;
+  onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
   return (
@@ -278,6 +298,7 @@ function SearchResults({
             isDownloading={downloading === deck.id}
             isDownloaded={downloadedIds.has(deck.id)}
             onDownload={onDownload}
+            onSelect={onSelect}
           />
         ))
       )}
@@ -293,12 +314,14 @@ function DiscoverTab({
   downloading,
   downloadedIds,
   onDownload,
+  onSelect,
 }: {
   featuredDecks: PublicDeck[];
   editorsChoiceDecks: PublicDeck[];
   downloading: string | null;
   downloadedIds: Set<string>;
   onDownload: (d: PublicDeck) => void;
+  onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
   return (
@@ -315,6 +338,7 @@ function DiscoverTab({
                 isDownloading={downloading === deck.id}
                 isDownloaded={downloadedIds.has(deck.id)}
                 onDownload={onDownload}
+                onSelect={onSelect}
               />
             ))}
           </ScrollView>
@@ -332,6 +356,7 @@ function DiscoverTab({
               isDownloading={downloading === deck.id}
               isDownloaded={downloadedIds.has(deck.id)}
               onDownload={onDownload}
+              onSelect={onSelect}
             />
           ))}
         </View>
@@ -352,6 +377,7 @@ function BrowseTab({
   downloading,
   downloadedIds,
   onDownload,
+  onSelect,
 }: {
   decks: PublicDeck[];
   selectedCategory: string;
@@ -362,6 +388,7 @@ function BrowseTab({
   downloading: string | null;
   downloadedIds: Set<string>;
   onDownload: (d: PublicDeck) => void;
+  onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
   return (
@@ -425,6 +452,7 @@ function BrowseTab({
             isDownloading={downloading === deck.id}
             isDownloaded={downloadedIds.has(deck.id)}
             onDownload={onDownload}
+            onSelect={onSelect}
           />
         ))}
       </ScrollView>
@@ -439,16 +467,18 @@ function FeaturedDeckCard({
   onDownload,
   isDownloading,
   isDownloaded,
+  onSelect,
 }: {
   deck: PublicDeck;
   onDownload: (d: PublicDeck) => void;
   isDownloading: boolean;
   isDownloaded: boolean;
+  onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
   const name = useResolvedDeckName(deck);
   return (
-    <View style={styles.featuredCard}>
+    <Pressable style={styles.featuredCard} onPress={() => onSelect(deck)}>
       <View style={styles.featuredIcon}>
         <Text style={styles.featuredIconText}>{deck.icon_url ?? getCategoryEmoji(deck.category)}</Text>
       </View>
@@ -457,23 +487,13 @@ function FeaturedDeckCard({
         <Text style={styles.featuredCount}>{t('cards_count', { count: deck.card_count })}</Text>
         <LanguageBadge supported_languages={deck.supported_languages} />
       </View>
-      {isDownloaded ? (
+      {isDownloaded && (
         <View style={styles.downloadedBadge}>
           <Ionicons name="checkmark" size={14} color={colors.white} />
           <Text style={styles.downloadedBadgeText}> {t('downloaded')}</Text>
         </View>
-      ) : (
-        <Pressable
-          style={[styles.downloadBtn, isDownloading && styles.downloadBtnDisabled]}
-          onPress={() => onDownload(deck)}
-          disabled={isDownloading}
-        >
-          {isDownloading
-            ? <ActivityIndicator size="small" color={colors.white} />
-            : <Text style={styles.downloadBtnText}>↓ {t('download')}</Text>}
-        </Pressable>
       )}
-    </View>
+    </Pressable>
   );
 }
 
@@ -482,16 +502,18 @@ function EditorsChoiceDeckCard({
   onDownload,
   isDownloading,
   isDownloaded,
+  onSelect,
 }: {
   deck: PublicDeck;
   onDownload: (d: PublicDeck) => void;
   isDownloading: boolean;
   isDownloaded: boolean;
+  onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
   const name = useResolvedDeckName(deck);
   return (
-    <View style={[styles.editorsCard, { backgroundColor: getCategoryBg(deck.category) }]}>
+    <Pressable style={[styles.editorsCard, { backgroundColor: getCategoryBg(deck.category) }]} onPress={() => onSelect(deck)}>
       <View style={styles.editorsCardLeft}>
         <View style={styles.editorsBadge}>
           <Text style={styles.editorsBadgeText}>{t('editors_choice_badge')}</Text>
@@ -504,23 +526,13 @@ function EditorsChoiceDeckCard({
       </View>
       <View style={styles.editorsCardRight}>
         <Text style={styles.editorsEmoji}>{getCategoryEmoji(deck.category)}</Text>
-        {isDownloaded ? (
+        {isDownloaded && (
           <View style={styles.downloadedBadgeSmall}>
             <Ionicons name="checkmark" size={18} color={colors.white} />
           </View>
-        ) : (
-          <Pressable
-            style={[styles.downloadBtn, isDownloading && styles.downloadBtnDisabled]}
-            onPress={() => onDownload(deck)}
-            disabled={isDownloading}
-          >
-            {isDownloading
-              ? <ActivityIndicator size="small" color={colors.white} />
-              : <Text style={styles.downloadBtnText}>↓</Text>}
-          </Pressable>
         )}
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -529,16 +541,18 @@ function BrowseDeckCard({
   onDownload,
   isDownloading,
   isDownloaded,
+  onSelect,
 }: {
   deck: PublicDeck;
   onDownload: (d: PublicDeck) => void;
   isDownloading: boolean;
   isDownloaded: boolean;
+  onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
   const name = useResolvedDeckName(deck);
   return (
-    <View style={styles.browseCard}>
+    <Pressable style={styles.browseCard} onPress={() => onSelect(deck)}>
       <View style={[styles.browseIcon, { backgroundColor: getCategoryBg(deck.category) }]}>
         <Text style={styles.browseIconText}>{deck.icon_url ?? getCategoryEmoji(deck.category)}</Text>
       </View>
@@ -549,23 +563,98 @@ function BrowseDeckCard({
           <LanguageBadge supported_languages={deck.supported_languages} />
         </View>
       </View>
-      {isDownloaded ? (
+      {isDownloaded && (
         <View style={styles.downloadedBadge}>
           <Ionicons name="checkmark" size={14} color={colors.white} />
           <Text style={styles.downloadedBadgeText}> {t('downloaded')}</Text>
         </View>
-      ) : (
-        <Pressable
-          style={[styles.downloadBtn, isDownloading && styles.downloadBtnDisabled]}
-          onPress={() => onDownload(deck)}
-          disabled={isDownloading}
-        >
-          {isDownloading
-            ? <ActivityIndicator size="small" color={colors.white} />
-            : <Text style={styles.downloadBtnText}>↓ {t('download')}</Text>}
-        </Pressable>
       )}
-    </View>
+    </Pressable>
+  );
+}
+
+// ─── Deck Detail Modal ────────────────────────────────────────────────────────
+
+function DeckDetailModal({
+  deck,
+  isDownloading,
+  isDownloaded,
+  onDownload,
+  onDismiss,
+}: {
+  deck: PublicDeck;
+  isDownloading: boolean;
+  isDownloaded: boolean;
+  onDownload: (d: PublicDeck) => void;
+  onDismiss: () => void;
+}) {
+  const { t } = useTranslation();
+  const { language } = useAppStore();
+  const name = resolveTranslation(deck.name_translations, deck.name, language);
+  const description = resolveTranslation(deck.description_translations, deck.description ?? '', language);
+  const categoryLabel = getCategoryLabel(deck.category);
+
+  return (
+    <Modal transparent animationType="fade" onRequestClose={onDismiss}>
+      <Pressable style={styles.modalOverlay} onPress={onDismiss}>
+        <Pressable style={styles.modalSheet} onPress={(e) => e.stopPropagation()}>
+          {/* Icon */}
+          <View style={[styles.modalIconCircle, { backgroundColor: getCategoryBg(deck.category) }]}>
+            <Text style={styles.modalIconText}>{deck.icon_url ?? getCategoryEmoji(deck.category)}</Text>
+          </View>
+
+          {/* Name */}
+          <Text style={styles.modalName}>{name}</Text>
+
+          {/* Meta row */}
+          <View style={styles.modalMetaRow}>
+            <View style={styles.modalMetaChip}>
+              <Text style={styles.modalMetaText}>{t('cards_count', { count: deck.card_count })}</Text>
+            </View>
+            <View style={styles.modalMetaChip}>
+              <Text style={styles.modalMetaText}>{categoryLabel}</Text>
+            </View>
+            <LanguageBadge supported_languages={deck.supported_languages} />
+          </View>
+
+          {/* Description */}
+          {description ? (
+            <Text style={styles.modalDescription}>{description}</Text>
+          ) : null}
+
+          {/* Editor's choice badge */}
+          {deck.is_editors_choice && (
+            <View style={styles.modalEditorsBadge}>
+              <Ionicons name="star" size={14} color={colors.primary} />
+              <Text style={styles.modalEditorsBadgeText}>{t('editors_choice_badge')}</Text>
+            </View>
+          )}
+
+          {/* Action button */}
+          {isDownloaded ? (
+            <View style={styles.modalDownloadedBtn}>
+              <Ionicons name="checkmark-circle" size={20} color={colors.white} />
+              <Text style={styles.modalDownloadedText}>{t('downloaded')}</Text>
+            </View>
+          ) : (
+            <Pressable
+              style={[styles.modalDownloadBtn, isDownloading && styles.downloadBtnDisabled]}
+              onPress={() => onDownload(deck)}
+              disabled={isDownloading}
+            >
+              {isDownloading ? (
+                <ActivityIndicator size="small" color={colors.white} />
+              ) : (
+                <>
+                  <Ionicons name="download-outline" size={20} color={colors.white} />
+                  <Text style={styles.modalDownloadText}>{t('download')}</Text>
+                </>
+              )}
+            </Pressable>
+          )}
+        </Pressable>
+      </Pressable>
+    </Modal>
   );
 }
 
@@ -578,6 +667,15 @@ function getCategoryEmoji(category: string): string {
     technology: '💻', psychology: '🧠', exams: '🎓', default: '📚',
   };
   return map[category.toLowerCase()] ?? map.default;
+}
+
+function getCategoryLabel(category: string): string {
+  const map: Record<string, string> = {
+    languages: 'Languages', anatomy: 'Anatomy', mcat: 'MCAT', science: 'Science',
+    history: 'History', business: 'Business', math: 'Mathematics', medical: 'Medical',
+    technology: 'Technology', psychology: 'Psychology', exams: 'Exams', make_money: 'Make Money',
+  };
+  return map[category.toLowerCase()] ?? category;
 }
 
 function getCategoryBg(category: string): string {
@@ -805,4 +903,86 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   downloadedBadgeSmallText: { ...typography.bodyBold, color: colors.white },
+
+  // Deck detail modal
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.lg,
+  },
+  modalSheet: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    padding: spacing.xl,
+    width: '100%',
+    maxWidth: 360,
+    alignItems: 'center',
+  },
+  modalIconCircle: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  modalIconText: { fontSize: 36 },
+  modalName: {
+    ...typography.h3,
+    color: colors.textPrimary,
+    textAlign: 'center',
+    marginBottom: spacing.sm,
+  },
+  modalMetaRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    marginBottom: spacing.md,
+  },
+  modalMetaChip: {
+    backgroundColor: colors.surfaceAlt,
+    borderRadius: borderRadius.full,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+  },
+  modalMetaText: { ...typography.small, color: colors.textSecondary },
+  modalDescription: {
+    ...typography.body,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: spacing.md,
+  },
+  modalEditorsBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginBottom: spacing.md,
+  },
+  modalEditorsBadgeText: { ...typography.captionBold, color: colors.primary },
+  modalDownloadBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.lg,
+    paddingVertical: 14,
+    width: '100%',
+  },
+  modalDownloadText: { ...typography.button, color: colors.white, fontSize: 16 },
+  modalDownloadedBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    backgroundColor: colors.learning,
+    borderRadius: borderRadius.lg,
+    paddingVertical: 14,
+    width: '100%',
+  },
+  modalDownloadedText: { ...typography.button, color: colors.white, fontSize: 16 },
 });
