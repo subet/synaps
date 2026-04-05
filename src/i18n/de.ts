@@ -176,7 +176,7 @@ export const de = {
   settings: 'Einstellungen',
   account: 'Konto',
   section_app_settings: 'App-Einstellungen',
-  section_legal: 'Recht & Support',
+  section_legal: 'Langweiliges Zeug',
   sign_in: 'Anmelden',
   manage_subscription: 'Abonnement verwalten',
   sync_data: 'Daten synchronisieren',

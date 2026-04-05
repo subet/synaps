@@ -285,6 +285,7 @@ export default function SettingsScreen() {
           <SettingsRow label={t('terms')} onPress={() => router.push('/legal/terms')} />
           <SettingsRow label={t('privacy')} onPress={() => router.push('/legal/privacy')} />
           <SettingsRow label={t('contact_support')} onPress={() => router.push('/legal/support')} />
+          <SettingsRow label="Credits" onPress={() => router.push('/legal/credits')} />
         </Section>
 
         <Text style={styles.version}>{t('app_version')} {version}</Text>

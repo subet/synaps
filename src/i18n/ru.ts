@@ -176,7 +176,7 @@ export const ru = {
   settings: 'Настройки',
   account: 'Аккаунт',
   section_app_settings: 'Настройки приложения',
-  section_legal: 'Юридическая информация и поддержка',
+  section_legal: 'Скучные штуки',
   sign_in: 'Войти',
   manage_subscription: 'Управление подпиской',
   sync_data: 'Синхронизация данных',

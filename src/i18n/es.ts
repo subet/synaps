@@ -176,7 +176,7 @@ export const es = {
   settings: 'Ajustes',
   account: 'Cuenta',
   section_app_settings: 'Ajustes de la app',
-  section_legal: 'Legal y soporte',
+  section_legal: 'Cosas aburridas',
   sign_in: 'Iniciar sesión',
   manage_subscription: 'Gestionar suscripción',
   sync_data: 'Sincronizar datos',

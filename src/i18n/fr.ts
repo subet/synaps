@@ -176,7 +176,7 @@ export const fr = {
   settings: 'Paramètres',
   account: 'Compte',
   section_app_settings: 'Paramètres de l\'application',
-  section_legal: 'Mentions légales & Support',
+  section_legal: 'Trucs ennuyeux',
   sign_in: 'Se connecter',
   manage_subscription: 'Gérer l\'abonnement',
   sync_data: 'Synchroniser les données',

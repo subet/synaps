@@ -176,7 +176,7 @@ export const pt_PT = {
   settings: 'Definições',
   account: 'Conta',
   section_app_settings: 'Definições da Aplicação',
-  section_legal: 'Jurídico e Suporte',
+  section_legal: 'Coisas chatas',
   sign_in: 'Iniciar Sessão',
   manage_subscription: 'Gerir Subscrição',
   sync_data: 'Sincronizar Dados',

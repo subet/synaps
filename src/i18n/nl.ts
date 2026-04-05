@@ -176,7 +176,7 @@ export const nl = {
   settings: 'Instellingen',
   account: 'Account',
   section_app_settings: 'App-instellingen',
-  section_legal: 'Juridisch & Support',
+  section_legal: 'Saai spul',
   sign_in: 'Aanmelden',
   manage_subscription: 'Abonnement beheren',
   sync_data: 'Gegevens synchroniseren',

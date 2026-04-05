@@ -176,7 +176,7 @@ export const it = {
   settings: 'Impostazioni',
   account: 'Account',
   section_app_settings: 'Impostazioni app',
-  section_legal: 'Legale e supporto',
+  section_legal: 'Roba noiosa',
   sign_in: 'Accedi',
   manage_subscription: 'Gestisci abbonamento',
   sync_data: 'Sincronizza dati',

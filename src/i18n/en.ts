@@ -176,7 +176,7 @@ export const en = {
   settings: 'Settings',
   account: 'Account',
   section_app_settings: 'App Settings',
-  section_legal: 'Legal & Support',
+  section_legal: 'Boring Stuff',
   sign_in: 'Sign In',
   manage_subscription: 'Manage Subscription',
   sync_data: 'Sync Data',

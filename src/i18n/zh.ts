@@ -176,7 +176,7 @@ export const zh = {
   settings: '设置',
   account: '账号',
   section_app_settings: '应用设置',
-  section_legal: '法律与支持',
+  section_legal: '无聊的东西',
   sign_in: '登录',
   manage_subscription: '管理订阅',
   sync_data: '同步数据',

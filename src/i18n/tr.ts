@@ -176,7 +176,7 @@ export const tr = {
   settings: 'Ayarlar',
   account: 'Hesap',
   section_app_settings: 'Uygulama Ayarları',
-  section_legal: 'Hukuki & Destek',
+  section_legal: 'Sıkıcı şeyler',
   sign_in: 'Giriş Yap',
   manage_subscription: 'Aboneliği Yönet',
   sync_data: 'Veriyi Senkronize Et',
