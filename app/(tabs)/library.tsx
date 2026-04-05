@@ -23,6 +23,7 @@ import {
   searchStaticDecks,
 } from '../../src/data/publicDecks';
 import { bulkInsertCards, createDeck } from '../../src/services/database';
+import { incrementDownloadCount, fetchDownloadCounts } from '../../src/services/supabase';
 import { useTranslation } from '../../src/i18n';
 import { TabHeader } from '../../src/components/ui/TabHeader';
 import { useDeckStore } from '../../src/stores/useDeckStore';
@@ -63,6 +64,7 @@ export default function LibraryScreen() {
   const [searchResults, setSearchResults] = useState<PublicDeck[]>([]);
   const [downloading, setDownloading] = useState<string | null>(null);
   const [selectedDeck, setSelectedDeck] = useState<PublicDeck | null>(null);
+  const [downloadCounts, setDownloadCounts] = useState<Record<string, number>>({});
   const { loadDecks, decks } = useDeckStore();
   const { freeDownloadsUsed, incrementFreeDownloads, language } = useAppStore();
   const { isPro, wasPro } = useSubscriptionStore();
@@ -80,6 +82,13 @@ export default function LibraryScreen() {
     setFeaturedDecks(filterHidden(getStaticFeaturedDecks()));
     setEditorsChoiceDecks(filterHidden(getStaticEditorsChoiceDecks()));
   }, [hiddenDeckId]);
+
+  // Fetch download counts from Supabase
+  useEffect(() => {
+    fetchDownloadCounts()
+      .then(setDownloadCounts)
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -143,6 +152,9 @@ export default function LibraryScreen() {
       );
       if (!isPro) await incrementFreeDownloads();
       await loadDecks();
+      // Track download count in Supabase (fire-and-forget)
+      incrementDownloadCount(deck.id).catch(() => {});
+      setDownloadCounts((prev) => ({ ...prev, [deck.id]: (prev[deck.id] ?? 0) + 1 }));
       Alert.alert(t('download_success_title'), t('download_success_message', { name: resolveTranslation(deck.name_translations, deck.name, language) }));
     } catch {
       Alert.alert(t('error'), t('download_failed'));
@@ -229,6 +241,7 @@ export default function LibraryScreen() {
           results={searchResults}
           downloading={downloading}
           downloadedIds={downloadedIds}
+          downloadCounts={downloadCounts}
           onDownload={handleDownload}
           onSelect={setSelectedDeck}
         />
@@ -238,6 +251,7 @@ export default function LibraryScreen() {
           editorsChoiceDecks={editorsChoiceDecks}
           downloading={downloading}
           downloadedIds={downloadedIds}
+          downloadCounts={downloadCounts}
           onDownload={handleDownload}
           onSelect={setSelectedDeck}
         />
@@ -251,6 +265,7 @@ export default function LibraryScreen() {
           languageFilters={languageFilters}
           downloading={downloading}
           downloadedIds={downloadedIds}
+          downloadCounts={downloadCounts}
           onDownload={handleDownload}
           onSelect={setSelectedDeck}
         />
@@ -262,6 +277,7 @@ export default function LibraryScreen() {
           deck={selectedDeck}
           isDownloading={downloading === selectedDeck.id}
           isDownloaded={downloadedIds.has(selectedDeck.id)}
+          downloadCount={downloadCounts[selectedDeck.id] ?? 0}
           onDownload={handleDownload}
           onDismiss={() => setSelectedDeck(null)}
         />
@@ -276,12 +292,14 @@ function SearchResults({
   results,
   downloading,
   downloadedIds,
+  downloadCounts,
   onDownload,
   onSelect,
 }: {
   results: PublicDeck[];
   downloading: string | null;
   downloadedIds: Set<string>;
+  downloadCounts: Record<string, number>;
   onDownload: (d: PublicDeck) => void;
   onSelect: (d: PublicDeck) => void;
 }) {
@@ -297,6 +315,7 @@ function SearchResults({
             deck={deck}
             isDownloading={downloading === deck.id}
             isDownloaded={downloadedIds.has(deck.id)}
+            downloadCount={downloadCounts[deck.id] ?? 0}
             onDownload={onDownload}
             onSelect={onSelect}
           />
@@ -313,6 +332,7 @@ function DiscoverTab({
   editorsChoiceDecks,
   downloading,
   downloadedIds,
+  downloadCounts,
   onDownload,
   onSelect,
 }: {
@@ -320,6 +340,7 @@ function DiscoverTab({
   editorsChoiceDecks: PublicDeck[];
   downloading: string | null;
   downloadedIds: Set<string>;
+  downloadCounts: Record<string, number>;
   onDownload: (d: PublicDeck) => void;
   onSelect: (d: PublicDeck) => void;
 }) {
@@ -337,6 +358,7 @@ function DiscoverTab({
                 deck={deck}
                 isDownloading={downloading === deck.id}
                 isDownloaded={downloadedIds.has(deck.id)}
+                downloadCount={downloadCounts[deck.id] ?? 0}
                 onDownload={onDownload}
                 onSelect={onSelect}
               />
@@ -355,6 +377,7 @@ function DiscoverTab({
               deck={deck}
               isDownloading={downloading === deck.id}
               isDownloaded={downloadedIds.has(deck.id)}
+              downloadCount={downloadCounts[deck.id] ?? 0}
               onDownload={onDownload}
               onSelect={onSelect}
             />
@@ -376,6 +399,7 @@ function BrowseTab({
   languageFilters,
   downloading,
   downloadedIds,
+  downloadCounts,
   onDownload,
   onSelect,
 }: {
@@ -387,6 +411,7 @@ function BrowseTab({
   languageFilters: Language[];
   downloading: string | null;
   downloadedIds: Set<string>;
+  downloadCounts: Record<string, number>;
   onDownload: (d: PublicDeck) => void;
   onSelect: (d: PublicDeck) => void;
 }) {
@@ -451,6 +476,7 @@ function BrowseTab({
             deck={deck}
             isDownloading={downloading === deck.id}
             isDownloaded={downloadedIds.has(deck.id)}
+            downloadCount={downloadCounts[deck.id] ?? 0}
             onDownload={onDownload}
             onSelect={onSelect}
           />
@@ -467,12 +493,14 @@ function FeaturedDeckCard({
   onDownload,
   isDownloading,
   isDownloaded,
+  downloadCount,
   onSelect,
 }: {
   deck: PublicDeck;
   onDownload: (d: PublicDeck) => void;
   isDownloading: boolean;
   isDownloaded: boolean;
+  downloadCount: number;
   onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
@@ -487,6 +515,9 @@ function FeaturedDeckCard({
         <Text style={styles.featuredCount}>{t('cards_count', { count: deck.card_count })}</Text>
         <LanguageBadge supported_languages={deck.supported_languages} />
       </View>
+      {downloadCount > 0 && (
+        <Text style={styles.downloadCountText}>{formatCount(downloadCount)} {t('download').toLowerCase()}s</Text>
+      )}
       {isDownloaded && (
         <View style={styles.downloadedBadge}>
           <Ionicons name="checkmark" size={14} color={colors.white} />
@@ -502,12 +533,14 @@ function EditorsChoiceDeckCard({
   onDownload,
   isDownloading,
   isDownloaded,
+  downloadCount,
   onSelect,
 }: {
   deck: PublicDeck;
   onDownload: (d: PublicDeck) => void;
   isDownloading: boolean;
   isDownloaded: boolean;
+  downloadCount: number;
   onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
@@ -523,6 +556,9 @@ function EditorsChoiceDeckCard({
           <Text style={styles.editorsCount}>{deck.card_count} cards</Text>
           <LanguageBadge supported_languages={deck.supported_languages} />
         </View>
+        {downloadCount > 0 && (
+          <Text style={styles.downloadCountText}>{formatCount(downloadCount)} {t('download').toLowerCase()}s</Text>
+        )}
       </View>
       <View style={styles.editorsCardRight}>
         <Text style={styles.editorsEmoji}>{getCategoryEmoji(deck.category)}</Text>
@@ -541,12 +577,14 @@ function BrowseDeckCard({
   onDownload,
   isDownloading,
   isDownloaded,
+  downloadCount,
   onSelect,
 }: {
   deck: PublicDeck;
   onDownload: (d: PublicDeck) => void;
   isDownloading: boolean;
   isDownloaded: boolean;
+  downloadCount: number;
   onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
@@ -560,6 +598,12 @@ function BrowseDeckCard({
         <Text style={styles.browseName} numberOfLines={1}>{name}</Text>
         <View style={styles.browseMetaRow}>
           <Text style={styles.browseCount}>{t('cards_count', { count: deck.card_count })}</Text>
+          {downloadCount > 0 && (
+            <>
+              <Text style={styles.browseCount}>·</Text>
+              <Text style={styles.browseCount}>{formatCount(downloadCount)}↓</Text>
+            </>
+          )}
           <LanguageBadge supported_languages={deck.supported_languages} />
         </View>
       </View>
@@ -579,12 +623,14 @@ function DeckDetailModal({
   deck,
   isDownloading,
   isDownloaded,
+  downloadCount,
   onDownload,
   onDismiss,
 }: {
   deck: PublicDeck;
   isDownloading: boolean;
   isDownloaded: boolean;
+  downloadCount: number;
   onDownload: (d: PublicDeck) => void;
   onDismiss: () => void;
 }) {
@@ -616,6 +662,14 @@ function DeckDetailModal({
             </View>
             <LanguageBadge supported_languages={deck.supported_languages} />
           </View>
+
+          {/* Download count */}
+          {downloadCount > 0 && (
+            <View style={styles.modalDownloadCountRow}>
+              <Ionicons name="arrow-down-circle-outline" size={16} color={colors.textMuted} />
+              <Text style={styles.modalDownloadCountText}>{t('times_downloaded', { count: formatCount(downloadCount) })}</Text>
+            </View>
+          )}
 
           {/* Description */}
           {description ? (
@@ -667,6 +721,12 @@ function getCategoryEmoji(category: string): string {
     technology: '💻', psychology: '🧠', exams: '🎓', default: '📚',
   };
   return map[category.toLowerCase()] ?? map.default;
+}
+
+function formatCount(count: number): string {
+  if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
+  if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
+  return String(count);
 }
 
 function getCategoryLabel(category: string): string {
@@ -985,4 +1045,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   modalDownloadedText: { ...typography.button, color: colors.white, fontSize: 16 },
+  modalDownloadCountRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginBottom: spacing.md,
+  },
+  modalDownloadCountText: { ...typography.caption, color: colors.textMuted },
+  downloadCountText: { ...typography.small, color: colors.textMuted, marginTop: 2 },
 });

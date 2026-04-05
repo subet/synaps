@@ -147,6 +147,7 @@ export const es = {
   downloads_remaining: '%{count} descarga(s) gratuita(s) restante(s)',
   browse_by_subject: 'Explorar por tema',
   downloaded: 'Descargado',
+  times_downloaded: '%{count} descargas',
   no_decks_found: 'No se encontraron mazos',
   discover: 'Descubrir',
   browse: 'Explorar',

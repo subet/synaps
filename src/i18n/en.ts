@@ -147,6 +147,7 @@ export const en = {
   downloads_remaining: '%{count} free download(s) remaining',
   browse_by_subject: 'Browse by Subject',
   downloaded: 'Downloaded',
+  times_downloaded: '%{count} downloads',
   no_decks_found: 'No decks found',
   discover: 'Discover',
   browse: 'Browse',

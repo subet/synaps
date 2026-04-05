@@ -147,6 +147,7 @@ export const pt_BR = {
   downloads_remaining: '%{count} download(s) gratuito(s) restante(s)',
   browse_by_subject: 'Explorar por assunto',
   downloaded: 'Baixado',
+  times_downloaded: '%{count} downloads',
   no_decks_found: 'Nenhum baralho encontrado',
   discover: 'Descobrir',
   browse: 'Explorar',

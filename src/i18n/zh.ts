@@ -147,6 +147,7 @@ export const zh = {
   downloads_remaining: '剩余 %{count} 次免费下载',
   browse_by_subject: '按学科浏览',
   downloaded: '已下载',
+  times_downloaded: '%{count} 次下载',
   no_decks_found: '未找到牌组',
   discover: '发现',
   browse: '浏览',

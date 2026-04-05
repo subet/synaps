@@ -147,6 +147,7 @@ export const ru = {
   downloads_remaining: 'Осталось %{count} бесплатных загрузок',
   browse_by_subject: 'По предмету',
   downloaded: 'Загружено',
+  times_downloaded: '%{count} загрузок',
   no_decks_found: 'Колоды не найдены',
   discover: 'Открыть',
   browse: 'Обзор',

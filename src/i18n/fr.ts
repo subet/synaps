@@ -147,6 +147,7 @@ export const fr = {
   downloads_remaining: '%{count} téléchargement(s) gratuit(s) restant(s)',
   browse_by_subject: 'Parcourir par thème',
   downloaded: 'Téléchargé',
+  times_downloaded: '%{count} téléchargements',
   no_decks_found: 'Aucun paquet trouvé',
   discover: 'Découvrir',
   browse: 'Parcourir',

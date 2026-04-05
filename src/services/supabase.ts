@@ -102,6 +102,20 @@ export async function incrementDownloadCount(deckId: string) {
   await supabase.rpc('increment_download_count', { deck_id: deckId });
 }
 
+export async function fetchDownloadCounts(): Promise<Record<string, number>> {
+  const { data, error } = await supabase
+    .from('deck_download_counts')
+    .select('deck_id, download_count');
+
+  if (error) throw error;
+
+  const counts: Record<string, number> = {};
+  for (const row of data ?? []) {
+    counts[row.deck_id] = row.download_count;
+  }
+  return counts;
+}
+
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 
 export async function signUp(email: string, password: string, displayName: string) {

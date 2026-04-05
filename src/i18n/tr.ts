@@ -147,6 +147,7 @@ export const tr = {
   downloads_remaining: '%{count} ücretsiz indirme kaldı',
   browse_by_subject: 'Konuya Göre Gözat',
   downloaded: 'İndirildi',
+  times_downloaded: '%{count} indirme',
   no_decks_found: 'Deste bulunamadı',
   discover: 'Keşfet',
   browse: 'Gözat',

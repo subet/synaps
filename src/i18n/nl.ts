@@ -147,6 +147,7 @@ export const nl = {
   downloads_remaining: '%{count} gratis download(s) resterend',
   browse_by_subject: 'Bladeren op onderwerp',
   downloaded: 'Gedownload',
+  times_downloaded: '%{count} downloads',
   no_decks_found: 'Geen stapels gevonden',
   discover: 'Ontdekken',
   browse: 'Bladeren',

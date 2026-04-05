@@ -147,6 +147,7 @@ export const it = {
   downloads_remaining: '%{count} download gratuiti rimanenti',
   browse_by_subject: 'Sfoglia per argomento',
   downloaded: 'Scaricato',
+  times_downloaded: '%{count} download',
   no_decks_found: 'Nessun mazzo trovato',
   discover: 'Scopri',
   browse: 'Sfoglia',

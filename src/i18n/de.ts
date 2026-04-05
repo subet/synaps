@@ -147,6 +147,7 @@ export const de = {
   downloads_remaining: '%{count} kostenloser Download(s) verbleibend',
   browse_by_subject: 'Nach Thema durchsuchen',
   downloaded: 'Heruntergeladen',
+  times_downloaded: '%{count} Downloads',
   no_decks_found: 'Keine Stapel gefunden',
   discover: 'Entdecken',
   browse: 'Durchsuchen',
