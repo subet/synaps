@@ -308,7 +308,7 @@ function SessionComplete({
           </View>
         )}
 
-        <Button label={t('back_to_deck')} onPress={() => router.replace(`/deck/${deckId}`)} style={styles.backBtn} />
+        <Button label={t('back_to_deck')} onPress={() => router.back()} style={styles.backBtn} />
       </View>
 
       {celebrationBadge && (
