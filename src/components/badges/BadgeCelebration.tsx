@@ -29,8 +29,8 @@ function Particle({ delay, x, color }: { delay: number; x: number; color: string
   const rotate = useSharedValue(0);
 
   useEffect(() => {
-    translateY.value = withDelay(delay, withTiming(400, { duration: 1200, easing: Easing.out(Easing.quad) }));
-    opacity.value = withDelay(delay + 600, withTiming(0, { duration: 600 }));
+    translateY.value = withDelay(delay, withTiming(500, { duration: 1400, easing: Easing.out(Easing.quad) }));
+    opacity.value = withDelay(delay + 800, withTiming(0, { duration: 600 }));
     rotate.value = withDelay(delay, withRepeat(withTiming(360, { duration: 800 }), 2));
   }, []);
 
@@ -216,8 +216,8 @@ const styles = StyleSheet.create({
   particle: {
     position: 'absolute',
     top: -10,
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
   },
 });
