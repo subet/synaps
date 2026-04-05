@@ -4,6 +4,7 @@ import { borderRadius, colors, spacing, typography } from '../../constants';
 import { useTranslation } from '../../i18n';
 import { useAppStore } from '../../stores/useAppStore';
 import { StreakDay } from '../../types';
+import { StreakFire } from './StreakFire';
 
 interface StreakCardProps {
   currentStreak: number;
@@ -32,16 +33,21 @@ export function StreakCard({ currentStreak, weekDays }: StreakCardProps) {
       {/* Section label */}
       <Text style={styles.sectionLabel}>{t('daily_momentum')}</Text>
 
-      {/* Streak number */}
-      <View style={styles.streakRow}>
-        <Text style={styles.streakNumber}>{currentStreak}</Text>
-        <Text style={styles.streakSuffix}>
-          {' '}{currentStreak === 1 ? t('day_streak') : t('days_streak')}
-        </Text>
+      {/* Streak number + fire */}
+      <View style={styles.streakRowOuter}>
+        <View style={styles.streakRowLeft}>
+          <View style={styles.streakRow}>
+            <Text style={styles.streakNumber}>{currentStreak}</Text>
+            <Text style={styles.streakSuffix}>
+              {' '}{currentStreak === 1 ? t('day_streak') : t('days_streak')}
+            </Text>
+          </View>
+          <Text style={styles.motivation}>{t('streak_motivation')}</Text>
+        </View>
+        <View style={{ marginTop: -12 }}>
+          <StreakFire streak={currentStreak} />
+        </View>
       </View>
-
-      {/* Motivation */}
-      <Text style={styles.motivation}>{t('streak_motivation')}</Text>
 
       {/* Bar chart */}
       <View style={styles.chartArea}>
@@ -109,6 +115,15 @@ const styles = StyleSheet.create({
     color: colors.primary,
     marginBottom: spacing.sm,
   },
+  streakRowOuter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: spacing.xs,
+  },
+  streakRowLeft: {
+    flex: 1,
+  },
   streakRow: {
     flexDirection: 'row',
     alignItems: 'flex-end',
@@ -129,7 +144,6 @@ const styles = StyleSheet.create({
   motivation: {
     ...typography.body,
     color: colors.textSecondary,
-    marginBottom: spacing.lg,
   },
   chartArea: {
     flexDirection: 'row',
