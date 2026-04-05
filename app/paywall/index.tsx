@@ -39,7 +39,7 @@ const PLANS = [
 export default function PaywallScreen() {
   const { t } = useTranslation();
   const [selectedPlan, setSelectedPlan] = useState('monthly');
-  const { offerings, loadOfferings, purchase, restore, isLoading, isPro } = useSubscriptionStore();
+  const { offerings, loadOfferings, purchase, restore, isLoading, isPro, wasPro } = useSubscriptionStore();
   const { hasSeenOnboarding } = useAppStore();
   const inOnboarding = !hasSeenOnboarding;
 
@@ -104,9 +104,9 @@ export default function PaywallScreen() {
 
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerEmoji}>⚡</Text>
-          <Text style={styles.title}>{t('unlock_pro')}</Text>
-          <Text style={styles.subtitle}>{t('paywall_subtitle')}</Text>
+          <Text style={styles.headerEmoji}>{wasPro && !inOnboarding ? '👋' : '⚡'}</Text>
+          <Text style={styles.title}>{wasPro && !inOnboarding ? t('winback_title') : t('unlock_pro')}</Text>
+          <Text style={styles.subtitle}>{wasPro && !inOnboarding ? t('winback_subtitle') : t('paywall_subtitle')}</Text>
         </View>
 
         {/* Features */}

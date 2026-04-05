@@ -260,6 +260,20 @@ export const it = {
     custom_styling: 'Stile personalizzato delle carte',
   },
 
+  // Win-back / paywall soft
+  winback_title: 'Bentornato!',
+  winback_subtitle: 'In precedenza avevi accesso PRO. Riabbonati per sbloccare di nuovo tutto.',
+  limit_downloads_title: 'Limite download raggiunto',
+  limit_downloads_message: 'Gli account gratuiti possono scaricare fino a %{limit} mazzi. Passa a PRO per download illimitati.',
+  limit_cards_title: 'Limite carte raggiunto',
+  limit_cards_message: 'Gli account gratuiti possono aggiungere fino a %{limit} carte per mazzo. Passa a PRO per carte illimitate.',
+  limit_decks_title: 'Limite mazzi raggiunto',
+  limit_decks_message: 'Gli account gratuiti possono creare fino a %{limit} mazzi. Passa a PRO per mazzi illimitati.',
+  feature_pro_only: 'Funzione PRO',
+  feature_pro_only_message: 'Questa funzione richiede un abbonamento PRO.',
+  resubscribe: 'Riabbonati',
+  upgrade: 'Aggiorna',
+
   // Badges
   badge_streak_1_name: 'Prima fiamma',
   badge_streak_1_desc: 'Studia per 1 giorno di fila',

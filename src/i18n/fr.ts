@@ -260,6 +260,20 @@ export const fr = {
     custom_styling: 'Style de carte personnalisé',
   },
 
+  // Win-back / paywall doux
+  winback_title: 'Bon retour !',
+  winback_subtitle: 'Vous aviez un acces PRO. Reabonnez-vous pour tout debloquer a nouveau.',
+  limit_downloads_title: 'Limite de telechargements atteinte',
+  limit_downloads_message: 'Les comptes gratuits peuvent telecharger jusqu\'a %{limit} paquets. Passez a PRO pour des telechargements illimites.',
+  limit_cards_title: 'Limite de cartes atteinte',
+  limit_cards_message: 'Les comptes gratuits peuvent ajouter jusqu\'a %{limit} cartes par paquet. Passez a PRO pour des cartes illimitees.',
+  limit_decks_title: 'Limite de paquets atteinte',
+  limit_decks_message: 'Les comptes gratuits peuvent creer jusqu\'a %{limit} paquets. Passez a PRO pour des paquets illimites.',
+  feature_pro_only: 'Fonction PRO',
+  feature_pro_only_message: 'Cette fonction necessite un abonnement PRO.',
+  resubscribe: 'Se reabonner',
+  upgrade: 'Passer a PRO',
+
   // Badges
   badge_streak_1_name: 'Première flamme',
   badge_streak_1_desc: 'Étudier 1 jour d\'affilée',

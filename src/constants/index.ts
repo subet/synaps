@@ -2,7 +2,7 @@ export * from './colors';
 export * from './typography';
 
 export const FREE_DECK_LIMIT = 5;
-export const FREE_CARDS_PER_DECK_LIMIT = 50;
+export const FREE_CARDS_PER_DECK_LIMIT = 5;
 export const FREE_DOWNLOAD_LIMIT = 3;
 
 export const REVENUECAT_API_KEY_IOS = 'appl_LtCrIghFRoqFJGYDcmMNKNSsJad';

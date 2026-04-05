@@ -121,6 +121,52 @@ export async function scheduleInactivityNudge(): Promise<void> {
   });
 }
 
+export async function scheduleProExpiredWinBack(): Promise<void> {
+  // 3 days after expiry: gentle nudge
+  const threeDays = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
+  threeDays.setHours(11, 0, 0, 0);
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: 'Your PRO access has ended',
+      body: 'You still have your decks, but unlimited downloads and sync are paused. Come back to PRO!',
+      sound: true,
+      data: { type: 'win_back' },
+    },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
+      date: threeDays,
+    },
+  });
+
+  // 7 days after expiry: stronger nudge
+  const sevenDays = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+  sevenDays.setHours(11, 0, 0, 0);
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: 'We saved your progress',
+      body: 'All your study data is safe. Resubscribe to unlock unlimited access and pick up where you left off.',
+      sound: true,
+      data: { type: 'win_back_discount' },
+    },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
+      date: sevenDays,
+    },
+  });
+}
+
+export async function cancelWinBackNotifications(): Promise<void> {
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  for (const notification of scheduled) {
+    const type = notification.content.data?.type;
+    if (type === 'win_back' || type === 'win_back_discount') {
+      await Notifications.cancelScheduledNotificationAsync(notification.identifier);
+    }
+  }
+}
+
 export async function cancelAllNotifications(): Promise<void> {
   await Notifications.cancelAllScheduledNotificationsAsync();
 }

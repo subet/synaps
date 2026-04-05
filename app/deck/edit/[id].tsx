@@ -52,7 +52,7 @@ export default function EditDeckScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { getDeckById, updateDeck, deleteDeck, resetDeckProgress } = useDeckStore();
-  const { isPro } = useSubscriptionStore();
+  const { isPro, wasPro } = useSubscriptionStore();
 
   const deck = getDeckById(id);
 
@@ -184,7 +184,12 @@ export default function EditDeckScreen() {
                 isPro ? (
                   <Toggle value={autoPlayAudio} onValueChange={setAutoPlayAudio} />
                 ) : (
-                  <Pressable onPress={() => router.push('/paywall')} style={styles.proBadge}>
+                  <Pressable onPress={() => {
+                    Alert.alert(t('feature_pro_only'), t('feature_pro_only_message'), [
+                      { text: t('cancel'), style: 'cancel' },
+                      { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall') },
+                    ]);
+                  }} style={styles.proBadge}>
                     <Text style={styles.proBadgeText}>{t('pro_badge')}</Text>
                   </Pressable>
                 )
@@ -205,7 +210,12 @@ export default function EditDeckScreen() {
                 isPro ? (
                   <Text style={styles.availableText}>{t('available')}</Text>
                 ) : (
-                  <Pressable onPress={() => router.push('/paywall')} style={styles.proBadge}>
+                  <Pressable onPress={() => {
+                    Alert.alert(t('feature_pro_only'), t('feature_pro_only_message'), [
+                      { text: t('cancel'), style: 'cancel' },
+                      { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall') },
+                    ]);
+                  }} style={styles.proBadge}>
                     <Text style={styles.proBadgeText}>{t('pro_badge')}</Text>
                   </Pressable>
                 )

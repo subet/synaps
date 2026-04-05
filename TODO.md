@@ -5,8 +5,9 @@ Kullanıcılar oluşturdukları deckleri paylaşabilsinler. Öyle bir library ol
 Show locked decks (Let user unlock the second part if he downloads the first part)
 Show “X students downloaded” (sort by most downloaded in library)
 
-# PRO -> FREE
-What happens when a PRO user's subscription expires? If he downloaded 10 decks, which ones will be disabled? Or will they be disabled at all? What is the best sales strategy to convert them back into paying users?
+# WEEKLY PREVIEW
+There is a weekly preview push notification coming on Sundays at 10:00. Lets put a toggle for it on the settings tab. By default, it is toggled on, but user will be able to toggle it off, so no weekly push notification.
+
 
 # NEW DECKS
 ## BUSINESS

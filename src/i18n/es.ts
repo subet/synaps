@@ -260,6 +260,20 @@ export const es = {
     custom_styling: 'Estilo personalizado de tarjetas',
   },
 
+  // Recuperacion / paywall suave
+  winback_title: 'Bienvenido de nuevo!',
+  winback_subtitle: 'Antes tenias acceso PRO. Vuelve a suscribirte para desbloquear todo de nuevo.',
+  limit_downloads_title: 'Limite de descargas alcanzado',
+  limit_downloads_message: 'Las cuentas gratuitas pueden descargar hasta %{limit} mazos. Actualiza a PRO para descargas ilimitadas.',
+  limit_cards_title: 'Limite de tarjetas alcanzado',
+  limit_cards_message: 'Las cuentas gratuitas pueden agregar hasta %{limit} tarjetas por mazo. Actualiza a PRO para tarjetas ilimitadas.',
+  limit_decks_title: 'Limite de mazos alcanzado',
+  limit_decks_message: 'Las cuentas gratuitas pueden crear hasta %{limit} mazos. Actualiza a PRO para mazos ilimitados.',
+  feature_pro_only: 'Funcion PRO',
+  feature_pro_only_message: 'Esta funcion requiere una suscripcion PRO.',
+  resubscribe: 'Volver a suscribirse',
+  upgrade: 'Actualizar',
+
   // Badges
   badge_streak_1_name: 'Primera llama',
   badge_streak_1_desc: 'Estudia 1 día seguido',

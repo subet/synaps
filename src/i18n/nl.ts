@@ -260,6 +260,20 @@ export const nl = {
     custom_styling: 'Aangepaste kaartstijl',
   },
 
+  // Win-back / zachte paywall
+  winback_title: 'Welkom terug!',
+  winback_subtitle: 'Je had eerder PRO-toegang. Abonneer opnieuw om alles weer te ontgrendelen.',
+  limit_downloads_title: 'Downloadlimiet bereikt',
+  limit_downloads_message: 'Gratis accounts kunnen maximaal %{limit} decks downloaden. Upgrade naar PRO voor onbeperkte downloads.',
+  limit_cards_title: 'Kaartlimiet bereikt',
+  limit_cards_message: 'Gratis accounts kunnen maximaal %{limit} kaarten per deck toevoegen. Upgrade naar PRO voor onbeperkte kaarten.',
+  limit_decks_title: 'Decklimiet bereikt',
+  limit_decks_message: 'Gratis accounts kunnen maximaal %{limit} decks maken. Upgrade naar PRO voor onbeperkte decks.',
+  feature_pro_only: 'PRO-functie',
+  feature_pro_only_message: 'Deze functie vereist een PRO-abonnement.',
+  resubscribe: 'Opnieuw abonneren',
+  upgrade: 'Upgraden',
+
   // Badges
   badge_streak_1_name: 'Eerste vlam',
   badge_streak_1_desc: '1 dag op rij studeren',

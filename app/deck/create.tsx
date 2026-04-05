@@ -54,7 +54,7 @@ export default function CreateDeckScreen() {
   const [nameError, setNameError] = useState('');
 
   const { createDeck, decks } = useDeckStore();
-  const { isPro } = useSubscriptionStore();
+  const { isPro, wasPro } = useSubscriptionStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCreate = async () => {
@@ -64,7 +64,14 @@ export default function CreateDeckScreen() {
     }
 
     if (!isPro && decks.length >= FREE_DECK_LIMIT) {
-      router.push('/paywall');
+      Alert.alert(
+        t('limit_decks_title'),
+        t('limit_decks_message', { limit: FREE_DECK_LIMIT }),
+        [
+          { text: t('cancel'), style: 'cancel' },
+          { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall') },
+        ]
+      );
       return;
     }
 

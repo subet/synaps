@@ -25,7 +25,7 @@ export default function CreateCardScreen() {
   const { t } = useTranslation();
   const { deckId } = useLocalSearchParams<{ deckId: string }>();
   const { createCard, deckCards } = useStudyStore();
-  const { isPro } = useSubscriptionStore();
+  const { isPro, wasPro } = useSubscriptionStore();
 
   const [front, setFront] = useState('');
   const [back, setBack] = useState('');
@@ -65,7 +65,14 @@ export default function CreateCardScreen() {
     if (!validate()) return;
 
     if (!isPro && deckCards.length >= FREE_CARDS_PER_DECK_LIMIT) {
-      router.push('/paywall');
+      Alert.alert(
+        t('limit_cards_title'),
+        t('limit_cards_message', { limit: FREE_CARDS_PER_DECK_LIMIT }),
+        [
+          { text: t('cancel'), style: 'cancel' },
+          { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall') },
+        ]
+      );
       return;
     }
 

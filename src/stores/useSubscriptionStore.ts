@@ -4,6 +4,8 @@ import { checkProStatus, getOfferings, initializeRevenueCat, purchasePackage, re
 import { getUserProfile } from '../services/supabase';
 
 const PRO_CACHE_KEY = '@synaps_is_pro';
+const WAS_PRO_KEY = '@synaps_was_pro';
+const PRO_EXPIRED_AT_KEY = '@synaps_pro_expired_at';
 
 async function getCachedPro(): Promise<boolean> {
   try {
@@ -19,8 +21,38 @@ async function setCachedPro(isPro: boolean): Promise<void> {
   } catch {}
 }
 
+async function getWasPro(): Promise<boolean> {
+  try {
+    return (await AsyncStorage.getItem(WAS_PRO_KEY)) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+async function setWasPro(): Promise<void> {
+  try {
+    await AsyncStorage.setItem(WAS_PRO_KEY, 'true');
+  } catch {}
+}
+
+async function getProExpiredAt(): Promise<string | null> {
+  try {
+    return await AsyncStorage.getItem(PRO_EXPIRED_AT_KEY);
+  } catch {
+    return null;
+  }
+}
+
+async function setProExpiredAt(date: string): Promise<void> {
+  try {
+    await AsyncStorage.setItem(PRO_EXPIRED_AT_KEY, date);
+  } catch {}
+}
+
 interface SubscriptionState {
   isPro: boolean;
+  wasPro: boolean;
+  proExpiredAt: string | null;
   isLoading: boolean;
   offerings: any | null;
 
@@ -31,8 +63,10 @@ interface SubscriptionState {
   restore: () => Promise<boolean>;
 }
 
-export const useSubscriptionStore = create<SubscriptionState>((set) => ({
+export const useSubscriptionStore = create<SubscriptionState>((set, get) => ({
   isPro: false,
+  wasPro: false,
+  proExpiredAt: null,
   isLoading: false,
   offerings: null,
 
@@ -40,6 +74,10 @@ export const useSubscriptionStore = create<SubscriptionState>((set) => ({
     // 1. Load cached status immediately (offline-safe)
     const cached = await getCachedPro();
     if (cached) set({ isPro: true });
+
+    const wasPro = await getWasPro();
+    const proExpiredAt = await getProExpiredAt();
+    set({ wasPro, proExpiredAt });
 
     // 2. Check RevenueCat (may fail on simulator / Expo Go)
     let rcPro = false;
@@ -58,7 +96,20 @@ export const useSubscriptionStore = create<SubscriptionState>((set) => ({
     }
 
     const isPro = rcPro || dbPro;
-    set({ isPro });
+
+    // Track PRO history for win-back
+    if (isPro) {
+      await setWasPro();
+      set({ isPro, wasPro: true });
+    } else if (wasPro && !proExpiredAt) {
+      // PRO just expired — record the date
+      const now = new Date().toISOString();
+      await setProExpiredAt(now);
+      set({ isPro, proExpiredAt: now });
+    } else {
+      set({ isPro });
+    }
+
     await setCachedPro(isPro);
   },
 
@@ -77,7 +128,21 @@ export const useSubscriptionStore = create<SubscriptionState>((set) => ({
     }
 
     const isPro = rcPro || dbPro;
-    set({ isPro });
+    const { wasPro: prevWasPro, proExpiredAt } = get();
+
+    if (isPro) {
+      await setWasPro();
+      set({ isPro, wasPro: true, proExpiredAt: null });
+      // Clear expired date if resubscribed
+      try { await AsyncStorage.removeItem(PRO_EXPIRED_AT_KEY); } catch {}
+    } else if (prevWasPro && !proExpiredAt) {
+      const now = new Date().toISOString();
+      await setProExpiredAt(now);
+      set({ isPro, proExpiredAt: now });
+    } else {
+      set({ isPro });
+    }
+
     await setCachedPro(isPro);
   },
 
@@ -95,7 +160,13 @@ export const useSubscriptionStore = create<SubscriptionState>((set) => ({
     set({ isLoading: true });
     try {
       const { isPro } = await purchasePackage(pkg);
-      set({ isPro, isLoading: false });
+      if (isPro) {
+        await setWasPro();
+        try { await AsyncStorage.removeItem(PRO_EXPIRED_AT_KEY); } catch {}
+        set({ isPro, wasPro: true, proExpiredAt: null, isLoading: false });
+      } else {
+        set({ isPro, isLoading: false });
+      }
       await setCachedPro(isPro);
       return isPro;
     } catch {
@@ -108,7 +179,13 @@ export const useSubscriptionStore = create<SubscriptionState>((set) => ({
     set({ isLoading: true });
     try {
       const isPro = await restorePurchases();
-      set({ isPro, isLoading: false });
+      if (isPro) {
+        await setWasPro();
+        try { await AsyncStorage.removeItem(PRO_EXPIRED_AT_KEY); } catch {}
+        set({ isPro, wasPro: true, proExpiredAt: null, isLoading: false });
+      } else {
+        set({ isPro, isLoading: false });
+      }
       await setCachedPro(isPro);
       return isPro;
     } catch {

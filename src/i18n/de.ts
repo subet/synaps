@@ -260,6 +260,20 @@ export const de = {
     custom_styling: 'Individuelle Kartengestaltung',
   },
 
+  // Win-back / Soft-Paywall
+  winback_title: 'Willkommen zuruck!',
+  winback_subtitle: 'Du hattest zuvor PRO-Zugang. Abonniere erneut, um alles wieder freizuschalten.',
+  limit_downloads_title: 'Download-Limit erreicht',
+  limit_downloads_message: 'Kostenlose Konten konnen bis zu %{limit} Decks herunterladen. Upgrade auf PRO fur unbegrenzte Downloads.',
+  limit_cards_title: 'Karten-Limit erreicht',
+  limit_cards_message: 'Kostenlose Konten konnen bis zu %{limit} Karten pro Deck hinzufugen. Upgrade auf PRO fur unbegrenzte Karten.',
+  limit_decks_title: 'Deck-Limit erreicht',
+  limit_decks_message: 'Kostenlose Konten konnen bis zu %{limit} Decks erstellen. Upgrade auf PRO fur unbegrenzte Decks.',
+  feature_pro_only: 'PRO-Funktion',
+  feature_pro_only_message: 'Diese Funktion erfordert ein PRO-Abonnement.',
+  resubscribe: 'Erneut abonnieren',
+  upgrade: 'Upgraden',
+
   // Badges
   badge_streak_1_name: 'Erste Flamme',
   badge_streak_1_desc: '1 Tag in Folge lernen',

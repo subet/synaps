@@ -260,6 +260,20 @@ export const pt_PT = {
     custom_styling: 'Personalização visual dos cartões',
   },
 
+  // Win-back / paywall suave
+  winback_title: 'Bem-vindo de volta!',
+  winback_subtitle: 'Tinha acesso PRO. Subscreva novamente para desbloquear tudo.',
+  limit_downloads_title: 'Limite de downloads atingido',
+  limit_downloads_message: 'Contas gratuitas podem descarregar ate %{limit} baralhos. Atualize para PRO para downloads ilimitados.',
+  limit_cards_title: 'Limite de cartoes atingido',
+  limit_cards_message: 'Contas gratuitas podem adicionar ate %{limit} cartoes por baralho. Atualize para PRO para cartoes ilimitados.',
+  limit_decks_title: 'Limite de baralhos atingido',
+  limit_decks_message: 'Contas gratuitas podem criar ate %{limit} baralhos. Atualize para PRO para baralhos ilimitados.',
+  feature_pro_only: 'Recurso PRO',
+  feature_pro_only_message: 'Este recurso requer uma subscrição PRO.',
+  resubscribe: 'Reassinar',
+  upgrade: 'Atualizar',
+
   // Badges
   badge_streak_1_name: 'Primeira Chama',
   badge_streak_1_desc: 'Estude durante 1 dia seguido',

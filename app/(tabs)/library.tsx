@@ -63,7 +63,7 @@ export default function LibraryScreen() {
   const [downloading, setDownloading] = useState<string | null>(null);
   const { loadDecks, decks } = useDeckStore();
   const { freeDownloadsUsed, incrementFreeDownloads, language } = useAppStore();
-  const { isPro } = useSubscriptionStore();
+  const { isPro, wasPro } = useSubscriptionStore();
 
   const downloadedIds = useMemo<Set<string>>(
     () => new Set(decks.filter((d) => d.source_id).map((d) => d.source_id as string)),
@@ -93,7 +93,14 @@ export default function LibraryScreen() {
 
   const handleDownload = async (deck: PublicDeck) => {
     if (!isPro && freeDownloadsUsed >= FREE_DOWNLOAD_LIMIT) {
-      router.push('/paywall');
+      Alert.alert(
+        t('limit_downloads_title'),
+        t('limit_downloads_message', { limit: FREE_DOWNLOAD_LIMIT }),
+        [
+          { text: t('cancel'), style: 'cancel' },
+          { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall') },
+        ]
+      );
       return;
     }
     if (downloadedIds.has(deck.id)) return;

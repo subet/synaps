@@ -4,7 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { scheduleDailyReminder, scheduleInactivityNudge } from '../src/services/notifications';
+import { scheduleDailyReminder, scheduleInactivityNudge, scheduleProExpiredWinBack, cancelWinBackNotifications } from '../src/services/notifications';
 import { repairPublicDeckTranslations } from '../src/services/database';
 import { ErrorBoundary } from '../src/components/ui/ErrorBoundary';
 import { setLocale } from '../src/i18n';
@@ -53,6 +53,14 @@ export default function RootLayout() {
       await initAuth();
       const { user } = useAuthStore.getState();
       await initSubscription(user?.id);
+
+      // Schedule or cancel win-back notifications based on PRO status
+      const { isPro, wasPro } = useSubscriptionStore.getState();
+      if (!isPro && wasPro) {
+        scheduleProExpiredWinBack().catch(() => {});
+      } else if (isPro) {
+        cancelWinBackNotifications().catch(() => {});
+      }
 
       // Backfill translation columns for previously-downloaded public decks
       repairPublicDeckTranslations().catch(() => {});

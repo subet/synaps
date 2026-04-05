@@ -260,6 +260,20 @@ export const zh = {
     custom_styling: '自定义卡片样式',
   },
 
+  // Win-back
+  winback_title: '欢迎回来！',
+  winback_subtitle: '您之前拥有PRO权限。重新订阅以解锁所有功能。',
+  limit_downloads_title: '下载次数已达上限',
+  limit_downloads_message: '免费账户最多可下载%{limit}个牌组。升级PRO享受无限下载。',
+  limit_cards_title: '卡片数量已达上限',
+  limit_cards_message: '免费账户每个牌组最多可添加%{limit}张卡片。升级PRO享受无限卡片。',
+  limit_decks_title: '牌组数量已达上限',
+  limit_decks_message: '免费账户最多可创建%{limit}个牌组。升级PRO享受无限牌组。',
+  feature_pro_only: 'PRO功能',
+  feature_pro_only_message: '此功能需要PRO订阅。',
+  resubscribe: '重新订阅',
+  upgrade: '升级',
+
   // Badges
   badge_streak_1_name: '初燃之火',
   badge_streak_1_desc: '连续学习 1 天',

@@ -260,6 +260,20 @@ export const tr = {
     custom_styling: 'Özel kart tasarımı',
   },
 
+  // Geri kazanma / yumusak odeme duvari
+  winback_title: 'Tekrar Hosgeldiniz!',
+  winback_subtitle: 'Daha once PRO erisimimiz vardi. Tum ozellikleri tekrar acmak icin abone olun.',
+  limit_downloads_title: 'Indirme Limitine Ulasildi',
+  limit_downloads_message: 'Ucretsiz hesaplar en fazla %{limit} deste indirebilir. Sinirsiz indirme icin PRO\'ya yukseltin.',
+  limit_cards_title: 'Kart Limitine Ulasildi',
+  limit_cards_message: 'Ucretsiz hesaplar deste basina en fazla %{limit} kart ekleyebilir. Sinirsiz kart icin PRO\'ya yukseltin.',
+  limit_decks_title: 'Deste Limitine Ulasildi',
+  limit_decks_message: 'Ucretsiz hesaplar en fazla %{limit} deste olusturabilir. Sinirsiz deste icin PRO\'ya yukseltin.',
+  feature_pro_only: 'PRO Ozelligi',
+  feature_pro_only_message: 'Bu ozellik PRO aboneligi gerektirir.',
+  resubscribe: 'Tekrar Abone Ol',
+  upgrade: 'Yukselt',
+
   // Rozetler
   badge_streak_1_name: 'İlk Alev',
   badge_streak_1_desc: '1 gün üst üste çalış',

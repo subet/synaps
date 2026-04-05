@@ -261,6 +261,20 @@ export const en = {
     custom_styling: 'Custom card styling',
   },
 
+  // Win-back / soft paywall
+  winback_title: 'Welcome Back!',
+  winback_subtitle: 'You previously had PRO access. Resubscribe to unlock everything again.',
+  limit_downloads_title: 'Download Limit Reached',
+  limit_downloads_message: 'Free accounts can download up to %{limit} decks. Upgrade to PRO for unlimited downloads.',
+  limit_cards_title: 'Card Limit Reached',
+  limit_cards_message: 'Free accounts can add up to %{limit} cards per deck. Upgrade to PRO for unlimited cards.',
+  limit_decks_title: 'Deck Limit Reached',
+  limit_decks_message: 'Free accounts can create up to %{limit} decks. Upgrade to PRO for unlimited decks.',
+  feature_pro_only: 'PRO Feature',
+  feature_pro_only_message: 'This feature requires a PRO subscription.',
+  resubscribe: 'Resubscribe',
+  upgrade: 'Upgrade',
+
   // Badges
   badge_streak_1_name: 'First Flame',
   badge_streak_1_desc: 'Study for 1 day in a row',

@@ -260,6 +260,20 @@ export const ru = {
     custom_styling: 'Настраиваемый стиль карточек',
   },
 
+  // Win-back
+  winback_title: 'C vozvrascheniem!',
+  winback_subtitle: 'U vas byl dostup PRO. Podpishites snova, chtoby razblokirovat vse funktsii.',
+  limit_downloads_title: 'Limit zagruzok dostignut',
+  limit_downloads_message: 'Besplatnye akkaunty mogut zagruzit do %{limit} kolod. Obnovites do PRO dlya neogranichennyh zagruzok.',
+  limit_cards_title: 'Limit kart dostignut',
+  limit_cards_message: 'Besplatnye akkaunty mogut dobavit do %{limit} kart na kolodu. Obnovites do PRO dlya neogranichennyh kart.',
+  limit_decks_title: 'Limit kolod dostignut',
+  limit_decks_message: 'Besplatnye akkaunty mogut sozdat do %{limit} kolod. Obnovites do PRO dlya neogranichennyh kolod.',
+  feature_pro_only: 'Funktsiya PRO',
+  feature_pro_only_message: 'Eta funktsiya trebuet podpisku PRO.',
+  resubscribe: 'Podpisatsya snova',
+  upgrade: 'Obnovit',
+
   // Badges
   badge_streak_1_name: 'Первый огонь',
   badge_streak_1_desc: 'Учитесь 1 день подряд',
