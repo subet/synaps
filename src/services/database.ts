@@ -309,6 +309,17 @@ export async function getDueCards(deckId: string): Promise<Card[]> {
   return [...reviewCards, ...newCards].map(mapCard);
 }
 
+export async function getAllCardsForExtraStudy(deckId: string): Promise<Card[]> {
+  const database = await getDatabase();
+  const rows = await database.getAllAsync<Card>(
+    `SELECT * FROM cards WHERE deck_id = ? ORDER BY
+       CASE status WHEN 'learning' THEN 0 WHEN 'review' THEN 1 WHEN 'mastered' THEN 2 ELSE 3 END,
+       last_reviewed DESC`,
+    [deckId]
+  );
+  return rows.map(mapCard);
+}
+
 export async function getDeckStats(deckId: string) {
   const database = await getDatabase();
   const rows = await database.getAllAsync<{ status: string; count: number }>(

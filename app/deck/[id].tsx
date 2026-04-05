@@ -2,6 +2,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import React, { useCallback, useMemo, useState } from 'react';
 import {
+  Alert,
   FlatList,
   Pressable,
   StyleSheet,
@@ -162,7 +163,7 @@ export default function DeckDetailScreen() {
         getItemLayout={(_, index) => ({ length: 58, offset: 58 * index, index })}
       />
 
-      {(isLocked || (stats?.dueToday ?? 0) > 0) && (
+      {(stats?.total ?? 0) > 0 && (
         <View style={styles.studyBtnContainer}>
           {isLocked ? (
             <Pressable
@@ -176,8 +177,26 @@ export default function DeckDetailScreen() {
             </Pressable>
           ) : (
             <Button
-              label={t('study_button', { count: stats?.dueToday ?? 0 })}
-              onPress={() => router.push(`/study/${id}`)}
+              label={(stats?.dueToday ?? 0) > 0
+                ? t('study_button', { count: stats?.dueToday ?? 0 })
+                : t('study_now')}
+              onPress={() => {
+                if ((stats?.dueToday ?? 0) > 0) {
+                  router.push(`/study/${id}`);
+                } else {
+                  Alert.alert(
+                    t('todays_cards_done_title'),
+                    t('todays_cards_done_message'),
+                    [
+                      { text: t('cancel'), style: 'cancel' },
+                      {
+                        text: t('start_extra_session'),
+                        onPress: () => router.push(`/study/${id}?extra=true`),
+                      },
+                    ]
+                  );
+                }
+              }}
             />
           )}
         </View>

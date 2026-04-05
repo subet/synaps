@@ -45,7 +45,7 @@ const LANGUAGE_CODES: Record<string, string> = {
 
 export default function StudyScreen() {
   const { t } = useTranslation();
-  const { deckId } = useLocalSearchParams<{ deckId: string }>();
+  const { deckId, extra } = useLocalSearchParams<{ deckId: string; extra?: string }>();
   const { getDeckById, loadDeckStats, deckStats } = useDeckStore();
   const { loadStreak } = useStreakStore();
   const { checkBadges } = useBadgeStore();
@@ -73,7 +73,7 @@ export default function StudyScreen() {
   const progressWidth = useSharedValue(0);
 
   useEffect(() => {
-    startSession(deckId);
+    startSession(deckId, extra === 'true');
     loadDeckStats(deckId);
     return () => { resetSession(); stopSpeech(); };
   }, [deckId]);

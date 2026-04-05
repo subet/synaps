@@ -5,6 +5,7 @@ import {
   createStudySession,
   createCard,
   deleteCard,
+  getAllCardsForExtraStudy,
   getDeckById,
   getDueCards,
   getCardsByDeckId,
@@ -35,7 +36,7 @@ interface StudyState {
   deckCards: Card[];
   isLoadingCards: boolean;
 
-  startSession: (deckId: string) => Promise<void>;
+  startSession: (deckId: string, extra?: boolean) => Promise<void>;
   flipCard: () => void;
   gradeCard: (grade: SRSGrade) => Promise<void>;
   endSession: () => Promise<void>;
@@ -63,10 +64,10 @@ export const useStudyStore = create<StudyState>((set, get) => ({
   deckCards: [],
   isLoadingCards: false,
 
-  startSession: async (deckId) => {
+  startSession: async (deckId, extra) => {
     const [session, dueCards, deck] = await Promise.all([
       createStudySession(deckId),
-      getDueCards(deckId),
+      extra ? getAllCardsForExtraStudy(deckId) : getDueCards(deckId),
       getDeckById(deckId),
     ]);
 
