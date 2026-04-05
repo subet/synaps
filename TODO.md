@@ -3,7 +3,7 @@ Kullanıcılar oluşturdukları deckleri paylaşabilsinler. Öyle bir library ol
 
 # DECK DOWNLOADS
 Show locked decks (Let user unlock the second part if he downloads the first part)
-Show “X students downloaded” (sort by most downloaded in library)
+Sort by most downloaded in library.
 
 # NEW DECKS
 ## BUSINESS
