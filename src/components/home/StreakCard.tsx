@@ -73,10 +73,10 @@ export function StreakCard({ currentStreak, weekDays }: StreakCardProps) {
 
           return (
             <View key={idx} style={styles.barColumn}>
-              <Text style={[styles.barCount, isToday && styles.barCountToday, !hasStudied && styles.barCountHidden]}>
-                {hasStudied ? dayData.cards_studied : ' '}
-              </Text>
               <View style={styles.barTrack}>
+                <Text style={[styles.barCount, isToday && styles.barCountToday, !hasStudied && styles.barCountHidden]}>
+                  {hasStudied ? dayData.cards_studied : ' '}
+                </Text>
                 <View
                   style={[
                     styles.bar,
@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+    marginTop: spacing.md,
   },
   barColumn: {
     alignItems: 'center',
@@ -158,6 +159,7 @@ const styles = StyleSheet.create({
   barTrack: {
     height: BAR_MAX_HEIGHT,
     justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   bar: {
     width: BAR_WIDTH,
