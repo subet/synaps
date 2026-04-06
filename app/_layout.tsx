@@ -4,7 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { scheduleDailyReminder, scheduleInactivityNudge, scheduleProExpiredWinBack, cancelWinBackNotifications } from '../src/services/notifications';
+import { scheduleDailyReminder, scheduleInactivityNudge, scheduleProExpiredWinBack, cancelWinBackNotifications, cancelAllNotifications } from '../src/services/notifications';
 import { repairPublicDeckTranslations } from '../src/services/database';
 import { ErrorBoundary } from '../src/components/ui/ErrorBoundary';
 import { setLocale } from '../src/i18n';
@@ -54,25 +54,24 @@ export default function RootLayout() {
       const { user } = useAuthStore.getState();
       await initSubscription(user?.id);
 
-      // Schedule or cancel win-back notifications based on PRO status
-      const { isPro, wasPro } = useSubscriptionStore.getState();
-      if (!isPro && wasPro) {
-        scheduleProExpiredWinBack().catch(() => {});
-      } else if (isPro) {
-        cancelWinBackNotifications().catch(() => {});
-      }
-
       // Backfill translation columns for previously-downloaded public decks
       repairPublicDeckTranslations().catch(() => {});
 
-      // Re-schedule daily reminder on every cold start in case OS cleared it
-      // (happens after app update, reinstall, or device restart on some OS versions)
+      // Cancel ALL scheduled notifications on every cold start, then reschedule
+      // only what's needed. This prevents duplicates from reinstalls or updates.
+      await cancelAllNotifications();
+
       const { notifications } = useAppStore.getState();
       if (notifications.enabled) {
         const [h, m] = notifications.time.split(':').map(Number);
         scheduleDailyReminder(h, m).catch(() => {});
-        // Schedule inactivity nudge (fires 3 days from now; resets each cold start)
         scheduleInactivityNudge().catch(() => {});
+      }
+
+      // Re-schedule win-back after the cancelAll above
+      const { isPro: isProNow, wasPro: wasProNow } = useSubscriptionStore.getState();
+      if (!isProNow && wasProNow) {
+        scheduleProExpiredWinBack().catch(() => {});
       }
     }
     bootstrap();

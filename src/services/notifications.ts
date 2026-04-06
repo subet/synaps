@@ -61,6 +61,15 @@ export async function cancelDailyReminder(): Promise<void> {
   }
 }
 
+async function cancelByType(type: string): Promise<void> {
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  for (const n of scheduled) {
+    if (n.content.data?.type === type) {
+      await Notifications.cancelScheduledNotificationAsync(n.identifier);
+    }
+  }
+}
+
 export async function scheduleStreakAtRiskNotification(streakDays: number): Promise<void> {
   const today = new Date();
   const trigger = new Date(today);
@@ -71,11 +80,14 @@ export async function scheduleStreakAtRiskNotification(streakDays: number): Prom
     return;
   }
 
+  await cancelByType('streak_at_risk');
+
   await Notifications.scheduleNotificationAsync({
     content: {
       title: `Don't break your ${streakDays}-day streak! 🔥`,
       body: 'Just a few cards — it only takes 2 minutes.',
       sound: true,
+      data: { type: 'streak_at_risk' },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
@@ -91,11 +103,14 @@ export async function scheduleWeeklyProgress(cardsThisWeek: number, sessionsThis
   nextSunday.setDate(nextSunday.getDate() + daysUntilSunday);
   nextSunday.setHours(10, 0, 0, 0);
 
+  await cancelByType('weekly_recap');
+
   await Notifications.scheduleNotificationAsync({
     content: {
       title: 'Your weekly recap 📊',
       body: `You studied ${cardsThisWeek} cards this week across ${sessionsThisWeek} sessions!`,
       sound: true,
+      data: { type: 'weekly_recap' },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
@@ -108,11 +123,14 @@ export async function scheduleInactivityNudge(): Promise<void> {
   const threeDaysFromNow = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
   threeDaysFromNow.setHours(10, 0, 0, 0);
 
+  await cancelByType('inactivity_nudge');
+
   await Notifications.scheduleNotificationAsync({
     content: {
       title: 'We miss you! 👋',
       body: 'Your cards are piling up. Come back for a quick session.',
       sound: true,
+      data: { type: 'inactivity_nudge' },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
