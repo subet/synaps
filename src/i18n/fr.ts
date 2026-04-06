@@ -178,6 +178,7 @@ export const fr = {
   section_app_settings: 'Paramètres de l\'application',
   section_legal: 'Trucs ennuyeux',
   sign_in: 'Se connecter',
+  edit_profile: 'Modifier le profil',
   manage_subscription: 'Gérer l\'abonnement',
   sync_data: 'Synchroniser les données',
   sync_requires_pro: 'La synchronisation cloud nécessite un abonnement PRO.',

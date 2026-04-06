@@ -178,6 +178,7 @@ export const zh = {
   section_app_settings: '应用设置',
   section_legal: '无聊的东西',
   sign_in: '登录',
+  edit_profile: '编辑资料',
   manage_subscription: '管理订阅',
   sync_data: '同步数据',
   sync_requires_pro: '云同步需要 PRO 订阅。',

@@ -178,6 +178,7 @@ export const tr = {
   section_app_settings: 'Uygulama Ayarları',
   section_legal: 'Sıkıcı şeyler',
   sign_in: 'Giriş Yap',
+  edit_profile: 'Profili Düzenle',
   manage_subscription: 'Aboneliği Yönet',
   sync_data: 'Veriyi Senkronize Et',
   sync_requires_pro: 'Bulut senkronizasyonu PRO aboneliği gerektirir.',

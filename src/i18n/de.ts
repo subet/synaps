@@ -178,6 +178,7 @@ export const de = {
   section_app_settings: 'App-Einstellungen',
   section_legal: 'Langweiliges Zeug',
   sign_in: 'Anmelden',
+  edit_profile: 'Profil bearbeiten',
   manage_subscription: 'Abonnement verwalten',
   sync_data: 'Daten synchronisieren',
   sync_requires_pro: 'Cloud-Synchronisation erfordert ein PRO-Abonnement.',

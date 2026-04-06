@@ -178,6 +178,7 @@ export const en = {
   section_app_settings: 'App Settings',
   section_legal: 'Boring Stuff',
   sign_in: 'Sign In',
+  edit_profile: 'Edit Profile',
   manage_subscription: 'Manage Subscription',
   sync_data: 'Sync Data',
   sync_requires_pro: 'Cloud sync requires PRO subscription.',

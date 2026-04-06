@@ -178,6 +178,7 @@ export const it = {
   section_app_settings: 'Impostazioni app',
   section_legal: 'Roba noiosa',
   sign_in: 'Accedi',
+  edit_profile: 'Modifica profilo',
   manage_subscription: 'Gestisci abbonamento',
   sync_data: 'Sincronizza dati',
   sync_requires_pro: 'La sincronizzazione cloud richiede un abbonamento PRO.',

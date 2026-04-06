@@ -178,6 +178,7 @@ export const pt_PT = {
   section_app_settings: 'Definições da Aplicação',
   section_legal: 'Coisas chatas',
   sign_in: 'Iniciar Sessão',
+  edit_profile: 'Editar perfil',
   manage_subscription: 'Gerir Subscrição',
   sync_data: 'Sincronizar Dados',
   sync_requires_pro: 'A sincronização na nuvem requer subscrição PRO.',

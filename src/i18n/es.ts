@@ -178,6 +178,7 @@ export const es = {
   section_app_settings: 'Ajustes de la app',
   section_legal: 'Cosas aburridas',
   sign_in: 'Iniciar sesión',
+  edit_profile: 'Editar perfil',
   manage_subscription: 'Gestionar suscripción',
   sync_data: 'Sincronizar datos',
   sync_requires_pro: 'La sincronización en la nube requiere una suscripción PRO.',

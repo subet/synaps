@@ -178,6 +178,7 @@ export const ru = {
   section_app_settings: 'Настройки приложения',
   section_legal: 'Скучные штуки',
   sign_in: 'Войти',
+  edit_profile: 'Редактировать профиль',
   manage_subscription: 'Управление подпиской',
   sync_data: 'Синхронизация данных',
   sync_requires_pro: 'Облачная синхронизация требует подписки PRO.',

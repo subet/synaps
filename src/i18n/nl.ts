@@ -178,6 +178,7 @@ export const nl = {
   section_app_settings: 'App-instellingen',
   section_legal: 'Saai spul',
   sign_in: 'Aanmelden',
+  edit_profile: 'Profiel bewerken',
   manage_subscription: 'Abonnement beheren',
   sync_data: 'Gegevens synchroniseren',
   sync_requires_pro: 'Cloud-synchronisatie vereist een PRO-abonnement.',
