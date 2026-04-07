@@ -30,10 +30,10 @@ const PRO_FEATURE_KEYS = [
 ] as const;
 
 const PLANS = [
-  { key: 'weekly',   labelKey: 'weekly',   price: '$1.99',  periodKey: 'per_week',         savingsPercent: null, popular: false, bestValue: false },
-  { key: 'monthly',  labelKey: 'monthly',  price: '$4.99',  periodKey: 'per_month',        savingsPercent: null, popular: true,  bestValue: false },
-  { key: 'annual',   labelKey: 'annual',   price: '$29.99', periodKey: 'per_year',         savingsPercent: 50,   popular: false, bestValue: true  },
-  { key: 'lifetime', labelKey: 'lifetime', price: '$49.99', periodKey: 'one_time_payment', savingsPercent: null, popular: false, bestValue: false },
+  { key: 'weekly',   labelKey: 'weekly',   titleKey: 'plan_title_weekly',   price: '$1.99',  periodKey: 'per_week',         savingsPercent: null, popular: false, bestValue: false },
+  { key: 'monthly',  labelKey: 'monthly',  titleKey: 'plan_title_monthly',  price: '$4.99',  periodKey: 'per_month',        savingsPercent: null, popular: true,  bestValue: false },
+  { key: 'annual',   labelKey: 'annual',   titleKey: 'plan_title_annual',   price: '$29.99', periodKey: 'per_year',         savingsPercent: 50,   popular: false, bestValue: true  },
+  { key: 'lifetime', labelKey: 'lifetime', titleKey: 'plan_title_lifetime', price: '$49.99', periodKey: 'one_time_payment', savingsPercent: null, popular: false, bestValue: false },
 ];
 
 export default function PaywallScreen() {
@@ -133,7 +133,7 @@ export default function PaywallScreen() {
                 </View>
                 <View>
                   <Text style={[styles.planLabel, selectedPlan === plan.key && styles.planLabelSelected]}>
-                    {t(plan.labelKey)}
+                    {t(plan.titleKey)}
                   </Text>
                   {plan.popular && (
                     <View style={styles.popularBadge}>
@@ -183,6 +183,16 @@ export default function PaywallScreen() {
         </Pressable>
 
         <Text style={styles.finePrint}>{t('paywall_fine_print')}</Text>
+
+        <View style={styles.legalLinks}>
+          <Pressable onPress={() => router.push('/legal/terms')}>
+            <Text style={styles.legalLinkText}>{t('terms_of_use')}</Text>
+          </Pressable>
+          <Text style={styles.legalSeparator}>|</Text>
+          <Pressable onPress={() => router.push('/legal/privacy')}>
+            <Text style={styles.legalLinkText}>{t('privacy')}</Text>
+          </Pressable>
+        </View>
 
         {inOnboarding && (
           <Pressable onPress={goNext} style={styles.restoreBtn}>
@@ -271,4 +281,7 @@ const styles = StyleSheet.create({
   restoreBtn: { alignItems: 'center', paddingVertical: spacing.sm, marginBottom: spacing.md },
   restoreText: { ...typography.body, color: colors.primary },
   finePrint: { ...typography.small, color: colors.textMuted, textAlign: 'center', lineHeight: 18 },
+  legalLinks: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: spacing.sm, marginBottom: spacing.md, gap: spacing.sm },
+  legalLinkText: { ...typography.small, color: colors.primary, fontWeight: '600' },
+  legalSeparator: { ...typography.small, color: colors.textMuted },
 });

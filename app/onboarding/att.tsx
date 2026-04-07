@@ -17,12 +17,8 @@ async function requestATT() {
 export default function ATTScreen() {
   const { t } = useTranslation();
 
-  const handleAllow = async () => {
+  const handleContinue = async () => {
     await requestATT();
-    router.replace('/paywall');
-  };
-
-  const handleSkip = () => {
     router.replace('/paywall');
   };
 
@@ -58,24 +54,20 @@ export default function ATTScreen() {
 
         {/* Buttons */}
         <View style={styles.buttons}>
-          <Pressable onPress={handleAllow} style={styles.primaryBtnWrapper}>
+          <Pressable onPress={handleContinue} style={styles.primaryBtnWrapper}>
             <LinearGradient
               colors={['#4361EE', '#7C3AED']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={styles.primaryBtn}
             >
-              <Text style={styles.primaryBtnText}>{t('att_allow')}</Text>
+              <Text style={styles.primaryBtnText}>{t('continue')}</Text>
             </LinearGradient>
-          </Pressable>
-
-          <Pressable onPress={handleSkip} style={styles.secondaryBtn}>
-            <Text style={styles.secondaryBtnText}>{t('skip')}</Text>
           </Pressable>
 
           <Text style={styles.footer}>
             Read our{' '}
-            <Text style={styles.footerLink}>Privacy Policy</Text>
+            <Text style={styles.footerLink} onPress={() => router.push('/legal/privacy')}>Privacy Policy</Text>
             {' '}to learn more.
           </Text>
         </View>
@@ -146,24 +138,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#FFFFFF',
     letterSpacing: 0.2,
-  },
-  secondaryBtn: {
-    width: '100%',
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  secondaryBtnText: {
-    fontSize: 17,
-    fontWeight: '600',
-    color: colors.textPrimary,
   },
   footer: {
     ...typography.small,
