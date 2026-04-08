@@ -351,8 +351,8 @@ export const ALL_DECKS: PublicDeck[] = [
     is_featured: true,
     is_editors_choice: true,
     created_at: '2024-01-01T00:00:00Z',
-    supported_languages: ['en'],
-    name_translations: {"en":"Startup Fundamentals – From Idea to Launch"},
-    description_translations: {"en":"Master the essentials of building a startup. Covers ideation, validation, business models, fundraising, marketing, growth, and scaling."},
+    supported_languages: ['en', 'de'],
+    name_translations: {"en":"Startup Fundamentals – From Idea to Launch","de":"Startup-Grundlagen – Von der Idee zum Launch"},
+    description_translations: {"en":"Master the essentials of building a startup. Covers ideation, validation, business models, fundraising, marketing, growth, and scaling.","de":"Meistere die Grundlagen der Startup-Gründung. Umfasst Ideenfindung, Validierung, Geschäftsmodelle, Finanzierung, Marketing, Wachstum und Skalierung."},
   },
 ];
