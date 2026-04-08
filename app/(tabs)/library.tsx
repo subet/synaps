@@ -38,7 +38,7 @@ import { Language } from '../../src/types';
 type Tab = 'discover' | 'browse';
 
 const CATEGORY_KEYS = [
-  { key: 'all', labelKey: 'all', icon: '🌐' },
+  { key: 'all', labelKey: 'all_categories', icon: '📂' },
   { key: 'languages', labelKey: 'categories.languages', icon: '🗣️' },
   { key: 'anatomy', labelKey: 'categories.anatomy', icon: '🫀' },
   { key: 'mcat', labelKey: 'categories.mcat', icon: '🩺' },
@@ -390,6 +390,60 @@ function DiscoverTab({
 
 // ─── Browse Tab ────────────────────────────────────────────────────────────────
 
+function FilterPickerModal<T extends string>({
+  visible,
+  onClose,
+  title,
+  options,
+  selected,
+  onSelect,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  title: string;
+  options: { key: T; label: string; icon?: string }[];
+  selected: T;
+  onSelect: (key: T) => void;
+}) {
+  return (
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+      <Pressable style={styles.popupBackdrop} onPress={onClose}>
+        <Pressable style={styles.popupContainer} onPress={() => {}}>
+          <Text style={styles.popupTitle}>{title}</Text>
+          <ScrollView style={styles.popupList} bounces={false}>
+            {options.map(({ key, label, icon }) => {
+              const isSelected = key === selected;
+              return (
+                <Pressable
+                  key={key}
+                  style={({ pressed }) => [
+                    styles.popupItem,
+                    isSelected && styles.popupItemSelected,
+                    pressed && styles.popupItemPressed,
+                  ]}
+                  onPress={() => { onSelect(key); onClose(); }}
+                >
+                  {icon ? <Text style={styles.popupItemIcon}>{icon}</Text> : null}
+                  <Text style={[styles.popupItemLabel, isSelected && styles.popupItemLabelSelected]}>
+                    {label}
+                  </Text>
+                  {isSelected && <Text style={styles.popupCheck}>✓</Text>}
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        </Pressable>
+      </Pressable>
+    </Modal>
+  );
+}
+
+const LANGUAGE_NAMES: Record<string, string> = {
+  en: 'English', de: 'Deutsch', es: 'Español', fr: 'Français',
+  it: 'Italiano', nl: 'Nederlands', pt_BR: 'Português (BR)',
+  pt_PT: 'Português (PT)', ru: 'Русский', tr: 'Türkçe', zh: '中文',
+};
+
 function BrowseTab({
   decks,
   selectedCategory,
@@ -416,55 +470,57 @@ function BrowseTab({
   onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
+  const [showLangPicker, setShowLangPicker] = useState(false);
+  const [showCatPicker, setShowCatPicker] = useState(false);
+
+  const langOptions = useMemo(() => [
+    { key: 'all' as string, label: t('all_languages'), icon: '🌐' },
+    ...languageFilters.map((lang) => ({
+      key: lang as string,
+      label: LANGUAGE_NAMES[lang] ?? lang,
+      icon: LANGUAGE_FLAGS[lang],
+    })),
+  ], [languageFilters, t]);
+
+  const catOptions = useMemo(() =>
+    CATEGORY_KEYS.map((cat) => ({
+      key: cat.key,
+      label: t(cat.labelKey),
+      icon: cat.icon,
+    })),
+  [t]);
+
+  const selectedLangLabel = selectedLanguage === 'all'
+    ? t('language')
+    : (LANGUAGE_NAMES[selectedLanguage] ?? selectedLanguage);
+  const selectedLangIcon = selectedLanguage === 'all' ? '🌐' : (LANGUAGE_FLAGS[selectedLanguage as Language] ?? '🌐');
+
+  const selectedCat = CATEGORY_KEYS.find((c) => c.key === selectedCategory) ?? CATEGORY_KEYS[0];
+  const selectedCatLabel = selectedCategory === 'all' ? t('category') : t(selectedCat.labelKey);
+  const selectedCatIcon = selectedCat.icon;
+
   return (
     <View style={styles.flex}>
-      {/* Language filter + Category chips */}
-      <View style={styles.filterRows}>
-        {/* Language filter — only show when there are language-specific decks */}
+      {/* Compact filter row */}
+      <View style={styles.filterRow}>
         {languageFilters.length > 0 && (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.langRow}
+          <Pressable
+            style={({ pressed }) => [styles.filterBtn, pressed && styles.filterBtnPressed]}
+            onPress={() => setShowLangPicker(true)}
           >
-            <Pressable
-              style={[styles.langChip, selectedLanguage === 'all' && styles.langChipActive]}
-              onPress={() => onSelectLanguage('all')}
-            >
-              <Ionicons name="globe-outline" size={16} color={selectedLanguage === 'all' ? colors.white : colors.textSecondary} />
-            </Pressable>
-            {languageFilters.map((lang) => (
-              <Pressable
-                key={lang}
-                style={[styles.langChip, selectedLanguage === lang && styles.langChipActive]}
-                onPress={() => onSelectLanguage(lang)}
-              >
-                <Text style={styles.langFlag}>{LANGUAGE_FLAGS[lang]}</Text>
-              </Pressable>
-            ))}
-          </ScrollView>
+            <Text style={styles.filterBtnIcon}>{selectedLangIcon}</Text>
+            <Text style={styles.filterBtnLabel} numberOfLines={1}>{selectedLangLabel}</Text>
+            <Text style={styles.filterChevron}>›</Text>
+          </Pressable>
         )}
-
-        {/* Category chips */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.chipsRow}
-          style={styles.chipsScroll}
+        <Pressable
+          style={({ pressed }) => [styles.filterBtn, pressed && styles.filterBtnPressed]}
+          onPress={() => setShowCatPicker(true)}
         >
-          {CATEGORY_KEYS.map((cat) => (
-            <Pressable
-              key={cat.key}
-              style={[styles.chip, selectedCategory === cat.key && styles.chipActive]}
-              onPress={() => onSelectCategory(cat.key)}
-            >
-              <Text style={styles.chipIcon}>{cat.icon}</Text>
-              <Text style={[styles.chipLabel, selectedCategory === cat.key && styles.chipLabelActive]}>
-                {t(cat.labelKey)}
-              </Text>
-            </Pressable>
-          ))}
-        </ScrollView>
+          <Text style={styles.filterBtnIcon}>{selectedCatIcon}</Text>
+          <Text style={styles.filterBtnLabel} numberOfLines={1}>{selectedCatLabel}</Text>
+          <Text style={styles.filterChevron}>›</Text>
+        </Pressable>
       </View>
 
       {/* Deck list */}
@@ -482,6 +538,23 @@ function BrowseTab({
           />
         ))}
       </ScrollView>
+
+      <FilterPickerModal
+        visible={showLangPicker}
+        onClose={() => setShowLangPicker(false)}
+        title={t('select_language')}
+        options={langOptions}
+        selected={selectedLanguage}
+        onSelect={onSelectLanguage}
+      />
+      <FilterPickerModal
+        visible={showCatPicker}
+        onClose={() => setShowCatPicker(false)}
+        title={t('select_category')}
+        options={catOptions}
+        selected={selectedCategory}
+        onSelect={onSelectCategory}
+      />
     </View>
   );
 }
@@ -803,47 +876,70 @@ const styles = StyleSheet.create({
   },
   downloadBannerText: { ...typography.caption, color: colors.primary, flex: 1, flexWrap: 'wrap' },
   upgradeLink: { ...typography.captionBold, color: colors.primary, flexShrink: 0 },
-  filterRows: { flexGrow: 0, flexShrink: 0 },
-  langRow: {
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xs,
-    gap: spacing.sm,
-  },
-  langChip: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: colors.surface,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: colors.border,
-  },
-  langChipActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  langFlag: { fontSize: 18 },
-  chipsScroll: { flexGrow: 0, flexShrink: 0 },
-  chipsRow: {
+  filterRow: {
+    flexDirection: 'row',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     gap: spacing.sm,
   },
-  chip: {
+  filterBtn: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.surface,
-    borderRadius: borderRadius.full,
+    borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    gap: spacing.xs,
+    paddingVertical: 10,
+    gap: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
-  chipActive: { backgroundColor: colors.primary },
-  chipIcon: { fontSize: 14 },
-  chipLabel: { ...typography.small, color: colors.textSecondary, fontWeight: '500' },
-  chipLabelActive: { color: colors.white, fontWeight: '600' },
+  filterBtnPressed: { opacity: 0.7 },
+  filterBtnIcon: { fontSize: 18 },
+  filterBtnLabel: { ...typography.small, color: colors.textPrimary, fontWeight: '500', flex: 1 },
+  filterChevron: { fontSize: 18, color: colors.textMuted },
+  popupBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.lg,
+  },
+  popupContainer: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    width: '100%',
+    maxHeight: '70%',
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.sm,
+    shadowColor: colors.shadowColor,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.15,
+    shadowRadius: 24,
+    elevation: 10,
+  },
+  popupTitle: {
+    ...typography.h3,
+    color: colors.textPrimary,
+    textAlign: 'center',
+    marginBottom: spacing.md,
+  },
+  popupList: { paddingHorizontal: spacing.sm },
+  popupItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    marginHorizontal: spacing.xs,
+    marginVertical: 2,
+  },
+  popupItemSelected: { backgroundColor: colors.primaryLight },
+  popupItemPressed: { opacity: 0.7 },
+  popupItemIcon: { fontSize: 24, marginRight: spacing.md },
+  popupItemLabel: { ...typography.body, color: colors.textPrimary, flex: 1 },
+  popupItemLabelSelected: { ...typography.bodyBold, color: colors.primary },
+  popupCheck: { ...typography.bodyBold, color: colors.primary, fontSize: 18 },
   tabContent: { padding: spacing.md, paddingBottom: 40 },
   emptyText: { ...typography.body, color: colors.textMuted, textAlign: 'center', marginTop: 40 },
   deckCount: { ...typography.caption, color: colors.textMuted, marginBottom: spacing.sm },
