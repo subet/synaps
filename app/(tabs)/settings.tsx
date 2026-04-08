@@ -30,6 +30,7 @@ import Constants from 'expo-constants';
 import * as StoreReview from 'expo-store-review';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Language } from '../../src/types';
+import { LANGUAGE_FLAGS } from '../../src/utils/languages';
 
 const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'en',    label: 'English' },
@@ -93,6 +94,7 @@ export default function SettingsScreen() {
   const { user, profile, logout } = useAuthStore();
   const { isPro } = useSubscriptionStore();
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [showLanguagePicker, setShowLanguagePicker] = useState(false);
 
   const timeDate = (() => {
     const [h, m] = notifications.time.split(':').map(Number);
@@ -243,15 +245,7 @@ export default function SettingsScreen() {
           <SettingsRow
             label={t('ui_language')}
             value={LANGUAGE_NAMES[language] ?? 'English'}
-            onPress={() => {
-              Alert.alert(t('ui_language'), t('select_language'), [
-                ...LANGUAGES.map(({ code, label }) => ({
-                  text: label,
-                  onPress: () => setLanguage(code),
-                })),
-                { text: t('cancel'), style: 'cancel' },
-              ]);
-            }}
+            onPress={() => setShowLanguagePicker(true)}
           />
           <SettingsRow
             label={t('rate_us')}
@@ -302,6 +296,46 @@ export default function SettingsScreen() {
           />
         )}
       </ScrollView>
+
+      {/* Language picker modal */}
+      <Modal
+        visible={showLanguagePicker}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowLanguagePicker(false)}
+      >
+        <Pressable style={styles.langBackdrop} onPress={() => setShowLanguagePicker(false)}>
+          <Pressable style={styles.langPopup} onPress={() => {}}>
+            <Text style={styles.langTitle}>{t('select_language')}</Text>
+            <ScrollView style={styles.langList} bounces={false}>
+              {LANGUAGES.map(({ code, label }) => {
+                const selected = code === language;
+                return (
+                  <Pressable
+                    key={code}
+                    style={({ pressed }) => [
+                      styles.langItem,
+                      selected && styles.langItemSelected,
+                      pressed && styles.langItemPressed,
+                    ]}
+                    onPress={() => {
+                      tap();
+                      setLanguage(code);
+                      setShowLanguagePicker(false);
+                    }}
+                  >
+                    <Text style={styles.langFlag}>{LANGUAGE_FLAGS[code]}</Text>
+                    <Text style={[styles.langLabel, selected && styles.langLabelSelected]}>
+                      {label}
+                    </Text>
+                    {selected && <Text style={styles.langCheck}>✓</Text>}
+                  </Pressable>
+                );
+              })}
+            </ScrollView>
+          </Pressable>
+        </Pressable>
+      </Modal>
 
       {/* iOS: modal overlay with spinner + Done button */}
       {Platform.OS === 'ios' && (
@@ -396,4 +430,66 @@ const styles = StyleSheet.create({
   modalDone: { padding: spacing.sm },
   modalDoneText: { ...typography.bodyBold, color: colors.primary },
   picker: { width: '100%' },
+  langBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.lg,
+  },
+  langPopup: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    width: '100%',
+    maxHeight: '70%',
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.sm,
+    shadowColor: colors.shadowColor,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.15,
+    shadowRadius: 24,
+    elevation: 10,
+  },
+  langTitle: {
+    ...typography.h3,
+    color: colors.textPrimary,
+    textAlign: 'center',
+    marginBottom: spacing.md,
+  },
+  langList: {
+    paddingHorizontal: spacing.sm,
+  },
+  langItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    marginHorizontal: spacing.xs,
+    marginVertical: 2,
+  },
+  langItemSelected: {
+    backgroundColor: colors.primaryLight,
+  },
+  langItemPressed: {
+    opacity: 0.7,
+  },
+  langFlag: {
+    fontSize: 24,
+    marginRight: spacing.md,
+  },
+  langLabel: {
+    ...typography.body,
+    color: colors.textPrimary,
+    flex: 1,
+  },
+  langLabelSelected: {
+    ...typography.bodyBold,
+    color: colors.primary,
+  },
+  langCheck: {
+    ...typography.bodyBold,
+    color: colors.primary,
+    fontSize: 18,
+  },
 });
