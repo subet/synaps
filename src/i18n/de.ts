@@ -156,6 +156,8 @@ export const de = {
   no_decks_found: 'Keine Stapel gefunden',
   discover: 'Entdecken',
   browse: 'Durchsuchen',
+  search: 'Suche',
+  search_hint: 'Tippen Sie, um nach Decks zu suchen',
   all: 'Alle',
   upgrade_pro: 'Auf PRO upgraden',
   categories: {

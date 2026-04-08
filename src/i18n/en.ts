@@ -156,6 +156,8 @@ export const en = {
   no_decks_found: 'No decks found',
   discover: 'Discover',
   browse: 'Browse',
+  search: 'Search',
+  search_hint: 'Type to search for decks',
   all: 'All',
   upgrade_pro: 'Upgrade to PRO',
   categories: {

@@ -156,6 +156,8 @@ export const pt_BR = {
   no_decks_found: 'Nenhum baralho encontrado',
   discover: 'Descobrir',
   browse: 'Explorar',
+  search: 'Pesquisar',
+  search_hint: 'Digite para pesquisar baralhos',
   all: 'Todos',
   upgrade_pro: 'Assinar o PRO',
   categories: {

@@ -156,6 +156,8 @@ export const fr = {
   no_decks_found: 'Aucun paquet trouvé',
   discover: 'Découvrir',
   browse: 'Parcourir',
+  search: 'Recherche',
+  search_hint: 'Tapez pour rechercher des paquets',
   all: 'Tous',
   upgrade_pro: 'Passer à PRO',
   categories: {

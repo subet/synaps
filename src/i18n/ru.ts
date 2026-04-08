@@ -156,6 +156,8 @@ export const ru = {
   no_decks_found: 'Колоды не найдены',
   discover: 'Открыть',
   browse: 'Обзор',
+  search: 'Поиск',
+  search_hint: 'Введите для поиска колод',
   all: 'Все',
   upgrade_pro: 'Перейти на PRO',
   categories: {

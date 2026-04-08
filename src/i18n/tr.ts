@@ -156,6 +156,8 @@ export const tr = {
   no_decks_found: 'Deste bulunamadı',
   discover: 'Keşfet',
   browse: 'Gözat',
+  search: 'Ara',
+  search_hint: 'Deste aramak için yazın',
   all: 'Tümü',
   upgrade_pro: "PRO'ya Geçin",
   categories: {

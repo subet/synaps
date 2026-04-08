@@ -156,6 +156,8 @@ export const zh = {
   no_decks_found: '未找到牌组',
   discover: '发现',
   browse: '浏览',
+  search: '搜索',
+  search_hint: '输入以搜索牌组',
   all: '全部',
   upgrade_pro: '升级到 PRO',
   categories: {

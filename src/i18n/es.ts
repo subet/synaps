@@ -156,6 +156,8 @@ export const es = {
   no_decks_found: 'No se encontraron mazos',
   discover: 'Descubrir',
   browse: 'Explorar',
+  search: 'Buscar',
+  search_hint: 'Escribe para buscar mazos',
   all: 'Todos',
   upgrade_pro: 'Actualizar a PRO',
   categories: {

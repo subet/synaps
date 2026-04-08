@@ -156,6 +156,8 @@ export const nl = {
   no_decks_found: 'Geen stapels gevonden',
   discover: 'Ontdekken',
   browse: 'Bladeren',
+  search: 'Zoeken',
+  search_hint: 'Typ om naar decks te zoeken',
   all: 'Alle',
   upgrade_pro: 'Upgraden naar PRO',
   categories: {

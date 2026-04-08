@@ -35,7 +35,7 @@ import { LanguageBadge } from '../../src/components/ui/LanguageBadge';
 import { isMultilingual, LANGUAGE_FLAGS } from '../../src/utils/languages';
 import { Language } from '../../src/types';
 
-type Tab = 'discover' | 'browse';
+type Tab = 'discover' | 'browse' | 'search';
 
 const CATEGORY_KEYS = [
   { key: 'all', labelKey: 'all_categories', icon: 'grid-outline' as const },
@@ -187,41 +187,25 @@ export default function LibraryScreen() {
     return base.filter((d) => d.category === selectedCategory);
   }, [selectedCategory, selectedLanguage, hiddenDeckId]);
 
-  const isSearching = searchQuery.trim().length > 0;
-
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      {/* Fixed header: logo + search + tabs */}
+      {/* Fixed header: logo + tabs */}
       <View style={styles.header}>
         <TabHeader />
-        <View style={styles.searchContainer}>
-          <SearchBar
-            placeholder={t('search_library')}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-        </View>
 
-        {!isSearching && (
-          <View style={styles.tabBar}>
+        <View style={styles.tabBar}>
+          {(['discover', 'browse', 'search'] as Tab[]).map((tab) => (
             <Pressable
-              style={[styles.tabBtn, activeTab === 'discover' && styles.tabBtnActive]}
-              onPress={() => setActiveTab('discover')}
+              key={tab}
+              style={[styles.tabBtn, activeTab === tab && styles.tabBtnActive]}
+              onPress={() => setActiveTab(tab)}
             >
-              <Text style={[styles.tabBtnText, activeTab === 'discover' && styles.tabBtnTextActive]}>
-                {t('discover')}
+              <Text style={[styles.tabBtnText, activeTab === tab && styles.tabBtnTextActive]}>
+                {t(tab)}
               </Text>
             </Pressable>
-            <Pressable
-              style={[styles.tabBtn, activeTab === 'browse' && styles.tabBtnActive]}
-              onPress={() => setActiveTab('browse')}
-            >
-              <Text style={[styles.tabBtnText, activeTab === 'browse' && styles.tabBtnTextActive]}>
-                {t('browse')}
-              </Text>
-            </Pressable>
-          </View>
-        )}
+          ))}
+        </View>
 
         {!isPro && (
           <View style={styles.downloadBanner}>
@@ -236,8 +220,10 @@ export default function LibraryScreen() {
       </View>
 
       {/* Scrollable body */}
-      {isSearching ? (
-        <SearchResults
+      {activeTab === 'search' ? (
+        <SearchTab
+          searchQuery={searchQuery}
+          onChangeQuery={setSearchQuery}
           results={searchResults}
           downloading={downloading}
           downloadedIds={downloadedIds}
@@ -286,9 +272,11 @@ export default function LibraryScreen() {
   );
 }
 
-// ─── Search Results ────────────────────────────────────────────────────────────
+// ─── Search Tab ───────────────────────────────────────────────────────────────
 
-function SearchResults({
+function SearchTab({
+  searchQuery,
+  onChangeQuery,
   results,
   downloading,
   downloadedIds,
@@ -296,6 +284,8 @@ function SearchResults({
   onDownload,
   onSelect,
 }: {
+  searchQuery: string;
+  onChangeQuery: (q: string) => void;
   results: PublicDeck[];
   downloading: string | null;
   downloadedIds: Set<string>;
@@ -304,24 +294,36 @@ function SearchResults({
   onSelect: (d: PublicDeck) => void;
 }) {
   const { t } = useTranslation();
+  const hasQuery = searchQuery.trim().length > 0;
   return (
-    <ScrollView contentContainerStyle={styles.tabContent}>
-      {results.length === 0 ? (
-        <Text style={styles.emptyText}>{t('no_decks_found')}</Text>
-      ) : (
-        results.map((deck) => (
-          <BrowseDeckCard
-            key={deck.id}
-            deck={deck}
-            isDownloading={downloading === deck.id}
-            isDownloaded={downloadedIds.has(deck.id)}
-            downloadCount={downloadCounts[deck.id] ?? 0}
-            onDownload={onDownload}
-            onSelect={onSelect}
-          />
-        ))
-      )}
-    </ScrollView>
+    <View style={styles.flex}>
+      <View style={styles.searchContainer}>
+        <SearchBar
+          placeholder={t('search_library')}
+          value={searchQuery}
+          onChangeText={onChangeQuery}
+        />
+      </View>
+      <ScrollView contentContainerStyle={styles.tabContent}>
+        {!hasQuery ? (
+          <Text style={styles.emptyText}>{t('search_hint')}</Text>
+        ) : results.length === 0 ? (
+          <Text style={styles.emptyText}>{t('no_decks_found')}</Text>
+        ) : (
+          results.map((deck) => (
+            <BrowseDeckCard
+              key={deck.id}
+              deck={deck}
+              isDownloading={downloading === deck.id}
+              isDownloaded={downloadedIds.has(deck.id)}
+              downloadCount={downloadCounts[deck.id] ?? 0}
+              onDownload={onDownload}
+              onSelect={onSelect}
+            />
+          ))
+        )}
+      </ScrollView>
+    </View>
   );
 }
 

@@ -156,6 +156,8 @@ export const it = {
   no_decks_found: 'Nessun mazzo trovato',
   discover: 'Scopri',
   browse: 'Sfoglia',
+  search: 'Cerca',
+  search_hint: 'Digita per cercare mazzi',
   all: 'Tutti',
   upgrade_pro: 'Passa a PRO',
   categories: {
