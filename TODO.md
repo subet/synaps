@@ -48,6 +48,15 @@ Tier 3 (later)
 🇨🇳 Chinese → Gaokao
 🇸🇦 Arabic → regional exams (fragmented)
 
+# SAT EXAM
+- SAT Vocabulary (500–1000 cards)
+- SAT Grammar Rules (200 cards)
+- SAT Math Formulas (150 cards)
+- SAT Math Patterns (200 cards)
+- SAT Reading Strategies (150 cards)
+- SAT Traps & Mistakes (150 cards)
+- SAT Test Strategies (100 cards)
+
 # PROMOTION TECHNIQUES
 ## Create content like:
 “YKS’de çıkan 50 kritik bilgi”

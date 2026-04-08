@@ -28,6 +28,13 @@ import { mcatCards } from './subjects/mcat';
 // Exams
 import { yksMathCards } from './exams/yks_math';
 import { yksBioCards } from './exams/yks_bio';
+import { satVocabCards } from './exams/sat_vocab';
+import { satGrammarCards } from './exams/sat_grammar';
+import { satMathFormulasCards } from './exams/sat_math_formulas';
+import { satMathPatternsCards } from './exams/sat_math_patterns';
+import { satReadingCards } from './exams/sat_reading';
+import { satTrapsCards } from './exams/sat_traps';
+import { satStrategiesCards } from './exams/sat_strategies';
 
 // Make Money
 import { startupFundamentalsCards } from './make_money/startup_fundamentals';
@@ -76,6 +83,13 @@ const CARDS_MAP: Record<string, PublicCard[]> = {
   'deck-mcat': mcatCards,
   'deck-yks-math': yksMathCards,
   'deck-yks-bio': yksBioCards,
+  'deck-sat-vocab': satVocabCards,
+  'deck-sat-grammar': satGrammarCards,
+  'deck-sat-math-formulas': satMathFormulasCards,
+  'deck-sat-math-patterns': satMathPatternsCards,
+  'deck-sat-reading': satReadingCards,
+  'deck-sat-traps': satTrapsCards,
+  'deck-sat-strategies': satStrategiesCards,
   'deck-startup-fundamentals': startupFundamentalsCards,
 };
 
