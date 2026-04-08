@@ -38,19 +38,19 @@ import { Language } from '../../src/types';
 type Tab = 'discover' | 'browse';
 
 const CATEGORY_KEYS = [
-  { key: 'all', labelKey: 'all_categories', icon: '📂' },
-  { key: 'languages', labelKey: 'categories.languages', icon: '🗣️' },
-  { key: 'anatomy', labelKey: 'categories.anatomy', icon: '🫀' },
-  { key: 'mcat', labelKey: 'categories.mcat', icon: '🩺' },
-  { key: 'science', labelKey: 'categories.science', icon: '🔬' },
-  { key: 'history', labelKey: 'categories.history', icon: '📜' },
-  { key: 'business', labelKey: 'categories.business', icon: '💼' },
-  { key: 'math', labelKey: 'categories.math', icon: '📐' },
-  { key: 'medical', labelKey: 'categories.medical', icon: '💊' },
-  { key: 'technology', labelKey: 'categories.technology', icon: '💻' },
-  { key: 'psychology', labelKey: 'categories.psychology', icon: '🧠' },
-  { key: 'exams', labelKey: 'categories.exams', icon: '🎓' },
-  { key: 'make_money', labelKey: 'categories.make_money', icon: '💰' },
+  { key: 'all', labelKey: 'all_categories', icon: 'grid-outline' as const },
+  { key: 'languages', labelKey: 'categories.languages', icon: 'chatbubbles-outline' as const },
+  { key: 'anatomy', labelKey: 'categories.anatomy', icon: 'body-outline' as const },
+  { key: 'mcat', labelKey: 'categories.mcat', icon: 'fitness-outline' as const },
+  { key: 'science', labelKey: 'categories.science', icon: 'flask-outline' as const },
+  { key: 'history', labelKey: 'categories.history', icon: 'time-outline' as const },
+  { key: 'business', labelKey: 'categories.business', icon: 'briefcase-outline' as const },
+  { key: 'math', labelKey: 'categories.math', icon: 'calculator-outline' as const },
+  { key: 'medical', labelKey: 'categories.medical', icon: 'medkit-outline' as const },
+  { key: 'technology', labelKey: 'categories.technology', icon: 'hardware-chip-outline' as const },
+  { key: 'psychology', labelKey: 'categories.psychology', icon: 'bulb-outline' as const },
+  { key: 'exams', labelKey: 'categories.exams', icon: 'school-outline' as const },
+  { key: 'make_money', labelKey: 'categories.make_money', icon: 'cash-outline' as const },
 ];
 
 export default function LibraryScreen() {
@@ -127,7 +127,7 @@ export default function LibraryScreen() {
         name_translations: deck.name_translations,
         description_translations: deck.description_translations,
         supported_languages: deck.supported_languages,
-        icon: deck.icon_url ?? '📚',
+        icon: deck.icon_url ?? 'book-outline',
         color: colors.primary,
         new_cards_per_day: 20,
         shuffle_cards: true,
@@ -397,6 +397,7 @@ function FilterPickerModal<T extends string>({
   options,
   selected,
   onSelect,
+  iconType = 'emoji',
 }: {
   visible: boolean;
   onClose: () => void;
@@ -404,6 +405,7 @@ function FilterPickerModal<T extends string>({
   options: { key: T; label: string; icon?: string }[];
   selected: T;
   onSelect: (key: T) => void;
+  iconType?: 'emoji' | 'ionicon';
 }) {
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
@@ -423,7 +425,15 @@ function FilterPickerModal<T extends string>({
                   ]}
                   onPress={() => { onSelect(key); onClose(); }}
                 >
-                  {icon ? <Text style={styles.popupItemIcon}>{icon}</Text> : null}
+                  {icon ? (
+                    iconType === 'ionicon' ? (
+                      <View style={styles.popupItemIconWrap}>
+                        <Ionicons name={icon as any} size={22} color={isSelected ? colors.primary : colors.textSecondary} />
+                      </View>
+                    ) : (
+                      <Text style={styles.popupItemIcon}>{icon}</Text>
+                    )
+                  ) : null}
                   <Text style={[styles.popupItemLabel, isSelected && styles.popupItemLabelSelected]}>
                     {label}
                   </Text>
@@ -517,7 +527,7 @@ function BrowseTab({
           style={({ pressed }) => [styles.filterBtn, pressed && styles.filterBtnPressed]}
           onPress={() => setShowCatPicker(true)}
         >
-          <Text style={styles.filterBtnIcon}>{selectedCatIcon}</Text>
+          <Ionicons name={selectedCatIcon as any} size={18} color={colors.textSecondary} />
           <Text style={styles.filterBtnLabel} numberOfLines={1}>{selectedCatLabel}</Text>
           <Text style={styles.filterChevron}>›</Text>
         </Pressable>
@@ -552,6 +562,7 @@ function BrowseTab({
         onClose={() => setShowCatPicker(false)}
         title={t('select_category')}
         options={catOptions}
+        iconType="ionicon"
         selected={selectedCategory}
         onSelect={onSelectCategory}
       />
@@ -581,7 +592,7 @@ function FeaturedDeckCard({
   return (
     <Pressable style={styles.featuredCard} onPress={() => onSelect(deck)}>
       <View style={styles.featuredIcon}>
-        <Text style={styles.featuredIconText}>{deck.icon_url ?? getCategoryEmoji(deck.category)}</Text>
+        {renderIcon(deck.icon_url, deck.category, 28, colors.primary)}
       </View>
       <Text style={styles.featuredName} numberOfLines={2}>{name}</Text>
       <View style={styles.featuredMeta}>
@@ -634,7 +645,7 @@ function EditorsChoiceDeckCard({
         )}
       </View>
       <View style={styles.editorsCardRight}>
-        <Text style={styles.editorsEmoji}>{getCategoryEmoji(deck.category)}</Text>
+        {renderIcon(deck.icon_url, deck.category, 36, colors.primary)}
         {isDownloaded && (
           <View style={styles.downloadedBadgeSmall}>
             <Ionicons name="checkmark" size={18} color={colors.white} />
@@ -665,7 +676,7 @@ function BrowseDeckCard({
   return (
     <Pressable style={styles.browseCard} onPress={() => onSelect(deck)}>
       <View style={[styles.browseIcon, { backgroundColor: getCategoryBg(deck.category) }]}>
-        <Text style={styles.browseIconText}>{deck.icon_url ?? getCategoryEmoji(deck.category)}</Text>
+        {renderIcon(deck.icon_url, deck.category, 24, colors.primary)}
       </View>
       <View style={styles.browseInfo}>
         <Text style={styles.browseName} numberOfLines={1}>{name}</Text>
@@ -719,7 +730,7 @@ function DeckDetailModal({
         <Pressable style={styles.modalSheet} onPress={(e) => e.stopPropagation()}>
           {/* Icon */}
           <View style={[styles.modalIconCircle, { backgroundColor: getCategoryBg(deck.category) }]}>
-            <Text style={styles.modalIconText}>{deck.icon_url ?? getCategoryEmoji(deck.category)}</Text>
+            {renderIcon(deck.icon_url, deck.category, 36, colors.primary)}
           </View>
 
           {/* Name */}
@@ -787,11 +798,26 @@ function DeckDetailModal({
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 
-function getCategoryEmoji(category: string): string {
+function isIonicon(icon: string): boolean {
+  return /^[a-z]/.test(icon);
+}
+
+function renderIcon(icon: string | undefined | null, category: string, size: number, color: string) {
+  if (icon && !isIonicon(icon)) {
+    // It's an emoji (e.g. flag)
+    return <Text style={{ fontSize: size - 4 }}>{icon}</Text>;
+  }
+  const ionName = icon && isIonicon(icon) ? icon : getCategoryIcon(category);
+  return <Ionicons name={ionName as any} size={size} color={color} />;
+}
+
+function getCategoryIcon(category: string): string {
   const map: Record<string, string> = {
-    languages: '🗣️', anatomy: '🫀', mcat: '🩺', science: '🔬',
-    history: '📜', business: '💼', math: '📐', medical: '💊',
-    technology: '💻', psychology: '🧠', exams: '🎓', default: '📚',
+    languages: 'chatbubbles-outline', anatomy: 'body-outline', mcat: 'fitness-outline',
+    science: 'flask-outline', history: 'time-outline', business: 'briefcase-outline',
+    math: 'calculator-outline', medical: 'medkit-outline', technology: 'hardware-chip-outline',
+    psychology: 'bulb-outline', exams: 'school-outline', make_money: 'cash-outline',
+    default: 'book-outline',
   };
   return map[category.toLowerCase()] ?? map.default;
 }
@@ -937,6 +963,7 @@ const styles = StyleSheet.create({
   popupItemSelected: { backgroundColor: colors.primaryLight },
   popupItemPressed: { opacity: 0.7 },
   popupItemIcon: { fontSize: 24, marginRight: spacing.md },
+  popupItemIconWrap: { width: 28, alignItems: 'center' as const, marginRight: spacing.md },
   popupItemLabel: { ...typography.body, color: colors.textPrimary, flex: 1 },
   popupItemLabelSelected: { ...typography.bodyBold, color: colors.primary },
   popupCheck: { ...typography.bodyBold, color: colors.primary, fontSize: 18 },

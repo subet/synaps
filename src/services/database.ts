@@ -619,11 +619,12 @@ export async function repairPublicDeckTranslations(): Promise<void> {
     const staticDeck = ALL_DECKS.find((d) => d.id === deck.source_id);
     if (staticDeck) {
       await database.runAsync(
-        `UPDATE decks SET name_translations = ?, description_translations = ?, supported_languages = ? WHERE id = ?`,
+        `UPDATE decks SET name_translations = ?, description_translations = ?, supported_languages = ?, icon = ? WHERE id = ?`,
         [
           JSON.stringify(staticDeck.name_translations ?? {}),
           JSON.stringify(staticDeck.description_translations ?? {}),
           staticDeck.supported_languages ? JSON.stringify(staticDeck.supported_languages) : null,
+          staticDeck.icon_url ?? null,
           deck.id,
         ]
       );
