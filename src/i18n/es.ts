@@ -142,6 +142,17 @@ export const es = {
   no_cards_due: 'No hay tarjetas pendientes',
   caught_up: '¡Buen trabajo! Estás al día. Vuelve mañana.',
 
+  // Leaderboard
+  leaderboard: 'Clasificación',
+  leaderboard_world: 'Mundial',
+  leaderboard_country: 'Mi País',
+  leaderboard_week_resets: 'Se reinicia cada lunes',
+  leaderboard_set_country: 'Establece tu país en tu perfil para ver clasificaciones locales',
+  leaderboard_empty: 'Nadie ha estudiado esta semana todavía',
+  leaderboard_no_rank: 'Estudia hoy para aparecer aquí',
+  leaderboard_you: '(tú)',
+  leaderboard_go_to_profile: 'Ir al Perfil',
+
   // Library
   search_library: 'Buscar mazos...',
   featured_decks: 'Mazos destacados',

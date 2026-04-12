@@ -142,6 +142,17 @@ export const de = {
   no_cards_due: 'Keine fälligen Karten',
   caught_up: 'Gut gemacht! Du bist auf dem neuesten Stand. Komm morgen wieder.',
 
+  // Leaderboard
+  leaderboard: 'Rangliste',
+  leaderboard_world: 'Welt',
+  leaderboard_country: 'Mein Land',
+  leaderboard_week_resets: 'Wird jeden Montag zurückgesetzt',
+  leaderboard_set_country: 'Lege dein Land im Profil fest, um lokale Ranglisten zu sehen',
+  leaderboard_empty: 'Diese Woche hat noch niemand gelernt',
+  leaderboard_no_rank: 'Lerne heute, um hier zu erscheinen',
+  leaderboard_you: '(du)',
+  leaderboard_go_to_profile: 'Zum Profil',
+
   // Library
   search_library: 'Stapel suchen...',
   featured_decks: 'Empfohlene Stapel',

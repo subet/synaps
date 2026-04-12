@@ -94,7 +94,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         e.details ? `details: ${e.details}` : null,
         e.hint ? `hint: ${e.hint}` : null,
       ].filter(Boolean);
-      console.error('[register error]', e);
+      if (__DEV__) console.error('[register error]', e);
       set({ error: parts.join(' · ') || 'Registration failed', isLoading: false });
       throw e;
     }

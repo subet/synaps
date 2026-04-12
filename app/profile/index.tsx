@@ -76,7 +76,7 @@ export default function ProfileScreen() {
       await updateProfile({ display_name: displayName.trim(), country: country.trim() });
       Alert.alert(t('success'), t('profile_saved'));
     } catch (e: any) {
-      console.error('[updateProfile error]', e);
+      if (__DEV__) console.error('[updateProfile error]', e);
       Alert.alert(t('error'), e.message ?? t('profile_save_error'));
     } finally {
       setSavingProfile(false);

@@ -142,6 +142,17 @@ export const it = {
   no_cards_due: 'Nessuna carta in scadenza',
   caught_up: 'Ottimo lavoro! Sei in pari. Torna domani.',
 
+  // Leaderboard
+  leaderboard: 'Classifica',
+  leaderboard_world: 'Mondiale',
+  leaderboard_country: 'Il Mio Paese',
+  leaderboard_week_resets: 'Si azzera ogni lunedì',
+  leaderboard_set_country: 'Imposta il tuo paese nel profilo per vedere le classifiche locali',
+  leaderboard_empty: 'Nessuno ha ancora studiato questa settimana',
+  leaderboard_no_rank: 'Studia oggi per apparire qui',
+  leaderboard_you: '(tu)',
+  leaderboard_go_to_profile: 'Vai al Profilo',
+
   // Library
   search_library: 'Cerca mazzi...',
   featured_decks: 'Mazzi in evidenza',

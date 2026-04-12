@@ -142,6 +142,17 @@ export const ru = {
   no_cards_due: 'Нет карточек для повторения',
   caught_up: 'Отличная работа! Вы всё повторили. Возвращайтесь завтра.',
 
+  // Leaderboard
+  leaderboard: 'Рейтинг',
+  leaderboard_world: 'Мир',
+  leaderboard_country: 'Моя Страна',
+  leaderboard_week_resets: 'Сбрасывается каждый понедельник',
+  leaderboard_set_country: 'Укажите страну в профиле, чтобы видеть местный рейтинг',
+  leaderboard_empty: 'На этой неделе ещё никто не занимался',
+  leaderboard_no_rank: 'Занимайтесь сегодня, чтобы попасть в рейтинг',
+  leaderboard_you: '(вы)',
+  leaderboard_go_to_profile: 'Перейти в Профиль',
+
   // Library
   search_library: 'Поиск колод...',
   featured_decks: 'Рекомендуемые колоды',

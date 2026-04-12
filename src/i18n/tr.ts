@@ -142,6 +142,17 @@ export const tr = {
   no_cards_due: 'Bekleyen kart yok',
   caught_up: 'Harika iş! Hepsini tamamladınız. Yarın geri gelin.',
 
+  // Leaderboard
+  leaderboard: 'Sıralama',
+  leaderboard_world: 'Dünya',
+  leaderboard_country: 'Ülkem',
+  leaderboard_week_resets: 'Her Pazartesi sıfırlanır',
+  leaderboard_set_country: 'Yerel sıralamayı görmek için profilinde ülkeni belirle',
+  leaderboard_empty: 'Bu hafta henüz kimse çalışmadı',
+  leaderboard_no_rank: 'Sıralamada görünmek için bugün çalış',
+  leaderboard_you: '(sen)',
+  leaderboard_go_to_profile: 'Profile Git',
+
   // Library
   search_library: 'Deste ara...',
   featured_decks: 'Öne Çıkan Desteler',

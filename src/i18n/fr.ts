@@ -142,6 +142,17 @@ export const fr = {
   no_cards_due: 'Aucune carte à revoir',
   caught_up: 'Bravo ! Tu es à jour. Reviens demain.',
 
+  // Leaderboard
+  leaderboard: 'Classement',
+  leaderboard_world: 'Mondial',
+  leaderboard_country: 'Mon Pays',
+  leaderboard_week_resets: 'Réinitialisé chaque lundi',
+  leaderboard_set_country: 'Définis ton pays dans ton profil pour voir les classements locaux',
+  leaderboard_empty: 'Personne n\'a encore étudié cette semaine',
+  leaderboard_no_rank: 'Étudie aujourd\'hui pour apparaître ici',
+  leaderboard_you: '(toi)',
+  leaderboard_go_to_profile: 'Aller au Profil',
+
   // Library
   search_library: 'Rechercher des paquets...',
   featured_decks: 'Paquets en vedette',

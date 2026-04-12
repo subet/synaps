@@ -142,6 +142,17 @@ export const pt_BR = {
   no_cards_due: 'Nenhum cartão pendente',
   caught_up: 'Ótimo trabalho! Você está em dia. Volte amanhã.',
 
+  // Leaderboard
+  leaderboard: 'Classificação',
+  leaderboard_world: 'Mundial',
+  leaderboard_country: 'Meu País',
+  leaderboard_week_resets: 'Reinicia toda segunda-feira',
+  leaderboard_set_country: 'Defina seu país no perfil para ver classificações locais',
+  leaderboard_empty: 'Ninguém estudou esta semana ainda',
+  leaderboard_no_rank: 'Estude hoje para aparecer aqui',
+  leaderboard_you: '(você)',
+  leaderboard_go_to_profile: 'Ir ao Perfil',
+
   // Library
   search_library: 'Buscar baralhos...',
   featured_decks: 'Baralhos em Destaque',

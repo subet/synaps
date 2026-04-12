@@ -142,6 +142,17 @@ export const en = {
   no_cards_due: 'No cards due',
   caught_up: "Great job! You're all caught up. Come back tomorrow.",
 
+  // Leaderboard
+  leaderboard: 'Leaderboard',
+  leaderboard_world: 'World',
+  leaderboard_country: 'My Country',
+  leaderboard_week_resets: 'Resets every Monday',
+  leaderboard_set_country: 'Set your country in your profile to see local rankings',
+  leaderboard_empty: 'No one has studied yet this week',
+  leaderboard_no_rank: 'Study today to appear here',
+  leaderboard_you: '(you)',
+  leaderboard_go_to_profile: 'Go to Profile',
+
   // Library
   search_library: 'Search decks...',
   featured_decks: 'Featured Decks',

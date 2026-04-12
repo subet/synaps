@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { BadgesRow } from '../../src/components/home/BadgesRow';
+import { LeaderboardRow } from '../../src/components/home/LeaderboardRow';
 import { DeckListItem } from '../../src/components/home/DeckListItem';
 import { GreetingHeader } from '../../src/components/home/GreetingHeader';
 import { StatBoxes } from '../../src/components/home/StatBoxes';
@@ -81,6 +82,7 @@ export default function HomeScreen() {
         <GreetingHeader weekDays={weekDays} />
         <StreakCard currentStreak={currentStreak} weekDays={weekDays} />
         <BadgesRow />
+        <LeaderboardRow />
         <StatBoxes cardsMastered={cardsMastered} avgDailyFocusMinutes={avgDailyFocusMinutes} />
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{t('my_decks')}</Text>

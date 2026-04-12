@@ -142,6 +142,17 @@ export const nl = {
   no_cards_due: 'Geen kaarten te herhalen',
   caught_up: 'Goed gedaan! Je bent helemaal bijgewerkt. Kom morgen terug.',
 
+  // Leaderboard
+  leaderboard: 'Ranglijst',
+  leaderboard_world: 'Wereld',
+  leaderboard_country: 'Mijn Land',
+  leaderboard_week_resets: 'Wordt elke maandag gereset',
+  leaderboard_set_country: 'Stel je land in je profiel in om lokale ranglijsten te zien',
+  leaderboard_empty: 'Niemand heeft deze week nog gestudeerd',
+  leaderboard_no_rank: 'Studeer vandaag om hier te verschijnen',
+  leaderboard_you: '(jij)',
+  leaderboard_go_to_profile: 'Naar Profiel',
+
   // Library
   search_library: 'Stapels zoeken...',
   featured_decks: 'Uitgelichte stapels',

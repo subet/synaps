@@ -121,6 +121,7 @@ export default function RootLayout() {
             options={{ presentation: 'modal' }}
           />
           <Stack.Screen name="profile/index" />
+          <Stack.Screen name="leaderboard/index" />
         </Stack>
       </SafeAreaProvider>
     </GestureHandlerRootView>

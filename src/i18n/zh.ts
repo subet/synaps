@@ -142,6 +142,17 @@ export const zh = {
   no_cards_due: '暂无待复习卡片',
   caught_up: '太棒了！您已全部复习完毕。明天再来吧。',
 
+  // Leaderboard
+  leaderboard: '排行榜',
+  leaderboard_world: '全球',
+  leaderboard_country: '我的国家',
+  leaderboard_week_resets: '每周一重置',
+  leaderboard_set_country: '在个人资料中设置国家以查看本地排行榜',
+  leaderboard_empty: '本周还没有人学习',
+  leaderboard_no_rank: '今天学习以出现在排行榜中',
+  leaderboard_you: '（你）',
+  leaderboard_go_to_profile: '前往个人资料',
+
   // Library
   search_library: '搜索牌组...',
   featured_decks: '精选牌组',

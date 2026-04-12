@@ -17,6 +17,8 @@ import { calculateSM2 } from '../services/srs';
 import { scheduleStreakAtRiskNotification, scheduleWeeklyProgress } from '../services/notifications';
 import { getStreakData } from '../services/database';
 import { useAppStore } from './useAppStore';
+import { useAuthStore } from './useAuthStore';
+import { upsertWeeklyStats } from '../services/leaderboard';
 import { Card, SRSGrade, StudySessionResult } from '../types';
 
 interface StudyState {
@@ -124,6 +126,16 @@ export const useStudyStore = create<StudyState>((set, get) => ({
       recordStudyActivity(1),
       recordFocusSeconds(elapsedSeconds),
     ]);
+
+    // Write to remote leaderboard immediately after each card — so partial sessions count too.
+    try {
+      const { user } = useAuthStore.getState();
+      if (user?.id) {
+        upsertWeeklyStats(user.id, 1).catch((e) => {
+          if (__DEV__) console.warn('[leaderboard] upsertWeeklyStats failed:', e?.message ?? e);
+        });
+      }
+    } catch {}
 
     // Track grade distribution
     const gradeKey = (['again', 'hard', 'good', 'easy'] as const)[grade];
