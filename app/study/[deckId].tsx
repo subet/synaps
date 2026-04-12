@@ -2,7 +2,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useMemo } from 'react';
-import { speak, stop as stopSpeech } from 'expo-speech';
+import { speakText, stopSpeech } from '../../src/utils/tts';
 import {
   AppState,
   AppStateStatus,
@@ -103,20 +103,20 @@ export default function StudyScreen() {
   useEffect(() => {
     if (!deck?.auto_play_audio || !currentCard) return;
     stopSpeech();
-    const text = deck.reverse_cards ? currentCard.back : currentCard.front;
-    try {
-      speak(text, speakLanguage ? { language: speakLanguage } : undefined);
-    } catch {}
+    // In normal mode the visible side is `front` (English); in reversed mode it's `back` (target lang).
+    const isTargetLang = deck.reverse_cards;
+    const text = isTargetLang ? currentCard.back : currentCard.front;
+    speakText(text, isTargetLang ? speakLanguage : undefined);
   }, [currentCard?.id]);
 
   // Auto-play: speak back text when card is flipped
   useEffect(() => {
     if (!deck?.auto_play_audio || !currentCard || !isFlipped) return;
     stopSpeech();
-    const text = deck.reverse_cards ? currentCard.front : currentCard.back;
-    try {
-      speak(text, speakLanguage ? { language: speakLanguage } : undefined);
-    } catch {}
+    // In normal mode the revealed side is `back` (target lang); in reversed mode it's `front` (English).
+    const isTargetLang = !deck.reverse_cards;
+    const text = isTargetLang ? currentCard.back : currentCard.front;
+    speakText(text, isTargetLang ? speakLanguage : undefined);
   }, [isFlipped]);
 
   // Overall deck progress: studied (learning + mastered) / total
@@ -152,12 +152,21 @@ export default function StudyScreen() {
   }
 
   if (!currentCard) {
+    const isExtraSession = extra === 'true';
     return (
       <SafeAreaView style={styles.safe}>
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyEmoji}>✅</Text>
           <Text style={styles.emptyTitle}>{t('no_cards_due')}</Text>
           <Text style={styles.emptySubtitle}>{t('caught_up')}</Text>
+          {!isExtraSession && (
+            <Button
+              label={t('start_extra_session')}
+              onPress={() => router.replace(`/study/${deckId}?extra=true`)}
+              style={styles.extraBtn}
+              variant="secondary"
+            />
+          )}
           <Button label={t('back_to_deck')} onPress={() => router.back()} style={styles.backBtn} />
         </View>
       </SafeAreaView>
@@ -376,6 +385,7 @@ const styles = StyleSheet.create({
   emptyEmoji: { fontSize: 64, marginBottom: spacing.lg },
   emptyTitle: { ...typography.h2, color: colors.textPrimary, marginBottom: spacing.sm, textAlign: 'center' },
   emptySubtitle: { ...typography.body, color: colors.textSecondary, textAlign: 'center', marginBottom: spacing.xl },
+  extraBtn: { marginTop: spacing.xl },
   backBtn: { marginTop: spacing.sm },
   // Session complete
   completeContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.xl },

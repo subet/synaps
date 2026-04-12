@@ -7,7 +7,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { speak as speechSpeak } from 'expo-speech';
+import { speakText } from '../../utils/tts';
 import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { Card } from '../../types';
@@ -102,11 +102,7 @@ export function FlashCard({
   const handleSpeak = () => {
     if (!speakLanguage) return;
     const text = reversed ? card.front : card.back;
-    try {
-      speechSpeak(text, { language: speakLanguage });
-    } catch {
-      // TTS unavailable (e.g. iOS Simulator — works on real device)
-    }
+    speakText(text, speakLanguage);
   };
 
   return (

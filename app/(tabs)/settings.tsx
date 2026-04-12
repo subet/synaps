@@ -179,7 +179,7 @@ export default function SettingsScreen() {
                 {isPro && <View style={styles.proBadge}><Text style={styles.proBadgeText}>{t('pro_badge')}</Text></View>}
               </View>
             </View>
-            <SettingsRow label={t('edit_profile')} onPress={() => router.push('/profile/edit')} />
+            <SettingsRow label={t('edit_profile')} onPress={() => router.push('/profile')} />
             <SettingsRow label={t('manage_subscription')} onPress={() => {
               if (isPro) {
                 const url = Platform.OS === 'ios'

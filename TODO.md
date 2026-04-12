@@ -88,5 +88,13 @@ Use:
 # ILERDE
 Dershanelere, kurslara, etüt merkezlerine, okullara kullandırılabilir. Sınıf oluşturulur, öğrenciler eklenir, herkes birbiriyle yarışır. Düşünelim.
 
+# PAYWALL LEGAL LINKS
+Apple requires privacy policy and terms of use links in the paywall to open in a browser (not in-app navigation).
+- In `app/paywall/index.tsx` (lines 188–193), change `router.push('/legal/terms')` and `router.push('/legal/privacy')` to open browser URLs.
+- URLs per language (replace `en` with the locale code):
+  - Privacy: https://www.mudimedia.co.uk/synaps/{locale}/privacy
+  - Terms: https://www.mudimedia.co.uk/synaps/{locale}/terms
+- Use `Linking.openURL(...)` from `react-native`.
+
 # SYNC
 PRO kullanıcıları "Settings > Sync Data" tıkladığında sync yapalım. 
