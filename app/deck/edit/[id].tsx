@@ -19,6 +19,7 @@ import { borderRadius, colors, spacing, typography } from '../../../src/constant
 import { useTranslation } from '../../../src/i18n';
 import { useDeckStore } from '../../../src/stores/useDeckStore';
 import { useSubscriptionStore } from '../../../src/stores/useSubscriptionStore';
+import { useResolvedDeckDescription, useResolvedDeckName } from '../../../src/utils/translations';
 
 function SettingsRow({
   label,
@@ -56,8 +57,12 @@ export default function EditDeckScreen() {
 
   const deck = getDeckById(id);
 
-  const [name, setName] = useState(deck?.name ?? '');
-  const [description, setDescription] = useState(deck?.description ?? '');
+  // Resolve translated name/description so the edit fields show the user's language
+  const resolvedName = useResolvedDeckName(deck ?? { name: '' });
+  const resolvedDescription = useResolvedDeckDescription(deck ?? { description: '' });
+
+  const [name, setName] = useState(resolvedName);
+  const [description, setDescription] = useState(resolvedDescription ?? '');
   const [newCardsPerDay, setNewCardsPerDay] = useState(String(deck?.new_cards_per_day ?? 20));
   const [shuffleCards, setShuffleCards] = useState(deck?.shuffle_cards ?? true);
   const [autoPlayAudio, setAutoPlayAudio] = useState(deck?.auto_play_audio ?? false);
