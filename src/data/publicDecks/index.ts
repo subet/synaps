@@ -35,6 +35,11 @@ import { satMathPatternsCards } from './exams/sat_math_patterns';
 import { satReadingCards } from './exams/sat_reading';
 import { satTrapsCards } from './exams/sat_traps';
 import { satStrategiesCards } from './exams/sat_strategies';
+import { gcseRevisionCards } from './exams/gcse_revision';
+import { gcseFormulasCards } from './exams/gcse_formulas';
+import { gcseExamQuestionsCards } from './exams/gcse_exam_questions';
+import { gcseProblemSolvingCards } from './exams/gcse_problem_solving';
+import { gcseGrade9Cards } from './exams/gcse_grade9';
 
 // Make Money
 import { startupFundamentalsCards } from './make_money/startup_fundamentals';
@@ -90,6 +95,11 @@ const CARDS_MAP: Record<string, PublicCard[]> = {
   'deck-sat-reading': satReadingCards,
   'deck-sat-traps': satTrapsCards,
   'deck-sat-strategies': satStrategiesCards,
+  'deck-gcse-revision': gcseRevisionCards,
+  'deck-gcse-formulas': gcseFormulasCards,
+  'deck-gcse-exam-questions': gcseExamQuestionsCards,
+  'deck-gcse-problem-solving': gcseProblemSolvingCards,
+  'deck-gcse-grade9': gcseGrade9Cards,
   'deck-startup-fundamentals': startupFundamentalsCards,
 };
 
