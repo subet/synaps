@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import type { FriendScoreDelta, FriendsLeaderboardEntry } from '../types';
 
 export interface LeaderboardEntry {
   userId: string;
@@ -29,15 +30,20 @@ export function countryToFlag(iso2: string): string {
 
 /**
  * Increment the current user's weekly card count in Supabase.
+ * Also updates friend_score, cards_correct, and study_days when scoreDelta is provided.
  * Fetches the existing row first so we can add to it (Supabase upsert replaces, not increments).
  */
-export async function upsertWeeklyStats(userId: string, delta: number): Promise<void> {
+export async function upsertWeeklyStats(
+  userId: string,
+  delta: number,
+  scoreDelta?: FriendScoreDelta
+): Promise<void> {
   const weekStart = getWeekStart();
 
-  // Fetch existing count for this week
+  // Fetch existing row for this week
   const { data: existing, error: fetchError } = await supabase
     .from('weekly_stats')
-    .select('cards_studied')
+    .select('cards_studied, friend_score, cards_correct, study_days')
     .eq('user_id', userId)
     .eq('week_start', weekStart)
     .maybeSingle();
@@ -47,10 +53,29 @@ export async function upsertWeeklyStats(userId: string, delta: number): Promise<
     throw fetchError;
   }
 
-  const newCount = (existing?.cards_studied ?? 0) + delta;
+  const newCardsStudied = (existing?.cards_studied ?? 0) + delta;
+
+  let newFriendScore = existing?.friend_score ?? 0;
+  let newCardsCorrect = existing?.cards_correct ?? 0;
+  let newStudyDays = existing?.study_days ?? 0;
+
+  if (scoreDelta) {
+    const pointsDelta = computeFriendScoreDelta(scoreDelta);
+    newFriendScore += pointsDelta;
+    if (scoreDelta.wasCorrect) newCardsCorrect += 1;
+    if (scoreDelta.isFirstStudyToday) newStudyDays = Math.min(newStudyDays + 1, 7);
+  }
 
   const { error } = await supabase.from('weekly_stats').upsert(
-    { user_id: userId, week_start: weekStart, cards_studied: newCount, updated_at: new Date().toISOString() },
+    {
+      user_id: userId,
+      week_start: weekStart,
+      cards_studied: newCardsStudied,
+      friend_score: newFriendScore,
+      cards_correct: newCardsCorrect,
+      study_days: newStudyDays,
+      updated_at: new Date().toISOString(),
+    },
     { onConflict: 'user_id,week_start' }
   );
 
@@ -58,6 +83,104 @@ export async function upsertWeeklyStats(userId: string, delta: number): Promise<
     if (__DEV__) console.warn('[leaderboard] upsert error:', error.message);
     throw error;
   }
+}
+
+/** Compute the friend score delta for a single card review event. */
+export function computeFriendScoreDelta(delta: FriendScoreDelta): number {
+  // Daily cap multiplier
+  const r = delta.reviewsToday;
+  const capMultiplier = r < 100 ? 1.0 : r < 200 ? 0.5 : 0.25;
+
+  const basePoints = 1;
+  const correctBonus = delta.wasCorrect ? 2 : 0;
+  const cappedPoints = Math.round((basePoints + correctBonus) * capMultiplier);
+
+  // Flat bonuses (not capped)
+  const dailyGoalBonus = delta.dailyGoalCompleted ? 10 : 0;
+  const streakBonus = delta.streakBonusEarned ? 5 : 0;
+  const milestoneBonus = delta.deckMilestone ? 20 : 0;
+
+  return cappedPoints + dailyGoalBonus + streakBonus + milestoneBonus;
+}
+
+/** Fetch the Friends leaderboard for a user: their friends + themselves, this week. */
+export async function getFriendsLeaderboard(
+  userId: string,
+  friendIds: string[]
+): Promise<FriendsLeaderboardEntry[]> {
+  const weekStart = getWeekStart();
+  const participantIds = [...friendIds, userId];
+
+  const { data, error } = await supabase
+    .from('weekly_stats')
+    .select(
+      'user_id, cards_studied, friend_score, cards_correct, study_days, updated_at, profiles!weekly_stats_user_id_fkey(display_name, avatar_url, country)'
+    )
+    .eq('week_start', weekStart)
+    .in('user_id', participantIds)
+    .order('friend_score', { ascending: false })
+    .order('study_days', { ascending: false })
+    .order('updated_at', { ascending: true });
+
+  if (error) throw error;
+
+  const rows = data ?? [];
+
+  // Also include the user themselves even if they have no weekly_stats row yet
+  // (so they always appear in their own Friends leaderboard at rank last)
+  const seen = new Set(rows.map((r: any) => r.user_id));
+  const missing = participantIds.filter((id) => !seen.has(id));
+
+  // Sort by friend_score, apply tie-breakers, assign ranks
+  return mapFriendsEntries(rows, userId, missing);
+}
+
+// ─── Internal helpers ──────────────────────────────────────────────────────────
+
+function firstWord(name?: string | null): string {
+  if (!name) return '—';
+  return name.trim().split(/\s+/)[0];
+}
+
+function mapFriendsEntries(
+  rows: any[],
+  userId: string,
+  missingIds: string[]
+): FriendsLeaderboardEntry[] {
+  const sorted = rows.map((row, index) => {
+    const cardsStudied = row.cards_studied ?? 0;
+    const cardsCorrect = row.cards_correct ?? 0;
+    const accuracy = cardsStudied > 0 ? cardsCorrect / cardsStudied : 0;
+    return {
+      userId: row.user_id,
+      displayName: firstWord(row.profiles?.display_name),
+      avatarUrl: row.profiles?.avatar_url ?? null,
+      country: row.profiles?.country ?? null,
+      friendScore: row.friend_score ?? 0,
+      cardsStudied,
+      studyDays: row.study_days ?? 0,
+      accuracy,
+      rank: index + 1,
+      isMe: row.user_id === userId,
+    };
+  });
+
+  // Append zero-score entries for users with no row this week
+  const lastRank = sorted.length;
+  const zeros: FriendsLeaderboardEntry[] = missingIds.map((id, i) => ({
+    userId: id,
+    displayName: '—',
+    avatarUrl: null,
+    country: null,
+    friendScore: 0,
+    cardsStudied: 0,
+    studyDays: 0,
+    accuracy: 0,
+    rank: lastRank + 1 + i,
+    isMe: id === userId,
+  }));
+
+  return [...sorted, ...zeros];
 }
 
 /** Fetch top 25 entries worldwide for the current week (extra 5 so we can find user rank). */
@@ -138,13 +261,6 @@ export async function getMyRank(
   }
 
   return { worldRank, countryRank, cardsStudied: myCards };
-}
-
-// ─── Internal helpers ──────────────────────────────────────────────────────────
-
-function firstWord(name?: string | null): string {
-  if (!name) return '—';
-  return name.trim().split(/\s+/)[0];
 }
 
 function mapEntries(rows: any[]): LeaderboardEntry[] {

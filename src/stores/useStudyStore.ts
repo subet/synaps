@@ -9,6 +9,7 @@ import {
   getDeckById,
   getDueCards,
   getCardsByDeckId,
+  getTodayCardsStudied,
   recordStudyActivity,
   recordFocusSeconds,
   updateCard,
@@ -19,7 +20,7 @@ import { getStreakData } from '../services/database';
 import { useAppStore } from './useAppStore';
 import { useAuthStore } from './useAuthStore';
 import { upsertWeeklyStats } from '../services/leaderboard';
-import { Card, SRSGrade, StudySessionResult } from '../types';
+import { Card, FriendScoreDelta, SRSGrade, StudySessionResult } from '../types';
 
 interface StudyState {
   // Current study session
@@ -122,6 +123,10 @@ export const useStudyStore = create<StudyState>((set, get) => ({
     // Count every grade press and record time spent on this card (excluding background time)
     const activeSeconds = cardShownAt ? (Date.now() - cardShownAt) / 1000 : 0;
     const elapsedSeconds = Math.round(accumulatedCardSeconds + activeSeconds);
+
+    // Read today's count BEFORE incrementing (used for cap calculation)
+    const reviewsToday = await getTodayCardsStudied();
+
     await Promise.all([
       recordStudyActivity(1),
       recordFocusSeconds(elapsedSeconds),
@@ -131,7 +136,24 @@ export const useStudyStore = create<StudyState>((set, get) => ({
     try {
       const { user } = useAuthStore.getState();
       if (user?.id) {
-        upsertWeeklyStats(user.id, 1).catch((e) => {
+        const isFirstStudyToday = reviewsToday === 0;
+        const streakData = await getStreakData().catch(() => ({ currentStreak: 0, longestStreak: 0, weekDays: [] }));
+
+        // Check daily goal: default 20 cards; completing when crossing the threshold
+        const deck = queue[currentIndex] ? await getDeckById(queue[currentIndex].deck_id).catch(() => null) : null;
+        const dailyGoalTarget = deck?.new_cards_per_day ?? 20;
+        const dailyGoalCompleted = reviewsToday < dailyGoalTarget && reviewsToday + 1 >= dailyGoalTarget;
+
+        const scoreDelta: FriendScoreDelta = {
+          wasCorrect: grade >= 2,
+          reviewsToday,
+          dailyGoalCompleted,
+          streakBonusEarned: isFirstStudyToday && streakData.currentStreak > 0,
+          deckMilestone: false, // milestone fired separately from endSession
+          isFirstStudyToday,
+        };
+
+        upsertWeeklyStats(user.id, 1, scoreDelta).catch((e) => {
           if (__DEV__) console.warn('[leaderboard] upsertWeeklyStats failed:', e?.message ?? e);
         });
       }

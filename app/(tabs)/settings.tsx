@@ -29,8 +29,9 @@ import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import Constants from 'expo-constants';
 import * as StoreReview from 'expo-store-review';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Language } from '../../src/types';
+import { FriendPrivacy, Language } from '../../src/types';
 import { LANGUAGE_FLAGS } from '../../src/utils/languages';
+import { getFriendPrivacy, updateFriendPrivacy } from '../../src/services/friends';
 
 const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'en',    label: 'English' },
@@ -95,6 +96,27 @@ export default function SettingsScreen() {
   const { isPro } = useSubscriptionStore();
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showLanguagePicker, setShowLanguagePicker] = useState(false);
+  const [friendPrivacy, setFriendPrivacyState] = useState<FriendPrivacy>('invite_only');
+
+  // Load friend privacy on mount (only if logged in)
+  React.useEffect(() => {
+    if (!user?.id) return;
+    getFriendPrivacy(user.id)
+      .then(setFriendPrivacyState)
+      .catch(() => {});
+  }, [user?.id]);
+
+  const handleFriendPrivacyChange = async (value: FriendPrivacy) => {
+    if (!user?.id) return;
+    setFriendPrivacyState(value);
+    await updateFriendPrivacy(user.id, value).catch(() => {});
+  };
+
+  const PRIVACY_LABELS: Record<FriendPrivacy, string> = {
+    invite_only: t('privacy_invite_only'),
+    everyone: t('privacy_everyone'),
+    nobody: t('privacy_nobody'),
+  };
 
   const timeDate = (() => {
     const [h, m] = notifications.time.split(':').map(Number);
@@ -274,6 +296,30 @@ export default function SettingsScreen() {
           />
           <SettingsRow label={t('delete_data')} onPress={handleDeleteData} danger />
         </Section>
+
+        {/* Privacy */}
+        {user && (
+          <Section title={t('privacy_section')}>
+            <SettingsRow
+              label={t('privacy_friend_requests_label')}
+              value={PRIVACY_LABELS[friendPrivacy]}
+              onPress={() => {
+                const options: FriendPrivacy[] = ['invite_only', 'everyone', 'nobody'];
+                Alert.alert(
+                  t('privacy_friend_requests_title'),
+                  t('privacy_friend_requests_msg'),
+                  [
+                    ...options.map((opt) => ({
+                      text: PRIVACY_LABELS[opt] + (opt === friendPrivacy ? ' ✓' : ''),
+                      onPress: () => handleFriendPrivacyChange(opt),
+                    })),
+                    { text: t('cancel'), style: 'cancel' as const },
+                  ]
+                );
+              }}
+            />
+          </Section>
+        )}
 
         {/* Legal */}
         <Section title={t('section_legal')}>

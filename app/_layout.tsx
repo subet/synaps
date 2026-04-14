@@ -122,6 +122,11 @@ export default function RootLayout() {
           />
           <Stack.Screen name="profile/index" />
           <Stack.Screen name="leaderboard/index" />
+          <Stack.Screen name="friends/index" />
+          <Stack.Screen
+            name="invite/[code]"
+            options={{ presentation: 'modal' }}
+          />
         </Stack>
       </SafeAreaProvider>
     </GestureHandlerRootView>

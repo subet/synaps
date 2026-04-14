@@ -390,6 +390,17 @@ export async function recordStudyActivity(cardsStudied: number): Promise<void> {
   );
 }
 
+/** Returns the number of cards studied today (before the current increment). */
+export async function getTodayCardsStudied(): Promise<number> {
+  const database = await getDatabase();
+  const today = new Date().toISOString().split('T')[0];
+  const row = await database.getFirstAsync<{ cards_studied: number }>(
+    `SELECT cards_studied FROM streaks WHERE date = ?`,
+    [today]
+  );
+  return row?.cards_studied ?? 0;
+}
+
 export async function recordFocusSeconds(seconds: number): Promise<void> {
   if (seconds <= 0) return;
   const database = await getDatabase();

@@ -146,3 +146,62 @@ export interface AppSettings {
   freeDownloadsUsed: number;
   hapticsEnabled: boolean;
 }
+
+// ─── Friends system ───────────────────────────────────────────────────────────
+
+export type FriendPrivacy = 'everyone' | 'invite_only' | 'nobody';
+export type FriendRequestStatus = 'pending' | 'declined';
+export type FriendshipRelation =
+  | 'none'
+  | 'pending_sent'
+  | 'pending_received'
+  | 'friends'
+  | 'blocked';
+
+export interface FriendRequest {
+  id: string;
+  fromUserId: string;
+  toUserId: string;
+  fromDisplayName: string;
+  fromAvatarUrl: string | null;
+  fromCountry: string | null;
+  status: FriendRequestStatus;
+  createdAt: string;
+}
+
+export interface FriendsLeaderboardEntry {
+  userId: string;
+  displayName: string;
+  avatarUrl: string | null;
+  country: string | null;
+  friendScore: number;
+  cardsStudied: number;
+  studyDays: number;
+  accuracy: number; // 0–1
+  rank: number;
+  isMe: boolean;
+}
+
+/**
+ * Payload passed from the study store to upsertWeeklyStats on every card grade.
+ * Used to compute the friend leaderboard score delta.
+ */
+export interface FriendScoreDelta {
+  wasCorrect: boolean;
+  /** Number of cards reviewed today BEFORE this review (from local SQLite). */
+  reviewsToday: number;
+  /** True when this card review completes the user's daily goal. */
+  dailyGoalCompleted: boolean;
+  /** True on the first review of the day when the user has an active streak. */
+  streakBonusEarned: boolean;
+  /** True when a deck milestone (e.g. 100 % mastered) was just hit. */
+  deckMilestone: boolean;
+  /** True when this is the first card studied today (used to increment study_days). */
+  isFirstStudyToday: boolean;
+}
+
+export interface InviteCodeLookupResult {
+  userId: string;
+  displayName: string;
+  avatarUrl: string | null;
+}
