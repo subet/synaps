@@ -487,6 +487,28 @@ export async function getStreakData(): Promise<{ currentStreak: number; longestS
   return { currentStreak, longestStreak, weekDays };
 }
 
+export async function getWeeklyStudyStats(): Promise<{ cards: number; sessions: number }> {
+  const database = await getDatabase();
+  const today = new Date();
+  const startOfWeek = new Date(today);
+  const day = startOfWeek.getDay();
+  startOfWeek.setDate(startOfWeek.getDate() - (day === 0 ? 6 : day - 1));
+  const startDate = startOfWeek.toISOString().split('T')[0];
+
+  const cardsRow = await database.getFirstAsync<{ total: number }>(
+    `SELECT COALESCE(SUM(cards_studied), 0) as total FROM streaks WHERE date >= ?`,
+    [startDate]
+  );
+  const sessionsRow = await database.getFirstAsync<{ count: number }>(
+    `SELECT COUNT(*) as count FROM study_sessions WHERE completed_at IS NOT NULL AND date(started_at) >= ?`,
+    [startDate]
+  );
+  return {
+    cards: cardsRow?.total ?? 0,
+    sessions: sessionsRow?.count ?? 0,
+  };
+}
+
 export async function getAverageDailyFocusMinutes(): Promise<number> {
   const database = await getDatabase();
   const row = await database.getFirstAsync<{ avg_seconds: number }>(

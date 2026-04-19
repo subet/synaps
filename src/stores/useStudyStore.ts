@@ -16,7 +16,7 @@ import {
 } from '../services/database';
 import { calculateSM2 } from '../services/srs';
 import { scheduleStreakAtRiskNotification, scheduleWeeklyProgress } from '../services/notifications';
-import { getStreakData } from '../services/database';
+import { getStreakData, getWeeklyStudyStats } from '../services/database';
 import { useAppStore } from './useAppStore';
 import { useAuthStore } from './useAuthStore';
 import { upsertWeeklyStats } from '../services/leaderboard';
@@ -209,7 +209,8 @@ export const useStudyStore = create<StudyState>((set, get) => ({
       }
       const { notifications } = useAppStore.getState();
       if (notifications.weeklyRecap !== false) {
-        scheduleWeeklyProgress(cardsStudied, 1).catch(() => {});
+        const weeklyStats = await getWeeklyStudyStats();
+        scheduleWeeklyProgress(weeklyStats.cards, weeklyStats.sessions).catch(() => {});
       }
     } catch { /* non-critical */ }
   },
