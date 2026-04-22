@@ -2,6 +2,7 @@ export const nl = {
   // Navigation tabs
   tab_home: 'Home',
   tab_library: 'Bibliotheek',
+  tab_leaderboard: 'Ranglijst',
   tab_settings: 'Instellingen',
 
   // General
@@ -31,9 +32,12 @@ export const nl = {
   onboarding_welcome_subtitle: 'De beste studiecompagnon voor je hersenen. Leer alles met slimme flashcards.',
   onboarding_srs_title: 'Slimmer leren, niet harder',
   onboarding_srs_subtitle: 'Synaps gebruikt gespreide herhaling – je herhaalt kaarten precies voordat je ze vergeet.',
-  onboarding_library_title: 'Duizenden kant-en-klare stapels',
-  onboarding_library_subtitle: 'Blader door onze bibliotheek met community-stapels – talen, geneeskunde, wetenschap, geschiedenis en meer.',
-  onboarding_start_title: 'Bouw een dagelijkse leergewoonte op',
+  onboarding_library_title: 'Een bibliotheek op maat voor jou',
+  onboarding_library_subtitle: 'Ontdek samengestelde stapels voor talen, examenvoorbereiding, wetenschap, geneeskunde en meer — direct klaar om te studeren.',
+  onboarding_start_title: 'Ontgrendel prestaties terwijl je leert',
+  onboarding_start_subtitle: 'Verdien badges voor elke mijlpaal — reeksen, beheerste kaarten, voltooide sessies en meer.',
+  onboarding_leaderboard_title: 'Daag je Vrienden uit',
+  onboarding_leaderboard_subtitle: 'Doe mee aan wekelijkse ranglijsten, stijg in je land en wereldwijd.',
   onboarding_create_account: 'Account aanmaken',
   onboarding_continue_without: 'Doorgaan zonder account',
   onboarding_later_note: 'Je kunt je altijd later aanmelden om je gegevens te synchroniseren',
@@ -521,4 +525,17 @@ export const nl = {
   // Leaderboard tab labels
   leaderboard_tab_country: 'Land',
   leaderboard_tab_friends: 'Vrienden',
+
+  // User profile sheet
+  profile_sheet_title: 'Profiel',
+  profile_sheet_not_found: 'Gebruiker niet gevonden',
+  profile_sheet_world: 'Wereld',
+  profile_sheet_country: 'Land',
+  profile_sheet_achievements: 'PRESTATIES',
+  profile_sheet_no_achievements: 'Nog geen prestaties',
+  profile_sheet_friends: 'Vrienden',
+  profile_sheet_add_friend: 'Vriend toevoegen',
+  profile_sheet_request_sent: 'Verzoek verzonden',
+  profile_sheet_accept_request: 'Verzoek accepteren',
+  profile_sheet_accepted: 'Geaccepteerd',
 };

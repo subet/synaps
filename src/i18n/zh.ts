@@ -2,6 +2,7 @@ export const zh = {
   // Navigation tabs
   tab_home: '首页',
   tab_library: '资料库',
+  tab_leaderboard: '排行榜',
   tab_settings: '设置',
 
   // General
@@ -31,9 +32,12 @@ export const zh = {
   onboarding_welcome_subtitle: '您大脑的最佳学习伴侣。用智能闪卡学习任何内容。',
   onboarding_srs_title: '聪明地学习，而非刻苦地学习',
   onboarding_srs_subtitle: 'Synaps 采用间隔重复——在您快要遗忘之前及时复习卡片。',
-  onboarding_library_title: '数千套现成牌组',
-  onboarding_library_subtitle: '浏览社区牌组库——语言、医学、科学、历史等应有尽有。',
-  onboarding_start_title: '养成每日学习习惯',
+  onboarding_library_title: '为你打造的资料库',
+  onboarding_library_subtitle: '探索精选牌组——语言、备考、科学、医学等——即刻开始学习。',
+  onboarding_start_title: '学习的同时解锁成就',
+  onboarding_start_subtitle: '为每个里程碑赢取徽章——连续学习、掌握卡片、完成学习等。',
+  onboarding_leaderboard_title: '与朋友竞争',
+  onboarding_leaderboard_subtitle: '加入每周排行榜，在你的国家和全球中脱颖而出。',
   onboarding_create_account: '创建账号',
   onboarding_continue_without: '不创建账号继续',
   onboarding_later_note: '您随时可以注册以同步数据',
@@ -521,4 +525,17 @@ export const zh = {
   // Leaderboard tab labels
   leaderboard_tab_country: '国家',
   leaderboard_tab_friends: '好友',
+
+  // User profile sheet
+  profile_sheet_title: '个人资料',
+  profile_sheet_not_found: '未找到用户',
+  profile_sheet_world: '世界',
+  profile_sheet_country: '国家',
+  profile_sheet_achievements: '成就',
+  profile_sheet_no_achievements: '暂无成就',
+  profile_sheet_friends: '好友',
+  profile_sheet_add_friend: '添加好友',
+  profile_sheet_request_sent: '请求已发送',
+  profile_sheet_accept_request: '接受请求',
+  profile_sheet_accepted: '已接受',
 };

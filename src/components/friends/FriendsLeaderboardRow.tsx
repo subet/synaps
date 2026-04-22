@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { borderRadius, colors, spacing, typography } from '../../constants';
 import { useTranslation } from '../../i18n';
@@ -26,11 +26,15 @@ export function FriendsLeaderboardRow({ entry }: Props) {
       </View>
 
       {/* Avatar */}
-      <View style={[styles.avatar, entry.isMe && styles.avatarMe]}>
-        <Text style={styles.avatarInitial}>
-          {(entry.displayName?.[0] ?? '?').toUpperCase()}
-        </Text>
-      </View>
+      {entry.avatarUrl ? (
+        <Image source={{ uri: entry.avatarUrl }} style={styles.avatarImg} />
+      ) : (
+        <View style={[styles.avatar, entry.isMe && styles.avatarMe]}>
+          <Text style={[styles.avatarInitial, entry.isMe && styles.avatarInitialMe]}>
+            {(entry.displayName?.[0] ?? '?').toUpperCase()}
+          </Text>
+        </View>
+      )}
 
       {/* Name + meta */}
       <View style={styles.nameBox}>
@@ -117,6 +121,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: spacing.sm,
   },
+  avatarImg: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    marginRight: spacing.sm,
+  },
   avatarMe: {
     backgroundColor: colors.primary,
   },
@@ -124,6 +134,9 @@ const styles = StyleSheet.create({
     ...typography.captionBold,
     color: colors.primary,
     fontWeight: '700',
+  },
+  avatarInitialMe: {
+    color: colors.white,
   },
 
   nameBox: {

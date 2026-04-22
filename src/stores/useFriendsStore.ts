@@ -5,12 +5,14 @@ import {
   cancelSentRequest,
   declineFriendRequest,
   getFriendIds,
+  getFriendProfiles,
   getMyInviteCode,
   getPendingRequests,
   getSentRequests,
   lookupInviteCode,
   removeFriend,
   sendFriendRequest,
+  FriendProfile,
 } from '../services/friends';
 import { getFriendsLeaderboard } from '../services/leaderboard';
 import type { FriendRequest, FriendsLeaderboardEntry, InviteCodeLookupResult } from '../types';
@@ -18,6 +20,7 @@ import type { FriendRequest, FriendsLeaderboardEntry, InviteCodeLookupResult } f
 interface FriendsState {
   // ── Data ──────────────────────────────────────────────────────────────────
   friendIds: string[];
+  friendProfiles: FriendProfile[];
   pendingReceived: FriendRequest[];
   pendingSent: FriendRequest[];
   leaderboard: FriendsLeaderboardEntry[];
@@ -53,6 +56,7 @@ interface FriendsState {
 
 export const useFriendsStore = create<FriendsState>((set, get) => ({
   friendIds: [],
+  friendProfiles: [],
   pendingReceived: [],
   pendingSent: [],
   leaderboard: [],
@@ -63,7 +67,8 @@ export const useFriendsStore = create<FriendsState>((set, get) => ({
 
   loadFriends: async (userId) => {
     const ids = await getFriendIds(userId);
-    set({ friendIds: ids });
+    const profiles = await getFriendProfiles(ids);
+    set({ friendIds: ids, friendProfiles: profiles });
     return ids as any;
   },
 
@@ -111,12 +116,22 @@ export const useFriendsStore = create<FriendsState>((set, get) => ({
 
   acceptRequest: async (requestId, fromUserId, toUserId) => {
     await acceptFriendRequest(requestId, fromUserId, toUserId);
-    // Optimistically update local state
-    set((state) => ({
-      friendIds: [...state.friendIds, fromUserId],
-      pendingReceived: state.pendingReceived.filter((r) => r.id !== requestId),
-      pendingRequestCount: Math.max(0, state.pendingRequestCount - 1),
-    }));
+    // Optimistically update local state, using request data for the profile
+    set((state) => {
+      const req = state.pendingReceived.find((r) => r.id === requestId);
+      const newProfile: FriendProfile = {
+        userId: fromUserId,
+        displayName: req?.fromDisplayName ?? '—',
+        avatarUrl: req?.fromAvatarUrl ?? null,
+        country: req?.fromCountry ?? null,
+      };
+      return {
+        friendIds: [...state.friendIds, fromUserId],
+        friendProfiles: [...state.friendProfiles, newProfile],
+        pendingReceived: state.pendingReceived.filter((r) => r.id !== requestId),
+        pendingRequestCount: Math.max(0, state.pendingRequestCount - 1),
+      };
+    });
   },
 
   declineRequest: async (requestId) => {
@@ -138,6 +153,7 @@ export const useFriendsStore = create<FriendsState>((set, get) => ({
     await removeFriend(userId, friendId);
     set((state) => ({
       friendIds: state.friendIds.filter((id) => id !== friendId),
+      friendProfiles: state.friendProfiles.filter((p) => p.userId !== friendId),
       leaderboard: state.leaderboard.filter((e) => e.userId !== friendId),
     }));
   },
@@ -146,6 +162,7 @@ export const useFriendsStore = create<FriendsState>((set, get) => ({
     await blockUser(userId, targetId);
     set((state) => ({
       friendIds: state.friendIds.filter((id) => id !== targetId),
+      friendProfiles: state.friendProfiles.filter((p) => p.userId !== targetId),
       leaderboard: state.leaderboard.filter((e) => e.userId !== targetId),
       pendingReceived: state.pendingReceived.filter(
         (r) => r.fromUserId !== targetId

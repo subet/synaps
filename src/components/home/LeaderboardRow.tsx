@@ -34,7 +34,7 @@ export function LeaderboardRow() {
   if (!user) return null;
 
   return (
-    <Pressable style={styles.card} onPress={() => router.push('/leaderboard')}>
+    <Pressable style={styles.card} onPress={() => router.push('/(tabs)/leaderboard')}>
       {/* Header row */}
       <View style={styles.header}>
         <Text style={styles.sectionLabel}>{t('leaderboard')}</Text>

@@ -2,6 +2,7 @@ export const de = {
   // Navigation tabs
   tab_home: 'Start',
   tab_library: 'Bibliothek',
+  tab_leaderboard: 'Rangliste',
   tab_settings: 'Einstellungen',
 
   // General
@@ -31,9 +32,12 @@ export const de = {
   onboarding_welcome_subtitle: 'Dein bester Lernbegleiter. Lerne alles mit intelligenten Karteikarten.',
   onboarding_srs_title: 'Smarter lernen, nicht härter',
   onboarding_srs_subtitle: 'Synaps nutzt Spaced Repetition – du wiederholst Karten genau dann, bevor du sie vergisst.',
-  onboarding_library_title: 'Tausende vorgefertigte Stapel',
-  onboarding_library_subtitle: 'Stöbere in unserer Bibliothek mit Community-Stapeln – Sprachen, Medizin, Wissenschaft, Geschichte und mehr.',
-  onboarding_start_title: 'Baue eine tägliche Lerngewohnheit auf',
+  onboarding_library_title: 'Eine Bibliothek für dich',
+  onboarding_library_subtitle: 'Entdecke ausgewählte Stapel für Sprachen, Prüfungsvorbereitung, Wissenschaft, Medizin und mehr – sofort lernbereit.',
+  onboarding_start_title: 'Schalte Erfolge beim Lernen frei',
+  onboarding_start_subtitle: 'Verdiene Abzeichen für jeden Meilenstein – Serien, gemeisterte Karten, abgeschlossene Sitzungen und mehr.',
+  onboarding_leaderboard_title: 'Tritt gegen Freunde an',
+  onboarding_leaderboard_subtitle: 'Nimm an wöchentlichen Ranglisten teil, steige in deinem Land und weltweit auf.',
   onboarding_create_account: 'Konto erstellen',
   onboarding_continue_without: 'Ohne Konto fortfahren',
   onboarding_later_note: 'Du kannst dich jederzeit später anmelden, um deine Daten zu synchronisieren',
@@ -521,4 +525,17 @@ export const de = {
   // Leaderboard tab labels
   leaderboard_tab_country: 'Land',
   leaderboard_tab_friends: 'Freunde',
+
+  // User profile sheet
+  profile_sheet_title: 'Profil',
+  profile_sheet_not_found: 'Benutzer nicht gefunden',
+  profile_sheet_world: 'Welt',
+  profile_sheet_country: 'Land',
+  profile_sheet_achievements: 'ERFOLGE',
+  profile_sheet_no_achievements: 'Noch keine Erfolge',
+  profile_sheet_friends: 'Freunde',
+  profile_sheet_add_friend: 'Freund hinzufügen',
+  profile_sheet_request_sent: 'Anfrage gesendet',
+  profile_sheet_accept_request: 'Anfrage annehmen',
+  profile_sheet_accepted: 'Angenommen',
 };

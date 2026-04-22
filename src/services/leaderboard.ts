@@ -1,9 +1,10 @@
 import { supabase } from './supabase';
-import type { FriendScoreDelta, FriendsLeaderboardEntry } from '../types';
+import type { FriendPrivacy, FriendScoreDelta, FriendsLeaderboardEntry } from '../types';
 
 export interface LeaderboardEntry {
   userId: string;
   displayName: string;
+  avatarUrl: string | null;
   country: string | null;
   cardsStudied: number;
   rank: number;
@@ -189,7 +190,7 @@ export async function getWorldLeaderboard(): Promise<LeaderboardEntry[]> {
 
   const { data, error } = await supabase
     .from('weekly_stats')
-    .select('user_id, cards_studied, profiles!weekly_stats_user_id_fkey(display_name, country)')
+    .select('user_id, cards_studied, profiles!weekly_stats_user_id_fkey(display_name, avatar_url, country)')
     .eq('week_start', weekStart)
     .order('cards_studied', { ascending: false })
     .limit(25);
@@ -204,7 +205,7 @@ export async function getCountryLeaderboard(countryCode: string): Promise<Leader
 
   const { data, error } = await supabase
     .from('weekly_stats')
-    .select('user_id, cards_studied, profiles!weekly_stats_user_id_fkey!inner(display_name, country)')
+    .select('user_id, cards_studied, profiles!weekly_stats_user_id_fkey!inner(display_name, avatar_url, country)')
     .eq('week_start', weekStart)
     .eq('profiles.country', countryCode)
     .order('cards_studied', { ascending: false })
@@ -267,8 +268,58 @@ function mapEntries(rows: any[]): LeaderboardEntry[] {
   return rows.map((row, index) => ({
     userId: row.user_id,
     displayName: firstWord(row.profiles?.display_name),
+    avatarUrl: row.profiles?.avatar_url ?? null,
     country: row.profiles?.country ?? null,
     cardsStudied: row.cards_studied,
     rank: index + 1,
   }));
+}
+
+// ─── Public user profile ────────────────────────────────────────────────────
+
+export interface PublicUserProfile {
+  userId: string;
+  displayName: string;
+  avatarUrl: string | null;
+  country: string | null;
+  friendPrivacy: FriendPrivacy;
+  achievedBadgeIds: string[];
+  worldRank: number;
+  countryRank: number | null;
+}
+
+/**
+ * Fetch public profile data for a leaderboard user.
+ * Includes their profile info, achieved badges, and world/country rank.
+ */
+export async function getPublicUserProfile(targetUserId: string): Promise<PublicUserProfile | null> {
+  const profileRes = await supabase
+    .from('profiles')
+    .select('display_name, avatar_url, country, friend_privacy, achieved_badges')
+    .eq('id', targetUserId)
+    .single();
+
+  if (profileRes.error) return null;
+
+  const p = profileRes.data;
+  const country = p.country ?? null;
+
+  // Fetch rank (with country if available)
+  const rankData = await getMyRank(targetUserId, country ?? undefined);
+
+  // achieved_badges is a jsonb array synced from the local device
+  const achievedBadgeIds: string[] = Array.isArray(p.achieved_badges)
+    ? p.achieved_badges
+    : [];
+
+  return {
+    userId: targetUserId,
+    displayName: firstWord(p.display_name),
+    avatarUrl: p.avatar_url ?? null,
+    country,
+    friendPrivacy: (p.friend_privacy ?? 'invite_only') as FriendPrivacy,
+    achievedBadgeIds,
+    worldRank: rankData.worldRank,
+    countryRank: rankData.countryRank,
+  };
 }

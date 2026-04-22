@@ -2,6 +2,7 @@ export const en = {
   // Navigation tabs
   tab_home: 'Home',
   tab_library: 'Library',
+  tab_leaderboard: 'Leaderboard',
   tab_settings: 'Settings',
 
   // General
@@ -30,9 +31,12 @@ export const en = {
   onboarding_welcome_subtitle: "Your brain's best study companion. Learn anything with smart flashcards.",
   onboarding_srs_title: 'Learn Smarter, Not Harder',
   onboarding_srs_subtitle: "Synaps uses spaced repetition — you'll review cards right before you forget them.",
-  onboarding_library_title: 'Thousands of Ready-Made Decks',
-  onboarding_library_subtitle: 'Browse our library of community decks — languages, medicine, science, history, and more.',
-  onboarding_start_title: 'Build a Daily Learning Habit',
+  onboarding_library_title: 'A Library Built for You',
+  onboarding_library_subtitle: 'Explore curated decks for languages, exam prep, science, medicine, and more — ready to study instantly.',
+  onboarding_start_title: 'Unlock Achievements as You Learn',
+  onboarding_start_subtitle: 'Earn badges for every milestone — streaks, mastered cards, completed sessions, and more.',
+  onboarding_leaderboard_title: 'Compete with Friends',
+  onboarding_leaderboard_subtitle: 'Join weekly leaderboards, rise through the ranks in your country and worldwide.',
   onboarding_create_account: 'Create Account',
   onboarding_continue_without: 'Continue without account',
   onboarding_later_note: 'You can always sign up later to sync your data',
@@ -522,4 +526,17 @@ export const en = {
   // Leaderboard tab labels
   leaderboard_tab_country: 'Country',
   leaderboard_tab_friends: 'Friends',
+
+  // User profile sheet
+  profile_sheet_title: 'Profile',
+  profile_sheet_not_found: 'User not found',
+  profile_sheet_world: 'World',
+  profile_sheet_country: 'Country',
+  profile_sheet_achievements: 'ACHIEVEMENTS',
+  profile_sheet_no_achievements: 'No achievements yet',
+  profile_sheet_friends: 'Friends',
+  profile_sheet_add_friend: 'Add Friend',
+  profile_sheet_request_sent: 'Request Sent',
+  profile_sheet_accept_request: 'Accept Request',
+  profile_sheet_accepted: 'Accepted',
 };

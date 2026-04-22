@@ -29,6 +29,8 @@ import { useStudyStore } from '../../src/stores/useStudyStore';
 import { useStreakStore } from '../../src/stores/useStreakStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 import { useNetworkStatus } from '../../src/hooks/useNetworkStatus';
+import { useAppStore } from '../../src/stores/useAppStore';
+import { resolveTranslation } from '../../src/utils/translations';
 import { SRSGrade, StudySessionResult } from '../../src/types';
 import { BadgeCelebration } from '../../src/components/badges/BadgeCelebration';
 
@@ -68,6 +70,7 @@ export default function StudyScreen() {
 
   const deck = getDeckById(deckId);
   const speakLanguage = deck?.source_id ? LANGUAGE_CODES[deck.source_id] : undefined;
+  const uiLanguage = useAppStore((s) => s.language);
   const currentCard = queue[currentIndex];
 
   const progressWidth = useSharedValue(0);
@@ -103,20 +106,24 @@ export default function StudyScreen() {
   useEffect(() => {
     if (!deck?.auto_play_audio || !currentCard) return;
     stopSpeech();
-    // In normal mode the visible side is `front` (English); in reversed mode it's `back` (target lang).
+    // In normal mode the visible side is `front` (UI lang); in reversed mode it's `back` (target lang).
     const isTargetLang = deck.reverse_cards;
-    const text = isTargetLang ? currentCard.back : currentCard.front;
-    speakText(text, isTargetLang ? speakLanguage : undefined);
+    const text = isTargetLang
+      ? currentCard.back
+      : resolveTranslation(currentCard.front_translations, currentCard.front, uiLanguage);
+    speakText(text, isTargetLang ? speakLanguage : uiLanguage);
   }, [currentCard?.id]);
 
   // Auto-play: speak back text when card is flipped
   useEffect(() => {
     if (!deck?.auto_play_audio || !currentCard || !isFlipped) return;
     stopSpeech();
-    // In normal mode the revealed side is `back` (target lang); in reversed mode it's `front` (English).
+    // In normal mode the revealed side is `back` (target lang); in reversed mode it's `front` (UI lang).
     const isTargetLang = !deck.reverse_cards;
-    const text = isTargetLang ? currentCard.back : currentCard.front;
-    speakText(text, isTargetLang ? speakLanguage : undefined);
+    const text = isTargetLang
+      ? currentCard.back
+      : resolveTranslation(currentCard.front_translations, currentCard.front, uiLanguage);
+    speakText(text, isTargetLang ? speakLanguage : uiLanguage);
   }, [isFlipped]);
 
   // Overall deck progress: studied (learning + mastered) / total

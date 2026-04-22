@@ -1,5 +1,5 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
@@ -41,15 +41,17 @@ export default function PaywallScreen() {
   const [selectedPlan, setSelectedPlan] = useState('monthly');
   const { offerings, loadOfferings, purchase, restore, isLoading, isPro, wasPro } = useSubscriptionStore();
   const { hasSeenOnboarding } = useAppStore();
-  const inOnboarding = !hasSeenOnboarding;
+  const { onboarding } = useLocalSearchParams<{ onboarding?: string }>();
+  const inOnboarding = !hasSeenOnboarding || onboarding === '1';
 
   useEffect(() => {
     loadOfferings();
   }, []);
 
   useEffect(() => {
-    if (isPro && !inOnboarding) router.back();
-    if (isPro && inOnboarding) router.replace('/auth/register');
+    // During onboarding, always show paywall even if already PRO
+    if (inOnboarding) return;
+    if (isPro) router.back();
   }, [isPro]);
 
   const goNext = () => router.replace(inOnboarding ? '/auth/register' : '/(tabs)');
@@ -95,12 +97,10 @@ export default function PaywallScreen() {
     <SafeAreaView style={styles.safe}>
       {inOnboarding && <Stack.Screen options={{ gestureEnabled: false }} />}
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Close button — hidden during onboarding */}
-        {!inOnboarding && (
-          <Pressable style={styles.closeBtn} onPress={() => router.back()}>
-            <Ionicons name="close" size={22} color={colors.textSecondary} />
-          </Pressable>
-        )}
+        {/* Close button — skips to next step during onboarding, goes back otherwise */}
+        <Pressable style={styles.closeBtn} onPress={() => inOnboarding ? goNext() : router.back()}>
+          <Ionicons name="close" size={22} color={colors.textSecondary} />
+        </Pressable>
 
         {/* Header */}
         <View style={styles.header}>

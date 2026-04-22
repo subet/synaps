@@ -2,6 +2,7 @@ export const tr = {
   // Navigation tabs
   tab_home: 'Ana Sayfa',
   tab_library: 'Kütüphane',
+  tab_leaderboard: 'Sıralama',
   tab_settings: 'Ayarlar',
 
   // General
@@ -30,9 +31,12 @@ export const tr = {
   onboarding_welcome_subtitle: 'Beyninizin en iyi çalışma arkadaşı. Akıllı flash kartlarla her şeyi öğrenin.',
   onboarding_srs_title: 'Daha Akıllı Çalışın',
   onboarding_srs_subtitle: 'Synaps aralıklı tekrar kullanır — kartları tam unutmak üzereyken tekrar edersiniz.',
-  onboarding_library_title: 'Binlerce Hazır Deste',
-  onboarding_library_subtitle: 'Dil, tıp, bilim, tarih ve daha fazlasında topluluk destelerini keşfedin.',
-  onboarding_start_title: 'Günlük Bir Öğrenme Alışkanlığı Oluşturun',
+  onboarding_library_title: 'Sizin İçin Oluşturulmuş Bir Kütüphane',
+  onboarding_library_subtitle: 'Diller, sınav hazırlığı, bilim, tıp ve daha fazlası için özenle seçilmiş desteleri keşfedin — hemen çalışmaya başlayın.',
+  onboarding_start_title: 'Öğrendikçe Başarımların Kilidini Açın',
+  onboarding_start_subtitle: 'Her kilometre taşı için rozetler kazanın — seriler, ustalaşılan kartlar, tamamlanan oturumlar ve daha fazlası.',
+  onboarding_leaderboard_title: 'Arkadaşlarınla Yarış',
+  onboarding_leaderboard_subtitle: 'Haftalık sıralamalara katıl, ülkende ve dünyada zirveye çık.',
   onboarding_create_account: 'Hesap Oluştur',
   onboarding_continue_without: 'Hesapsız Devam Et',
   onboarding_later_note: 'Verilerinizi senkronize etmek için her zaman sonradan kaydolabilirsiniz',
@@ -521,4 +525,17 @@ export const tr = {
   // Leaderboard tab labels
   leaderboard_tab_country: 'Ülke',
   leaderboard_tab_friends: 'Arkadaşlar',
+
+  // User profile sheet
+  profile_sheet_title: 'Profil',
+  profile_sheet_not_found: 'Kullanıcı bulunamadı',
+  profile_sheet_world: 'Dünya',
+  profile_sheet_country: 'Ülke',
+  profile_sheet_achievements: 'BAŞARILAR',
+  profile_sheet_no_achievements: 'Henüz başarı yok',
+  profile_sheet_friends: 'Arkadaşlar',
+  profile_sheet_add_friend: 'Arkadaş Ekle',
+  profile_sheet_request_sent: 'İstek Gönderildi',
+  profile_sheet_accept_request: 'İsteği Kabul Et',
+  profile_sheet_accepted: 'Kabul Edildi',
 };

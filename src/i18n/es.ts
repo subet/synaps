@@ -2,6 +2,7 @@ export const es = {
   // Navigation tabs
   tab_home: 'Inicio',
   tab_library: 'Biblioteca',
+  tab_leaderboard: 'Clasificación',
   tab_settings: 'Ajustes',
 
   // General
@@ -31,9 +32,12 @@ export const es = {
   onboarding_welcome_subtitle: 'Tu mejor compañero de estudio. Aprende cualquier cosa con tarjetas inteligentes.',
   onboarding_srs_title: 'Aprende más inteligente, no más difícil',
   onboarding_srs_subtitle: 'Synaps usa repetición espaciada — repasarás las tarjetas justo antes de olvidarlas.',
-  onboarding_library_title: 'Miles de mazos listos para usar',
-  onboarding_library_subtitle: 'Explora nuestra biblioteca de mazos comunitarios — idiomas, medicina, ciencia, historia y más.',
-  onboarding_start_title: 'Crea un hábito de aprendizaje diario',
+  onboarding_library_title: 'Una Biblioteca Hecha para Ti',
+  onboarding_library_subtitle: 'Explora mazos seleccionados de idiomas, preparación de exámenes, ciencia, medicina y más — listos para estudiar al instante.',
+  onboarding_start_title: 'Desbloquea logros mientras aprendes',
+  onboarding_start_subtitle: 'Gana insignias por cada hito: rachas, tarjetas dominadas, sesiones completadas y más.',
+  onboarding_leaderboard_title: 'Compite con Amigos',
+  onboarding_leaderboard_subtitle: 'Únete a las clasificaciones semanales, sube en el ranking de tu país y del mundo.',
   onboarding_create_account: 'Crear cuenta',
   onboarding_continue_without: 'Continuar sin cuenta',
   onboarding_later_note: 'Siempre puedes registrarte más tarde para sincronizar tus datos',
@@ -521,4 +525,17 @@ export const es = {
   // Leaderboard tab labels
   leaderboard_tab_country: 'País',
   leaderboard_tab_friends: 'Amigos',
+
+  // User profile sheet
+  profile_sheet_title: 'Perfil',
+  profile_sheet_not_found: 'Usuario no encontrado',
+  profile_sheet_world: 'Mundo',
+  profile_sheet_country: 'País',
+  profile_sheet_achievements: 'LOGROS',
+  profile_sheet_no_achievements: 'Aún no hay logros',
+  profile_sheet_friends: 'Amigos',
+  profile_sheet_add_friend: 'Añadir amigo',
+  profile_sheet_request_sent: 'Solicitud enviada',
+  profile_sheet_accept_request: 'Aceptar solicitud',
+  profile_sheet_accepted: 'Aceptado',
 };

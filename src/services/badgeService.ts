@@ -1,5 +1,6 @@
 import { ALL_BADGES, BadgeCriteria, BadgeDefinition } from '../data/badges';
 import { awardBadge, BadgeStats, getAwardedBadgeIds, getBadgeStats } from './database';
+import { supabase } from './supabase';
 
 export interface BadgeWithStatus extends BadgeDefinition {
   achieved: boolean;
@@ -49,4 +50,18 @@ export async function getAllBadgesWithStatus(): Promise<BadgeWithStatus[]> {
     const progress = Math.min(currentValue / badge.threshold, 1);
     return { ...badge, achieved, progress, currentValue };
   });
+}
+
+/**
+ * Sync locally-awarded badge IDs to the Supabase profiles table
+ * so other users can see them on the leaderboard profile sheet.
+ */
+export async function syncBadgesToRemote(userId: string): Promise<void> {
+  const awardedIds = await getAwardedBadgeIds();
+  const { error } = await supabase
+    .from('profiles')
+    .update({ achieved_badges: awardedIds })
+    .eq('id', userId);
+
+  if (error && __DEV__) console.warn('[badges] sync error:', error.message);
 }

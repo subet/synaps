@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import {
   Alert,
   FlatList,
+  Image,
   Pressable,
   RefreshControl,
   SectionList,
@@ -277,21 +278,25 @@ function FriendList({
   onBlock: (id: string, name: string) => void;
 }) {
   const { t } = useTranslation();
-  // Use leaderboard data from store for display names
-  const leaderboard = useFriendsStore((s) => s.leaderboard);
+  const friendProfiles = useFriendsStore((s) => s.friendProfiles);
 
   return (
     <>
       {friendIds.map((id) => {
-        const entry = leaderboard.find((e) => e.userId === id);
-        const name = entry?.displayName ?? id.slice(0, 8);
+        const profile = friendProfiles.find((p) => p.userId === id);
+        const name = profile?.displayName ?? '—';
+        const avatarUrl = profile?.avatarUrl ?? null;
         return (
           <View key={id} style={styles.friendRow}>
-            <View style={styles.friendAvatar}>
-              <Text style={styles.friendAvatarText}>
-                {(name[0] ?? '?').toUpperCase()}
-              </Text>
-            </View>
+            {avatarUrl ? (
+              <Image source={{ uri: avatarUrl }} style={styles.friendAvatarImg} />
+            ) : (
+              <View style={styles.friendAvatar}>
+                <Text style={styles.friendAvatarText}>
+                  {(name[0] ?? '?').toUpperCase()}
+                </Text>
+              </View>
+            )}
             <Text style={styles.friendName} numberOfLines={1}>{name}</Text>
             <Pressable
               style={styles.moreBtn}
@@ -365,6 +370,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryLight,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: spacing.sm,
+  },
+  friendAvatarImg: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     marginRight: spacing.sm,
   },
   friendAvatarText: { ...typography.captionBold, color: colors.primary, fontWeight: '700' },

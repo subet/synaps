@@ -2,6 +2,7 @@ export const ru = {
   // Navigation tabs
   tab_home: 'Главная',
   tab_library: 'Библиотека',
+  tab_leaderboard: 'Рейтинг',
   tab_settings: 'Настройки',
 
   // General
@@ -31,9 +32,12 @@ export const ru = {
   onboarding_welcome_subtitle: 'Лучший помощник для учёбы. Изучай что угодно с умными карточками.',
   onboarding_srs_title: 'Учись умнее, а не усерднее',
   onboarding_srs_subtitle: 'Synaps использует интервальное повторение — карточки появляются прямо перед тем, как вы их забудете.',
-  onboarding_library_title: 'Тысячи готовых колод',
-  onboarding_library_subtitle: 'Просматривайте библиотеку колод сообщества — языки, медицина, наука, история и многое другое.',
-  onboarding_start_title: 'Выработайте ежедневную привычку учиться',
+  onboarding_library_title: 'Библиотека, созданная для вас',
+  onboarding_library_subtitle: 'Изучайте подобранные колоды по языкам, подготовке к экзаменам, науке, медицине и не только — готовы к изучению прямо сейчас.',
+  onboarding_start_title: 'Открывайте достижения по мере обучения',
+  onboarding_start_subtitle: 'Зарабатывайте значки за каждый рубеж — серии, освоенные карточки, завершённые сессии и многое другое.',
+  onboarding_leaderboard_title: 'Соревнуйся с друзьями',
+  onboarding_leaderboard_subtitle: 'Участвуй в еженедельных рейтингах, поднимайся в своей стране и по всему миру.',
   onboarding_create_account: 'Создать аккаунт',
   onboarding_continue_without: 'Продолжить без аккаунта',
   onboarding_later_note: 'Вы всегда можете зарегистрироваться позже для синхронизации данных',
@@ -521,4 +525,17 @@ export const ru = {
   // Leaderboard tab labels
   leaderboard_tab_country: 'Страна',
   leaderboard_tab_friends: 'Друзья',
+
+  // User profile sheet
+  profile_sheet_title: 'Профиль',
+  profile_sheet_not_found: 'Пользователь не найден',
+  profile_sheet_world: 'Мир',
+  profile_sheet_country: 'Страна',
+  profile_sheet_achievements: 'ДОСТИЖЕНИЯ',
+  profile_sheet_no_achievements: 'Пока нет достижений',
+  profile_sheet_friends: 'Друзья',
+  profile_sheet_add_friend: 'Добавить в друзья',
+  profile_sheet_request_sent: 'Запрос отправлен',
+  profile_sheet_accept_request: 'Принять запрос',
+  profile_sheet_accepted: 'Принято',
 };

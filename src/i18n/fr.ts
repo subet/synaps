@@ -2,6 +2,7 @@ export const fr = {
   // Navigation tabs
   tab_home: 'Accueil',
   tab_library: 'Bibliothèque',
+  tab_leaderboard: 'Classement',
   tab_settings: 'Paramètres',
 
   // General
@@ -31,9 +32,12 @@ export const fr = {
   onboarding_welcome_subtitle: 'Le meilleur compagnon d\'étude pour ton cerveau. Apprends n\'importe quoi avec des flashcards intelligentes.',
   onboarding_srs_title: 'Apprendre mieux, pas plus dur',
   onboarding_srs_subtitle: 'Synaps utilise la répétition espacée — tu révises les cartes juste avant de les oublier.',
-  onboarding_library_title: 'Des milliers de paquets prêts à l\'emploi',
-  onboarding_library_subtitle: 'Parcours notre bibliothèque de paquets communautaires — langues, médecine, sciences, histoire et plus.',
-  onboarding_start_title: 'Crée une habitude d\'apprentissage quotidienne',
+  onboarding_library_title: 'Une bibliothèque faite pour toi',
+  onboarding_library_subtitle: 'Explore des paquets sélectionnés pour les langues, la préparation aux examens, les sciences, la médecine et plus — prêts à étudier instantanément.',
+  onboarding_start_title: 'Débloque des succès en apprenant',
+  onboarding_start_subtitle: 'Gagne des badges pour chaque étape : séries, cartes maîtrisées, sessions terminées et plus encore.',
+  onboarding_leaderboard_title: 'Affronte tes Amis',
+  onboarding_leaderboard_subtitle: 'Rejoins les classements hebdomadaires, progresse dans ton pays et dans le monde entier.',
   onboarding_create_account: 'Créer un compte',
   onboarding_continue_without: 'Continuer sans compte',
   onboarding_later_note: 'Tu peux toujours t\'inscrire plus tard pour synchroniser tes données',
@@ -521,4 +525,17 @@ export const fr = {
   // Leaderboard tab labels
   leaderboard_tab_country: 'Pays',
   leaderboard_tab_friends: 'Amis',
+
+  // User profile sheet
+  profile_sheet_title: 'Profil',
+  profile_sheet_not_found: 'Utilisateur introuvable',
+  profile_sheet_world: 'Monde',
+  profile_sheet_country: 'Pays',
+  profile_sheet_achievements: 'SUCCÈS',
+  profile_sheet_no_achievements: 'Pas encore de succès',
+  profile_sheet_friends: 'Amis',
+  profile_sheet_add_friend: 'Ajouter un ami',
+  profile_sheet_request_sent: 'Demande envoyée',
+  profile_sheet_accept_request: 'Accepter la demande',
+  profile_sheet_accepted: 'Accepté',
 };

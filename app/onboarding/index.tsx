@@ -2,7 +2,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -13,6 +13,7 @@ import {
   View,
 } from 'react-native';
 import Animated, {
+  FadeInDown,
   interpolate,
   interpolateColor,
   useAnimatedScrollHandler,
@@ -21,6 +22,11 @@ import Animated, {
   SharedValue,
 } from 'react-native-reanimated';
 import { SynapsLogo } from '../../src/components/ui/SynapsLogo';
+import { WelcomeHero } from '../../src/components/onboarding/WelcomeHero';
+import { SrsHero } from '../../src/components/onboarding/SrsHero';
+import { LibraryHero } from '../../src/components/onboarding/LibraryHero';
+import { AchievementsHero } from '../../src/components/onboarding/AchievementsHero';
+import { LeaderboardHero } from '../../src/components/onboarding/LeaderboardHero';
 import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
 
@@ -61,14 +67,24 @@ const SLIDES = [
     iconColors: ['#EC4899', '#DB2777'] as [string, string],
   },
   {
-    key: 'start',
-    icon: 'rocket-outline' as IoniconName,
+    key: 'achievements',
+    icon: 'trophy-outline' as IoniconName,
     useAppIcon: false,
     titleKey: 'onboarding_start_title',
-    subtitleKey: null,
+    subtitleKey: 'onboarding_start_subtitle' as string | null,
     bgColor: '#EDD8F8',
     glowColor: 'rgba(155, 60, 220, 0.13)',
     iconColors: ['#8B5CF6', '#EC4899'] as [string, string],
+  },
+  {
+    key: 'leaderboard',
+    icon: 'podium-outline' as IoniconName,
+    useAppIcon: false,
+    titleKey: 'onboarding_leaderboard_title',
+    subtitleKey: 'onboarding_leaderboard_subtitle' as string | null,
+    bgColor: '#D4F0E8',
+    glowColor: 'rgba(16, 185, 129, 0.13)',
+    iconColors: ['#10B981', '#0EA5E9'] as [string, string],
   },
 ];
 
@@ -126,16 +142,6 @@ export default function OnboardingScreen() {
       <View style={styles.bgCircle} pointerEvents="none" />
 
       <SafeAreaView style={styles.safe}>
-        {/* Top row: logo + skip */}
-        <View style={styles.topRow}>
-          <SynapsLogo width={150} />
-          {!isLastSlide && (
-            <Pressable style={styles.skipBtn} onPress={handleSkip}>
-              <Text style={styles.skipText}>{t('skip')}</Text>
-            </Pressable>
-          )}
-        </View>
-
         {/* Slides */}
         <AnimatedFlatList
           ref={listRef}
@@ -150,16 +156,18 @@ export default function OnboardingScreen() {
             const idx = Math.round(e.nativeEvent.contentOffset.x / width);
             setCurrentIndex(idx);
           }}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <View style={[styles.slide, { width }]}>
-              {item.useAppIcon ? (
-                <View style={[styles.glowWrapper, { backgroundColor: item.glowColor }]}>
-                  <Image
-                    source={require('../../assets/adaptive-icon.png')}
-                    style={styles.appIcon}
-                    resizeMode="cover"
-                  />
-                </View>
+              {item.key === 'welcome' ? (
+                <WelcomeHero />
+              ) : item.key === 'srs' ? (
+                <SrsHero active={currentIndex === index} />
+              ) : item.key === 'library' ? (
+                <LibraryHero active={currentIndex === index} />
+              ) : item.key === 'achievements' ? (
+                <AchievementsHero active={currentIndex === index} />
+              ) : item.key === 'leaderboard' ? (
+                <LeaderboardHero active={currentIndex === index} />
               ) : (
                 <View style={[styles.glowWrapper, { backgroundColor: item.glowColor }]}>
                   <LinearGradient
@@ -172,9 +180,19 @@ export default function OnboardingScreen() {
                   </LinearGradient>
                 </View>
               )}
-              <Text style={styles.slideTitle}>{t(item.titleKey)}</Text>
+              <Animated.Text
+                entering={FadeInDown.delay(item.useAppIcon ? 400 : 0).duration(500).springify()}
+                style={styles.slideTitle}
+              >
+                {t(item.titleKey)}
+              </Animated.Text>
               {item.subtitleKey && (
-                <Text style={styles.slideSubtitle}>{t(item.subtitleKey)}</Text>
+                <Animated.Text
+                  entering={FadeInDown.delay(item.useAppIcon ? 600 : 150).duration(500).springify()}
+                  style={styles.slideSubtitle}
+                >
+                  {t(item.subtitleKey)}
+                </Animated.Text>
               )}
             </View>
           )}
@@ -237,8 +255,8 @@ const styles = StyleSheet.create({
   slide: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: spacing.xl,
-    paddingTop: spacing.xl,
   },
   glowWrapper: {
     width: 220,

@@ -4,7 +4,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 import { Ionicons } from '@expo/vector-icons';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { SynapsLogo } from '../../src/components/ui/SynapsLogo';
 import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
 
@@ -17,9 +16,10 @@ async function requestATT() {
 export default function ATTScreen() {
   const { t } = useTranslation();
 
-  const handleContinue = async () => {
-    await requestATT();
-    router.replace('/paywall');
+  const handleContinue = () => {
+    // Navigate first, then request ATT in the background
+    router.replace('/paywall?onboarding=1');
+    requestATT().catch(() => {});
   };
 
   return (
@@ -30,11 +30,6 @@ export default function ATTScreen() {
       />
       <View style={styles.bgCircle} pointerEvents="none" />
       <SafeAreaView style={styles.safe}>
-        {/* Top logo */}
-        <View style={styles.logoHeader}>
-          <SynapsLogo width={150} />
-        </View>
-
         {/* Content */}
         <View style={styles.content}>
           <View style={styles.glowWrapper}>
@@ -79,11 +74,6 @@ export default function ATTScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1 },
   safe: { flex: 1 },
-  logoHeader: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.md,
-  },
   content: {
     flex: 1,
     alignItems: 'center',

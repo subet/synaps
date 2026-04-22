@@ -7,7 +7,7 @@ const AGAIN_INTERVAL = 1;
 const HARD_MIN_INTERVAL = 5;
 const GOOD_MIN_INTERVAL = 10;
 const EASY_MIN_INTERVAL = 4 * 24 * 60; // 4 days
-const MASTERED_THRESHOLD_INTERVAL = 21 * 24 * 60; // 21 days
+const MASTERED_THRESHOLD_INTERVAL = 7 * 24 * 60; // 7 days
 const MASTERED_THRESHOLD_REPS = 3;
 
 export function calculateSM2(

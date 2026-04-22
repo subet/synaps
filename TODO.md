@@ -98,3 +98,13 @@ Apple requires privacy policy and terms of use links in the paywall to open in a
 
 # SYNC
 PRO kullanıcıları "Settings > Sync Data" tıkladığında sync yapalım. 
+
+
+# ONBOARDING
+Artık birçok farklı yeni özelliğimiz var. Bunları da onboarding e ekleyelim. Mümkünse animasyonlu ve daha premium hissettiren onbparding ekranları tasarlayalım.
+
+# STORES
+Artık birçok farklı yeni özelliğimiz var. Storelara yeni screenshotlar ekleyelim. Ve açıklamaları güncelleyelim. ASO lu ve yeni özelliklerin dahil olduğu açıklamalar olsun.
+
+# ONBOARDING WIZARD
+İlk açılışta bir wizard gelsin. Yeni deck ekleme veya olanları görme gibi bir ekran olsun.

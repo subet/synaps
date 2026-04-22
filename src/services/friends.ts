@@ -194,6 +194,32 @@ export async function getFriendIds(userId: string): Promise<string[]> {
   return (data ?? []).map((row: { friend_id: string }) => row.friend_id);
 }
 
+export interface FriendProfile {
+  userId: string;
+  displayName: string;
+  avatarUrl: string | null;
+  country: string | null;
+}
+
+/** Fetch profile data (name, avatar, country) for a list of user IDs. */
+export async function getFriendProfiles(friendIds: string[]): Promise<FriendProfile[]> {
+  if (friendIds.length === 0) return [];
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id, display_name, avatar_url, country')
+    .in('id', friendIds);
+
+  if (error) throw error;
+
+  return (data ?? []).map((p: any) => ({
+    userId: p.id,
+    displayName: p.display_name ? p.display_name.trim().split(/\s+/)[0] : '—',
+    avatarUrl: p.avatar_url ?? null,
+    country: p.country ?? null,
+  }));
+}
+
 /** Remove a mutual friendship. Deletes the canonical row. */
 export async function removeFriend(userId: string, friendId: string): Promise<void> {
   const [userA, userB] = [userId, friendId].sort();
