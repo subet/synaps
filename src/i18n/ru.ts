@@ -1,6 +1,7 @@
 export const ru = {
   // Navigation tabs
   tab_home: 'Главная',
+  tab_study: 'Учиться',
   tab_library: 'Библиотека',
   tab_leaderboard: 'Рейтинг',
   tab_settings: 'Настройки',
@@ -55,6 +56,9 @@ export const ru = {
   no_decks_title: 'Колод пока нет',
   no_decks_subtitle: 'Создайте первую колоду, чтобы начать учиться',
   create_first_deck: 'Создать первую колоду',
+  fab_new_deck: 'Новая колода',
+  fab_achievements: 'Достижения',
+  fab_friends: 'Друзья',
   create_deck: 'Создать колоду',
 
   // Streak

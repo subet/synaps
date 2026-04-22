@@ -1,6 +1,7 @@
 export const tr = {
   // Navigation tabs
   tab_home: 'Ana Sayfa',
+  tab_study: 'Çalış',
   tab_library: 'Kütüphane',
   tab_leaderboard: 'Sıralama',
   tab_settings: 'Ayarlar',
@@ -54,6 +55,9 @@ export const tr = {
   no_decks_title: 'Henüz deste yok',
   no_decks_subtitle: 'Öğrenmeye başlamak için ilk destinizi oluşturun',
   create_first_deck: 'İlk destinizi oluşturun',
+  fab_new_deck: 'Yeni Deste',
+  fab_achievements: 'Başarımlar',
+  fab_friends: 'Arkadaşlar',
   create_deck: 'Deste Oluştur',
 
   // Streak

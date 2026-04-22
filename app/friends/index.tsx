@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   Image,
@@ -47,13 +48,17 @@ export default function FriendsScreen() {
   const [inviteVisible, setInviteVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+  const [initialLoading, setInitialLoading] = useState(true);
 
   useFocusEffect(
     useCallback(() => {
       if (!user?.id) return;
-      loadRequests(user.id);
-      loadFriends(user.id);
-      loadInviteCode(user.id);
+      setInitialLoading(true);
+      Promise.all([
+        loadRequests(user.id),
+        loadFriends(user.id),
+        loadInviteCode(user.id),
+      ]).finally(() => setInitialLoading(false));
     }, [user?.id])
   );
 
@@ -176,6 +181,11 @@ export default function FriendsScreen() {
         </Pressable>
       </View>
 
+      {initialLoading ? (
+        <View style={styles.loadingWrap}>
+          <ActivityIndicator color={colors.primary} size="large" />
+        </View>
+      ) : (
       <FlatList
         data={[]}
         keyExtractor={() => ''}
@@ -247,6 +257,7 @@ export default function FriendsScreen() {
         }
         contentContainerStyle={styles.listContent}
       />
+      )}
 
       <InviteSheet
         visible={inviteVisible}
@@ -338,6 +349,7 @@ const styles = StyleSheet.create({
   title: { ...typography.h3, color: colors.textPrimary, flex: 1, textAlign: 'center' },
   inviteBtn: { width: 44, alignItems: 'center', padding: spacing.sm },
 
+  loadingWrap: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   listContent: { paddingHorizontal: spacing.md, paddingBottom: spacing.xl },
 
   section: { marginBottom: spacing.lg },

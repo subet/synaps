@@ -1,6 +1,7 @@
 export const en = {
   // Navigation tabs
   tab_home: 'Home',
+  tab_study: 'Study',
   tab_library: 'Library',
   tab_leaderboard: 'Leaderboard',
   tab_settings: 'Settings',
@@ -54,6 +55,9 @@ export const en = {
   no_decks_title: 'No decks yet',
   no_decks_subtitle: 'Create your first deck to start learning',
   create_first_deck: 'Create your first deck',
+  fab_new_deck: 'New Deck',
+  fab_achievements: 'Achievements',
+  fab_friends: 'Friends',
   create_deck: 'Create Deck',
 
   // Streak

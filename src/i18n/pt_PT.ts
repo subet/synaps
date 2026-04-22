@@ -1,6 +1,7 @@
 export const pt_PT = {
   // Navigation tabs
   tab_home: 'Início',
+  tab_study: 'Estudar',
   tab_library: 'Biblioteca',
   tab_leaderboard: 'Classificação',
   tab_settings: 'Definições',
@@ -55,6 +56,9 @@ export const pt_PT = {
   no_decks_title: 'Ainda não tem baralhos',
   no_decks_subtitle: 'Crie o seu primeiro baralho para começar a aprender',
   create_first_deck: 'Criar o seu primeiro baralho',
+  fab_new_deck: 'Novo Baralho',
+  fab_achievements: 'Conquistas',
+  fab_friends: 'Amigos',
   create_deck: 'Criar Baralho',
 
   // Streak

@@ -1,6 +1,7 @@
 export const fr = {
   // Navigation tabs
   tab_home: 'Accueil',
+  tab_study: 'Étudier',
   tab_library: 'Bibliothèque',
   tab_leaderboard: 'Classement',
   tab_settings: 'Paramètres',
@@ -55,6 +56,9 @@ export const fr = {
   no_decks_title: 'Aucun paquet pour l\'instant',
   no_decks_subtitle: 'Crée ton premier paquet pour commencer à apprendre',
   create_first_deck: 'Crée ton premier paquet',
+  fab_new_deck: 'Nouveau Paquet',
+  fab_achievements: 'Succès',
+  fab_friends: 'Amis',
   create_deck: 'Créer un paquet',
 
   // Streak

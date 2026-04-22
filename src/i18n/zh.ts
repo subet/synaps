@@ -1,6 +1,7 @@
 export const zh = {
   // Navigation tabs
   tab_home: '首页',
+  tab_study: '学习',
   tab_library: '资料库',
   tab_leaderboard: '排行榜',
   tab_settings: '设置',
@@ -55,6 +56,9 @@ export const zh = {
   no_decks_title: '暂无牌组',
   no_decks_subtitle: '创建您的第一个牌组以开始学习',
   create_first_deck: '创建第一个牌组',
+  fab_new_deck: '新建牌组',
+  fab_achievements: '成就',
+  fab_friends: '朋友',
   create_deck: '创建牌组',
 
   // Streak

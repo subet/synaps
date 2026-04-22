@@ -9,14 +9,12 @@ import {
   Text,
   View,
 } from 'react-native';
-import { BadgesRow } from '../../src/components/home/BadgesRow';
-import { LeaderboardRow } from '../../src/components/home/LeaderboardRow';
 import { DeckListItem } from '../../src/components/home/DeckListItem';
 import { GreetingHeader } from '../../src/components/home/GreetingHeader';
 import { StatBoxes } from '../../src/components/home/StatBoxes';
 import { StreakCard } from '../../src/components/home/StreakCard';
 import { EmptyState } from '../../src/components/ui/EmptyState';
-import { FAB } from '../../src/components/ui/FAB';
+import { FABMenu, FABMenuItem } from '../../src/components/ui/FABMenu';
 import { colors, spacing, typography } from '../../src/constants';
 import { getHiddenVocabDeckId } from '../../src/data/publicDecks';
 import { useTranslation } from '../../src/i18n';
@@ -65,6 +63,12 @@ export default function HomeScreen() {
     setRefreshing(false);
   }, []);
 
+  const fabItems: FABMenuItem[] = useMemo(() => [
+    { label: t('fab_new_deck'), icon: 'add-circle-outline', onPress: () => router.push('/deck/create') },
+    { label: t('fab_achievements'), icon: 'trophy-outline', onPress: () => router.push('/badges') },
+    { label: t('fab_friends'), icon: 'people-outline', onPress: () => router.push('/friends') },
+  ], [language]);
+
   const renderDeck = useCallback(
     ({ item }: { item: Deck }) => (
       <DeckListItem
@@ -81,8 +85,6 @@ export default function HomeScreen() {
       <View>
         <GreetingHeader weekDays={weekDays} />
         <StreakCard currentStreak={currentStreak} weekDays={weekDays} />
-        <BadgesRow />
-        <LeaderboardRow />
         <StatBoxes cardsMastered={cardsMastered} avgDailyFocusMinutes={avgDailyFocusMinutes} />
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{t('my_decks')}</Text>
@@ -114,10 +116,7 @@ export default function HomeScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
         }
       />
-      <FAB
-        onPress={() => router.push('/deck/create')}
-        style={styles.fab}
-      />
+      <FABMenu items={fabItems} />
     </SafeAreaView>
   );
 }
@@ -141,10 +140,5 @@ const styles = StyleSheet.create({
   deckCount: {
     ...typography.caption,
     color: colors.textMuted,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
   },
 });

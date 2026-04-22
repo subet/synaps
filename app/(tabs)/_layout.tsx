@@ -15,7 +15,7 @@ type TabConfig = {
 };
 
 const TABS: TabConfig[] = [
-  { name: 'index', labelKey: 'tab_home', iconFocused: 'home', iconUnfocused: 'home-outline' },
+  { name: 'index', labelKey: 'tab_study', iconFocused: 'book', iconUnfocused: 'book-outline' },
   { name: 'library', labelKey: 'tab_library', iconFocused: 'library', iconUnfocused: 'library-outline' },
   { name: 'leaderboard', labelKey: 'tab_leaderboard', iconFocused: 'podium', iconUnfocused: 'podium-outline' },
   { name: 'settings', labelKey: 'tab_settings', iconFocused: 'settings', iconUnfocused: 'settings-outline' },

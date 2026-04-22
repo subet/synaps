@@ -1,6 +1,7 @@
 export const es = {
   // Navigation tabs
   tab_home: 'Inicio',
+  tab_study: 'Estudiar',
   tab_library: 'Biblioteca',
   tab_leaderboard: 'Clasificación',
   tab_settings: 'Ajustes',
@@ -55,6 +56,9 @@ export const es = {
   no_decks_title: 'Aún no hay mazos',
   no_decks_subtitle: 'Crea tu primer mazo para empezar a aprender',
   create_first_deck: 'Crea tu primer mazo',
+  fab_new_deck: 'Nuevo Mazo',
+  fab_achievements: 'Logros',
+  fab_friends: 'Amigos',
   create_deck: 'Crear mazo',
 
   // Streak

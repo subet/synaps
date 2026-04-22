@@ -1,6 +1,7 @@
 export const de = {
   // Navigation tabs
   tab_home: 'Start',
+  tab_study: 'Lernen',
   tab_library: 'Bibliothek',
   tab_leaderboard: 'Rangliste',
   tab_settings: 'Einstellungen',
@@ -55,6 +56,9 @@ export const de = {
   no_decks_title: 'Noch keine Stapel',
   no_decks_subtitle: 'Erstelle deinen ersten Stapel, um mit dem Lernen zu beginnen',
   create_first_deck: 'Erstelle deinen ersten Stapel',
+  fab_new_deck: 'Neuer Stapel',
+  fab_achievements: 'Erfolge',
+  fab_friends: 'Freunde',
   create_deck: 'Stapel erstellen',
 
   // Streak
