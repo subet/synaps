@@ -43,6 +43,9 @@ import { gcseGrade9Cards } from './exams/gcse_grade9';
 
 // Make Money
 import { startupFundamentalsCards } from './make_money/startup_fundamentals';
+import { youtubeGrowthCards } from './make_money/youtube_growth';
+import { instagramGrowthCards } from './make_money/instagram_growth';
+import { tiktokGrowthCards } from './make_money/tiktok_growth';
 
 export { ALL_DECKS };
 
@@ -101,6 +104,9 @@ const CARDS_MAP: Record<string, PublicCard[]> = {
   'deck-gcse-problem-solving': gcseProblemSolvingCards,
   'deck-gcse-grade9': gcseGrade9Cards,
   'deck-startup-fundamentals': startupFundamentalsCards,
+  'deck-youtube-growth': youtubeGrowthCards,
+  'deck-instagram-growth': instagramGrowthCards,
+  'deck-tiktok-growth': tiktokGrowthCards,
 };
 
 export function getStaticFeaturedDecks(): PublicDeck[] {
