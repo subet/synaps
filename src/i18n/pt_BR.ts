@@ -166,6 +166,8 @@ export const pt_BR = {
   featured_decks: 'Baralhos em Destaque',
   editors_choice: 'Escolha do Editor',
   editors_choice_badge: 'Escolha do editor',
+  new_decks: 'Novos baralhos',
+  most_studied: 'Mais estudados',
   download: 'Baixar',
   downloading: 'Baixando...',
   downloads_remaining: '%{count} download(s) gratuito(s) restante(s)',

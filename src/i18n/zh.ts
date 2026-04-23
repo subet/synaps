@@ -166,6 +166,8 @@ export const zh = {
   featured_decks: '精选牌组',
   editors_choice: '编辑推荐',
   editors_choice_badge: '编辑推荐',
+  new_decks: '新牌组',
+  most_studied: '最多学习',
   download: '下载',
   downloading: '下载中...',
   downloads_remaining: '剩余 %{count} 次免费下载',

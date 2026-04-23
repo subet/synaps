@@ -166,6 +166,8 @@ export const de = {
   featured_decks: 'Empfohlene Stapel',
   editors_choice: 'Redaktionsempfehlung',
   editors_choice_badge: 'Redaktionsempfehlung',
+  new_decks: 'Neue Stapel',
+  most_studied: 'Am meisten gelernt',
   download: 'Herunterladen',
   downloading: 'Wird heruntergeladen...',
   downloads_remaining: '%{count} kostenloser Download(s) verbleibend',

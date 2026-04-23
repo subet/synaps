@@ -166,6 +166,8 @@ export const fr = {
   featured_decks: 'Paquets en vedette',
   editors_choice: 'Choix de la rédaction',
   editors_choice_badge: 'Choix de la rédaction',
+  new_decks: 'Nouveaux paquets',
+  most_studied: 'Les plus étudiés',
   download: 'Télécharger',
   downloading: 'Téléchargement...',
   downloads_remaining: '%{count} téléchargement(s) gratuit(s) restant(s)',

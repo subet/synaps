@@ -56,7 +56,7 @@ export const tr = {
   no_decks_subtitle: 'Öğrenmeye başlamak için ilk destinizi oluşturun',
   create_first_deck: 'İlk destinizi oluşturun',
   fab_new_deck: 'Yeni Deste',
-  fab_achievements: 'Başarımlar',
+  fab_achievements: 'Başarılar',
   fab_friends: 'Arkadaşlar',
   create_deck: 'Deste Oluştur',
 
@@ -166,6 +166,8 @@ export const tr = {
   featured_decks: 'Öne Çıkan Desteler',
   editors_choice: 'Editörün Seçimi',
   editors_choice_badge: 'Editörün Seçimi',
+  new_decks: 'Yeni Desteler',
+  most_studied: 'En Çok Çalışılan',
   download: 'İndir',
   downloading: 'İndiriliyor...',
   downloads_remaining: '%{count} ücretsiz indirme kaldı',

@@ -166,6 +166,8 @@ export const es = {
   featured_decks: 'Mazos destacados',
   editors_choice: 'Selección del editor',
   editors_choice_badge: 'Selección del editor',
+  new_decks: 'Nuevos mazos',
+  most_studied: 'Más estudiados',
   download: 'Descargar',
   downloading: 'Descargando...',
   downloads_remaining: '%{count} descarga(s) gratuita(s) restante(s)',

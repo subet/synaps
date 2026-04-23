@@ -166,6 +166,8 @@ export const ru = {
   featured_decks: 'Рекомендуемые колоды',
   editors_choice: 'Выбор редакции',
   editors_choice_badge: 'Выбор редакции',
+  new_decks: 'Новые колоды',
+  most_studied: 'Самые популярные',
   download: 'Скачать',
   downloading: 'Загрузка...',
   downloads_remaining: 'Осталось %{count} бесплатных загрузок',

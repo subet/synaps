@@ -240,6 +240,7 @@ export default function LibraryScreen() {
           downloadCounts={downloadCounts}
           onDownload={handleDownload}
           onSelect={setSelectedDeck}
+          hiddenDeckId={hiddenDeckId}
         />
       ) : (
         <BrowseTab
@@ -337,6 +338,7 @@ function DiscoverTab({
   downloadCounts,
   onDownload,
   onSelect,
+  hiddenDeckId,
 }: {
   featuredDecks: PublicDeck[];
   editorsChoiceDecks: PublicDeck[];
@@ -345,8 +347,26 @@ function DiscoverTab({
   downloadCounts: Record<string, number>;
   onDownload: (d: PublicDeck) => void;
   onSelect: (d: PublicDeck) => void;
+  hiddenDeckId: string | undefined;
 }) {
   const { t } = useTranslation();
+
+  // New Decks: sorted by created_at descending, take 5
+  const newDecks = useMemo(() => {
+    const base = hiddenDeckId ? ALL_DECKS.filter((d) => d.id !== hiddenDeckId) : ALL_DECKS;
+    return [...base]
+      .sort((a, b) => b.created_at.localeCompare(a.created_at))
+      .slice(0, 5);
+  }, [hiddenDeckId]);
+
+  // Most Studied: sorted by download count descending, take 5
+  const mostStudiedDecks = useMemo(() => {
+    const base = hiddenDeckId ? ALL_DECKS.filter((d) => d.id !== hiddenDeckId) : ALL_DECKS;
+    return [...base]
+      .sort((a, b) => (downloadCounts[b.id] ?? 0) - (downloadCounts[a.id] ?? 0))
+      .slice(0, 5);
+  }, [hiddenDeckId, downloadCounts]);
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.tabContent}>
       {/* Featured */}
@@ -373,8 +393,44 @@ function DiscoverTab({
       {editorsChoiceDecks.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t('editors_choice')}</Text>
-          {editorsChoiceDecks.map((deck) => (
-            <EditorsChoiceDeckCard
+          {editorsChoiceDecks.slice(0, 5).map((deck) => (
+            <BrowseDeckCard
+              key={deck.id}
+              deck={deck}
+              isDownloading={downloading === deck.id}
+              isDownloaded={downloadedIds.has(deck.id)}
+              downloadCount={downloadCounts[deck.id] ?? 0}
+              onDownload={onDownload}
+              onSelect={onSelect}
+            />
+          ))}
+        </View>
+      )}
+
+      {/* New Decks */}
+      {newDecks.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{t('new_decks')}</Text>
+          {newDecks.map((deck) => (
+            <BrowseDeckCard
+              key={deck.id}
+              deck={deck}
+              isDownloading={downloading === deck.id}
+              isDownloaded={downloadedIds.has(deck.id)}
+              downloadCount={downloadCounts[deck.id] ?? 0}
+              onDownload={onDownload}
+              onSelect={onSelect}
+            />
+          ))}
+        </View>
+      )}
+
+      {/* Most Studied */}
+      {mostStudiedDecks.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{t('most_studied')}</Text>
+          {mostStudiedDecks.map((deck) => (
+            <BrowseDeckCard
               key={deck.id}
               deck={deck}
               isDownloading={downloading === deck.id}

@@ -166,6 +166,8 @@ export const pt_PT = {
   featured_decks: 'Baralhos em Destaque',
   editors_choice: 'Escolha do Editor',
   editors_choice_badge: 'Escolha do editor',
+  new_decks: 'Novos baralhos',
+  most_studied: 'Mais estudados',
   download: 'Transferir',
   downloading: 'A transferir...',
   downloads_remaining: '%{count} transferência(s) gratuita(s) restante(s)',

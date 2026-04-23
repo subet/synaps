@@ -166,6 +166,8 @@ export const nl = {
   featured_decks: 'Uitgelichte stapels',
   editors_choice: 'Redactiekeuze',
   editors_choice_badge: 'Redactiekeuze',
+  new_decks: 'Nieuwe stapels',
+  most_studied: 'Meest bestudeerd',
   download: 'Downloaden',
   downloading: 'Downloaden...',
   downloads_remaining: '%{count} gratis download(s) resterend',

@@ -166,6 +166,8 @@ export const en = {
   featured_decks: 'Featured Decks',
   editors_choice: "Editor's Choice",
   editors_choice_badge: "Editor's choice",
+  new_decks: 'New Decks',
+  most_studied: 'Most Studied',
   download: 'Download',
   downloading: 'Downloading...',
   downloads_remaining: '%{count} free download(s) remaining',

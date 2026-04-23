@@ -166,6 +166,8 @@ export const it = {
   featured_decks: 'Mazzi in evidenza',
   editors_choice: 'Scelta dell\'editore',
   editors_choice_badge: 'Scelta dell\'editore',
+  new_decks: 'Nuovi mazzi',
+  most_studied: 'Più studiati',
   download: 'Scarica',
   downloading: 'Download in corso...',
   downloads_remaining: '%{count} download gratuiti rimanenti',
