@@ -1,5 +1,8 @@
+import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
+
+import { supabase } from './supabase';
 
 // Configure notification behavior
 Notifications.setNotificationHandler({
@@ -195,4 +198,54 @@ export async function getBadgeCount(): Promise<number> {
 
 export async function setBadgeCount(count: number): Promise<void> {
   await Notifications.setBadgeCountAsync(count);
+}
+
+// ─── Remote Push Notifications (Expo Push Token) ─────────────────────────────
+
+export async function registerPushToken(userId: string): Promise<string | null> {
+  const granted = await requestNotificationPermissions();
+  if (!granted) return null;
+
+  const projectId = Constants.expoConfig?.extra?.eas?.projectId;
+  if (!projectId) return null;
+
+  const { data: tokenData } = await Notifications.getExpoPushTokenAsync({ projectId });
+  const token = tokenData; // e.g. "ExponentPushToken[xxxx]"
+
+  // Upsert into Supabase — update timestamp if token already exists
+  await supabase
+    .from('push_tokens')
+    .upsert(
+      {
+        user_id: userId,
+        token,
+        platform: Platform.OS as 'ios' | 'android',
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id,token' }
+    );
+
+  return token;
+}
+
+export async function removePushToken(userId: string): Promise<void> {
+  const projectId = Constants.expoConfig?.extra?.eas?.projectId;
+  if (!projectId) return;
+
+  try {
+    const { data: tokenData } = await Notifications.getExpoPushTokenAsync({ projectId });
+    await supabase
+      .from('push_tokens')
+      .delete()
+      .eq('user_id', userId)
+      .eq('token', tokenData);
+  } catch {
+    // Token may not exist — ignore
+  }
+}
+
+export function addNotificationResponseListener(
+  handler: (response: Notifications.NotificationResponse) => void
+) {
+  return Notifications.addNotificationResponseReceivedListener(handler);
 }

@@ -462,8 +462,9 @@ export const zh = {
 
   // Invite sheet
   invite_sheet_title: '邀请好友',
-  invite_sheet_your_link: '你的邀请链接',
-  invite_sheet_share_btn: '分享邀请链接',
+  invite_sheet_your_code: '你的邀请码',
+  invite_sheet_share_btn: '分享邀请码',
+  invite_sheet_share_message: '来Synaps和我一起学习吧！添加我的邀请码：{{code}}',
   invite_sheet_or_code: '或输入邀请码',
   invite_sheet_friends_code: '好友的邀请码',
   invite_sheet_code_placeholder: '例：A1B2C3D4',

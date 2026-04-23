@@ -11,9 +11,6 @@ Sort by most downloaded in library.
 - Business: Business Basics – How Companies Actually Work
 - Dropshipping: Dropshipping Essentials – From Store to First Sale
 - Amazon selling: Amazon FBA Basics – Product to Profit
-- Youtube: YouTube Growth Basics – From 0 to First 10K Views
-- Instagram: Instagram Growth Essentials – Reach, Followers, Content
-- TikTok: TikTok Growth Basics – Go Viral & Build Audience
 
 ## ENTERTAINMENT
 - Movies
@@ -98,10 +95,6 @@ Apple requires privacy policy and terms of use links in the paywall to open in a
 
 # SYNC
 PRO kullanıcıları "Settings > Sync Data" tıkladığında sync yapalım. 
-
-
-# STORES
-Artık birçok farklı yeni özelliğimiz var. Storelara yeni screenshotlar ekleyelim. Ve açıklamaları güncelleyelim. ASO lu ve yeni özelliklerin dahil olduğu açıklamalar olsun.
 
 # ONBOARDING WIZARD
 İlk açılışta bir wizard gelsin. Yeni deck ekleme veya olanları görme gibi bir ekran olsun.

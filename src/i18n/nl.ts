@@ -462,8 +462,9 @@ export const nl = {
 
   // Invite sheet
   invite_sheet_title: 'Vrienden uitnodigen',
-  invite_sheet_your_link: 'JOUW UITNODIGINGSLINK',
-  invite_sheet_share_btn: 'Uitnodigingslink delen',
+  invite_sheet_your_code: 'JOUW UITNODIGINGSCODE',
+  invite_sheet_share_btn: 'Uitnodigingscode delen',
+  invite_sheet_share_message: 'Studeer met mij op Synaps! Voeg me toe met code: {{code}}',
   invite_sheet_or_code: 'of voer een code in',
   invite_sheet_friends_code: 'UITNODIGINGSCODE VAN JE VRIEND',
   invite_sheet_code_placeholder: 'bijv. A1B2C3D4',

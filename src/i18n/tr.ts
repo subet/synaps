@@ -462,8 +462,9 @@ export const tr = {
 
   // Invite sheet
   invite_sheet_title: 'Arkadaş davet et',
-  invite_sheet_your_link: 'DAVET LİNKİN',
-  invite_sheet_share_btn: 'Davet linkini paylaş',
+  invite_sheet_your_code: 'DAVET KODUN',
+  invite_sheet_share_btn: 'Davet kodunu paylaş',
+  invite_sheet_share_message: 'Synaps\'ta benimle çalış! Davet kodum: {{code}}',
   invite_sheet_or_code: 'veya kod gir',
   invite_sheet_friends_code: 'ARKADAŞININ DAVET KODU',
   invite_sheet_code_placeholder: 'örn. A1B2C3D4',

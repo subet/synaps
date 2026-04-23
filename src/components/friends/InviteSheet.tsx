@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
   Share,
   StyleSheet,
@@ -37,20 +39,17 @@ export function InviteSheet({
   const [lookupLoading, setLookupLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const inviteLink = inviteCode ? `synaps://invite/${inviteCode}` : null;
-
   const handleCopy = async () => {
-    if (!inviteLink) return;
-    // Use the native Share sheet as the copy mechanism (no clipboard package installed)
-    await Share.share({ message: inviteLink });
+    if (!inviteCode) return;
+    await Share.share({ message: inviteCode });
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleShare = async () => {
-    if (!inviteLink || !inviteCode) return;
+    if (!inviteCode) return;
     await Share.share({
-      message: `Study with me on Synaps! Use my invite code ${inviteCode} or tap: ${inviteLink}`,
+      message: t('invite_sheet_share_message', { code: inviteCode }),
     });
   };
 
@@ -94,8 +93,12 @@ export function InviteSheet({
       animationType="slide"
       onRequestClose={onClose}
     >
-      <Pressable style={styles.backdrop} onPress={onClose} />
-      <View style={styles.sheet}>
+      <KeyboardAvoidingView
+        style={styles.kavContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <Pressable style={styles.backdrop} onPress={onClose} />
+        <View style={styles.sheet}>
         <View style={styles.handle} />
 
         <View style={styles.header}>
@@ -106,11 +109,11 @@ export function InviteSheet({
         </View>
 
         <View style={styles.content}>
-          {/* Share link */}
-          <Text style={styles.sectionLabel}>{t('invite_sheet_your_link')}</Text>
-          <View style={styles.linkBox}>
-            <Text style={styles.linkText} numberOfLines={1}>
-              {inviteLink ?? t('loading')}
+          {/* Invite code */}
+          <Text style={styles.sectionLabel}>{t('invite_sheet_your_code')}</Text>
+          <View style={styles.codeBox}>
+            <Text style={styles.codeText} selectable>
+              {inviteCode ?? t('loading')}
             </Text>
             <Pressable style={styles.copyBtn} onPress={handleCopy}>
               <Ionicons
@@ -161,11 +164,15 @@ export function InviteSheet({
           </View>
         </View>
       </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  kavContainer: {
+    flex: 1,
+  },
   backdrop: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.4)',
@@ -209,21 +216,23 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     marginBottom: spacing.sm,
   },
-  linkBox: {
+  codeBox: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.surfaceAlt,
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm + 2,
+    paddingVertical: spacing.md,
     marginBottom: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
   },
-  linkText: {
-    ...typography.caption,
-    color: colors.textSecondary,
+  codeText: {
+    ...typography.h3,
+    color: colors.textPrimary,
     flex: 1,
+    letterSpacing: 3,
+    textAlign: 'center',
   },
   copyBtn: {
     padding: 4,

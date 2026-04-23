@@ -462,8 +462,9 @@ export const de = {
 
   // Invite sheet
   invite_sheet_title: 'Freunde einladen',
-  invite_sheet_your_link: 'DEIN EINLADUNGSLINK',
-  invite_sheet_share_btn: 'Einladungslink teilen',
+  invite_sheet_your_code: 'DEIN EINLADUNGSCODE',
+  invite_sheet_share_btn: 'Einladungscode teilen',
+  invite_sheet_share_message: 'Lerne mit mir auf Synaps! Füge mich mit dem Code hinzu: {{code}}',
   invite_sheet_or_code: 'oder Code eingeben',
   invite_sheet_friends_code: 'EINLADUNGSCODE DEINES FREUNDES',
   invite_sheet_code_placeholder: 'z.B. A1B2C3D4',

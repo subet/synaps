@@ -1,10 +1,10 @@
 import { useLocales } from 'expo-localization';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { scheduleDailyReminder, scheduleInactivityNudge, scheduleProExpiredWinBack, cancelWinBackNotifications, cancelAllNotifications } from '../src/services/notifications';
+import { scheduleDailyReminder, scheduleInactivityNudge, scheduleProExpiredWinBack, cancelWinBackNotifications, cancelAllNotifications, registerPushToken, removePushToken, addNotificationResponseListener } from '../src/services/notifications';
 import { repairPublicDeckTranslations } from '../src/services/database';
 import { ErrorBoundary } from '../src/components/ui/ErrorBoundary';
 import { setLocale } from '../src/i18n';
@@ -31,6 +31,7 @@ export default function RootLayout() {
   const { initialize: initAuth, isInitialized } = useAuthStore();
   const { initialize: initSubscription } = useSubscriptionStore();
   const locales = useLocales();
+  const router = useRouter();
   const [animationDone, setAnimationDone] = useState(false);
   const appReady = !isLoading && isInitialized;
 
@@ -54,6 +55,11 @@ export default function RootLayout() {
       const { user } = useAuthStore.getState();
       await initSubscription(user?.id);
 
+      // Register Expo push token for remote notifications
+      if (user) {
+        registerPushToken(user.id).catch(() => {});
+      }
+
       // Backfill translation columns for previously-downloaded public decks
       repairPublicDeckTranslations().catch(() => {});
 
@@ -75,6 +81,17 @@ export default function RootLayout() {
       }
     }
     bootstrap();
+  }, []);
+
+  // Handle notification taps (e.g. deep-link from remote push)
+  useEffect(() => {
+    const sub = addNotificationResponseListener((response) => {
+      const data = response.notification.request.content.data;
+      if (data?.url && typeof data.url === 'string') {
+        router.push(data.url as never);
+      }
+    });
+    return () => sub.remove();
   }, []);
 
   // Hide native splash immediately — our animated splash takes over

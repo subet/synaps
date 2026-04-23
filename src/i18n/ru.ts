@@ -462,8 +462,9 @@ export const ru = {
 
   // Invite sheet
   invite_sheet_title: 'Пригласить друзей',
-  invite_sheet_your_link: 'ВАША ССЫЛКА-ПРИГЛАШЕНИЕ',
-  invite_sheet_share_btn: 'Поделиться ссылкой',
+  invite_sheet_your_code: 'ВАШ КОД ПРИГЛАШЕНИЯ',
+  invite_sheet_share_btn: 'Поделиться кодом',
+  invite_sheet_share_message: 'Учись со мной в Synaps! Добавь меня по коду: {{code}}',
   invite_sheet_or_code: 'или введите код',
   invite_sheet_friends_code: 'КОД ПРИГЛАШЕНИЯ ДРУГА',
   invite_sheet_code_placeholder: 'напр. A1B2C3D4',
