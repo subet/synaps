@@ -44,11 +44,11 @@ Supabase (`src/services/supabase.ts`) handles auth (email + Apple/Google via `so
 
 ### i18n (11 locales)
 
-`src/i18n/` uses i18n-js with locales: en, es, it, tr, de, fr, nl, ru, zh, pt_BR, pt_PT. Use the `useTranslation()` hook in components — it subscribes to `useAppStore.language` so components re-render on locale switch. `t()` outside components does not re-render. First launch detects device locale (Portuguese is region-split into pt_BR/pt_PT); any new user-facing string must be added to all 11 locale files.
+`src/i18n/` uses i18n-js with locales: en, es, it, tr, de, fr, nl, ru, zh, pt_BR, pt_PT (full list with native names: `LANGUAGES.md`). Use the `useTranslation()` hook in components — it subscribes to `useAppStore.language` so components re-render on locale switch. `t()` outside components does not re-render. First launch detects device locale (Portuguese is region-split into pt_BR/pt_PT); any new user-facing string must be added to all 11 locale files. **When adding a new app language, follow the full checklist in `ADDING_NEW_LANGUAGE.md`** — language support spans ~15 files and TypeScript does not catch all of them.
 
 ### Public deck library
 
-Ready-made decks are **statically bundled** in `src/data/publicDecks/` (metadata in `decks.ts`, cards per category under `languages/`, `subjects/`, `exams/`, `make_money/`). Downloading a deck copies it into local SQLite (`source_id`, `is_public_download` flags). Deck catalog is documented in `DECKS.md` and `READY_MADE_DECKS.md` — keep these in sync when adding decks. Static cards carry `front_translations`/`back_translations` maps produced by the scripts in `scripts/`.
+Ready-made decks are **statically bundled** in `src/data/publicDecks/` (metadata in `decks.ts`, cards per category under `languages/`, `subjects/`, `exams/`, `make_money/`). Downloading a deck copies it into local SQLite (`source_id`, `is_public_download` flags). Deck catalog is documented in `DECKS.md` — keep it in sync when adding decks. Static cards carry `front_translations`/`back_translations` maps produced by the scripts in `scripts/`.
 
 ### Roadmap
 

@@ -1,8 +1,12 @@
 # Synaps Public Deck Library
 
-Total: 37 decks
+Total: 37 decks, 9,910 cards
+
+Source of truth: `src/data/publicDecks/decks.ts` — keep this file in sync when adding decks.
 
 F = Featured, E = Editor's Choice, N = New
+
+Name/description translations cover all app locales; card-level translations: language decks have front-only translations, subject decks front+back (generated via `scripts/generate-translations.ts`). YKS decks are Turkish-only.
 
 ## Languages (8 decks)
 
@@ -60,13 +64,13 @@ F = Featured, E = Editor's Choice, N = New
 |      | SAT Math Patterns (200) |
 |      | SAT Reading Strategies (150) |
 |      | SAT Traps & Mistakes (150) |
-|      | SAT Test Strategies (150) |
+|      | SAT Test Strategies (100) |
 
 ## Exams — GCSE (5 decks)
 
 | Tags | Deck |
 |------|------|
-|      | GCSE Maths: Complete Revision (Grade 4-9) (300) |
+|      | GCSE Maths: Complete Revision (Grade 4–9) (300) |
 |      | GCSE Maths Formula Sheet (Must Know) (300) |
 |      | GCSE Maths Exam Questions (Top 300) (300) |
 |      | GCSE Maths Problem Solving Tricks (200) |
@@ -76,7 +80,7 @@ F = Featured, E = Editor's Choice, N = New
 
 | Tags | Deck |
 |------|------|
-| F, E | Startup Fundamentals - From Idea to Launch (250) |
+| F, E | Startup Fundamentals – From Idea to Launch (250) |
 | F, N | YouTube Growth Basics (30) |
 | F, N | Instagram Growth Essentials (100) |
 | F, N | TikTok Growth Basics (80) |
