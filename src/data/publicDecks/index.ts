@@ -4,6 +4,7 @@ import { ALL_DECKS } from './decks';
 
 // Languages
 import { germanVocabCards } from './languages/german';
+import { englishVocabCards } from './languages/english';
 import { spanishVocabCards } from './languages/spanish';
 import { frenchCards } from './languages/french';
 import { turkishCards } from './languages/turkish';
@@ -55,6 +56,7 @@ export { ALL_DECKS };
  * showing the corresponding vocab deck is pointless.
  */
 const LANG_TO_VOCAB_DECK: Partial<Record<Language, string>> = {
+  en: 'deck-english-vocab',
   de: 'deck-german-vocab',
   es: 'deck-spanish-vocab',
   fr: 'deck-french-vocab',
@@ -70,6 +72,7 @@ export function getHiddenVocabDeckId(lang: Language): string | undefined {
 }
 
 const CARDS_MAP: Record<string, PublicCard[]> = {
+  'deck-english-vocab': englishVocabCards,
   'deck-german-vocab': germanVocabCards,
   'deck-spanish-vocab': spanishVocabCards,
   'deck-french-vocab': frenchCards,

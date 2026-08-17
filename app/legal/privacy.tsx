@@ -20,6 +20,7 @@ const LAST_UPDATED: Record<string, string> = {
   zh: '2026年3月30日',
   pt_BR: '30 de março de 2026',
   pt_PT: '30 de março de 2026',
+  ja: '2026年3月30日',
 };
 
 const SCREEN_TITLE: Record<string, string> = {
@@ -34,6 +35,7 @@ const SCREEN_TITLE: Record<string, string> = {
   zh: '隐私政策',
   pt_BR: 'Política de Privacidade',
   pt_PT: 'Política de Privacidade',
+  ja: 'プライバシーポリシー',
 };
 
 const UPDATED_LABEL: Record<string, string> = {
@@ -48,6 +50,7 @@ const UPDATED_LABEL: Record<string, string> = {
   zh: '最后更新',
   pt_BR: 'Última atualização',
   pt_PT: 'Última atualização',
+  ja: '最終更新日',
 };
 
 const SECTIONS: Record<string, Section[]> = {
@@ -565,6 +568,53 @@ const SECTIONS: Record<string, Section[]> = {
     {
       title: '11. Contacto e reclamações',
       body: `Para questões relacionadas com privacidade, contacte:\n\nMudimedia Ltd\nLondres, Reino Unido\nsynaps@mudimedia.co.uk\n\nSe não estiver satisfeito com a nossa resposta, tem o direito de apresentar uma reclamação junto do Information Commissioner's Office (ICO) em ico.org.uk.`,
+    },
+  ],
+
+  ja: [
+    {
+      title: '1. 当社について',
+      body: `本プライバシーポリシーは、イングランドおよびウェールズで登記された会社であるMudimedia Ltd（ロンドン、イギリス。以下「当社」）が提供するものです。当社は、Synapsアプリを通じて収集される個人データの管理者です。\n\nお問い合わせ：synaps@mudimedia.co.uk`,
+    },
+    {
+      title: '2. 収集するデータ',
+      body: `当社はサービス提供に必要な最小限のデータを収集します：\n\n• アカウントデータ：アカウント作成を選択した場合のメールアドレス。\n• 利用データ：学習セッション数、連続記録、カード復習履歴 — お使いの端末にローカル保存されます。\n• 端末データ：端末の種類とOSバージョン。クラッシュレポートのため匿名で収集されます。\n• 購入データ：サブスクリプションの状態。AppleまたはGoogleが処理します。当社がお客様のカード情報を受け取ることはありません。`,
+    },
+    {
+      title: '3. データの利用目的',
+      body: `当社はお客様のデータを以下の目的で使用します：\n• Synapsサービスの提供と改善。\n• 新しい端末でサインインした際のアカウントと学習進捗の復元（PRO）。\n• 学習リマインダー通知の送信（この機能を有効にした場合のみ）。\n• クラッシュの診断とバグの修正。\n\n当社がお客様のデータを広告に使用したり、第三者に販売したりすることはありません。`,
+    },
+    {
+      title: '4. データの保存とセキュリティ',
+      body: `お客様のカード、デッキ、学習履歴はSQLiteを使用して端末にローカル保存されます。クラウド同期（PRO）を有効にしない限り、このデータが端末の外に出ることはありません。有効にした場合、データはTLSで暗号化されて転送され、EU内にあるSupabaseインフラに保存されます。\n\n当社は、不正アクセス、損失、開示からお客様のデータを保護するため、適切な技術的・組織的措置を講じています。`,
+    },
+    {
+      title: '5. 第三者サービス',
+      body: `当社は以下の第三者サービスを利用しています：\n\n• Supabase — 認証とクラウドストレージ（EUリージョン）\n• RevenueCat — サブスクリプション管理（カード情報は受け取りません）\n• Apple / Google — サブスクリプションの決済処理\n\n各第三者には独自のプライバシーポリシーがあります。ご不安な場合は、それぞれのポリシーをご確認ください。`,
+    },
+    {
+      title: '6. お客様の権利',
+      body: `英国GDPRおよび2018年データ保護法に基づき、お客様には以下の権利があります：\n• 当社が保有するお客様の個人データへのアクセス。\n• 不正確なデータの訂正。\n• データの削除の要求（「忘れられる権利」）。\n• 特定の処理への異議申し立てまたは制限。\n• データポータビリティ。\n\nこれらの権利を行使するには、synaps@mudimedia.co.ukまでご連絡ください。30日以内に回答いたします。`,
+    },
+    {
+      title: '7. データの保持',
+      body: `アカウントデータは、アカウントが有効である限り保持されます。アカウントを削除すると、関連するすべてのデータは30日以内に削除されます。\n\n端末にローカル保存されたデータはお客様の管理下にあり、設定 → すべてのデータを削除 からいつでも削除できます。`,
+    },
+    {
+      title: '8. 子どものプライバシー',
+      body: `Synapsは13歳未満の子どもを対象としていません。当社が13歳未満の子どもの個人データを故意に収集することはありません。子どもが個人データを提供したと思われる場合は、当社までご連絡ください。速やかに削除いたします。`,
+    },
+    {
+      title: '9. Cookieとトラッキング',
+      body: `SynapsモバイルアプリはCookieを使用しません。第三者のアプリやウェブサイトをまたいでお客様の行動を追跡することはありません。`,
+    },
+    {
+      title: '10. 本ポリシーの変更',
+      body: `当社は本プライバシーポリシーを随時更新することがあります。重要な変更は本アプリ内でお知らせします。通知後も本アプリの使用を継続した場合、更新されたポリシーに同意したものとみなされます。`,
+    },
+    {
+      title: '11. お問い合わせと苦情',
+      body: `プライバシーに関するお問い合わせは以下まで：\n\nMudimedia Ltd\nLondon, United Kingdom\nsynaps@mudimedia.co.uk\n\n当社の対応にご満足いただけない場合は、英国情報コミッショナー事務局（ICO、ico.org.uk）に苦情を申し立てる権利があります。`,
     },
   ],
 };

@@ -123,6 +123,16 @@ const STRINGS: Record<string, Strings> = {
     cannotOpenEmail: 'Não foi possível abrir o e-mail',
     pleaseEmailUs: `Envie-nos um e-mail para ${SUPPORT_EMAIL}`,
   },
+
+  ja: {
+    title: 'サポートに問い合わせ',
+    getInTouch: 'お問い合わせ',
+    emailSupport: 'メールサポート',
+    faq: 'よくある質問',
+    note: '私たちはロンドンのMudimedia Ltdの小さなチームです。1〜2営業日以内の返信を心がけています。',
+    cannotOpenEmail: 'メールを開けません',
+    pleaseEmailUs: `${SUPPORT_EMAIL} までメールでお問い合わせください`,
+  },
 };
 
 /* ────────────────────────────────────────────────────────────
@@ -429,6 +439,33 @@ const FAQS: Record<string, FaqItem[]> = {
     {
       q: 'Encontrei um erro — como o reporto?',
       a: `Envie-nos um e-mail para ${SUPPORT_EMAIL} com uma descrição do sucedido, o modelo do seu dispositivo e a versão iOS/Android. As capturas de ecrã são sempre úteis.`,
+    },
+  ],
+
+  ja: [
+    {
+      q: '間隔反復学習はどのように機能しますか？',
+      a: 'SynapsはSM-2アルゴリズムを使用しています。難しいと感じたカードはより頻繁に表示され、よく覚えているカードは表示頻度が下がります。忘れそうになる直前に復習が組まれるため、読み直すよりもはるかに効率的に学習できます。',
+    },
+    {
+      q: '連続記録が0と表示されるのはなぜですか？',
+      a: '連続記録は学習セッションを1回完了すると増えます。連続記録には1日の猶予期間があります — 昨日学習して今日まだ学習していない場合、今日が終わるまで記録は保持されます。',
+    },
+    {
+      q: 'Synapsはオフラインで使えますか？',
+      a: 'はい。すべてのデッキと学習セッションは端末にローカル保存されます。インターネット接続が必要なのは、アカウントへのサインイン、クラウド同期（PRO）、ライブラリデッキのダウンロードのみです。',
+    },
+    {
+      q: 'PROサブスクリプションを復元するには？',
+      a: '設定 → サブスクリプション管理 に進み、「購入を復元」をタップしてください。同じApp StoreまたはGoogle Playアカウントで購入されていれば、サブスクリプションが復元されます。',
+    },
+    {
+      q: 'データを削除するには？',
+      a: '設定 → すべてのデータを削除 に進んでください。端末上のすべてのデッキ、カード、学習履歴が削除されます。クラウド同期を有効にしている場合は、サーバー側のデータ削除についてサポートにお問い合わせください。',
+    },
+    {
+      q: 'バグを見つけました — どう報告すればいいですか？',
+      a: `発生した内容、端末のモデル、iOS/Androidのバージョンを添えて ${SUPPORT_EMAIL} までメールしてください。スクリーンショットがあると助かります。`,
     },
   ],
 };

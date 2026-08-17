@@ -10,8 +10,9 @@ import { ru } from './ru';
 import { zh } from './zh';
 import { pt_BR } from './pt_BR';
 import { pt_PT } from './pt_PT';
+import { ja } from './ja';
 
-export const i18n = new I18n({ en, es, it, tr, de, fr, nl, ru, zh, pt_BR, pt_PT });
+export const i18n = new I18n({ en, es, it, tr, de, fr, nl, ru, zh, pt_BR, pt_PT, ja });
 
 i18n.defaultLocale = 'en';
 i18n.locale = 'en';

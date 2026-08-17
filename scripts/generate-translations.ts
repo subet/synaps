@@ -19,7 +19,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const LANGUAGES = ['de', 'fr', 'tr', 'nl', 'ru', 'zh', 'pt_BR', 'pt_PT'] as const;
+const LANGUAGES = ['ja'] as const; // ja-only run for the Japanese launch; previous full run: ['de', 'fr', 'tr', 'nl', 'ru', 'zh', 'pt_BR', 'pt_PT']
 type Lang = (typeof LANGUAGES)[number];
 type TranslationMap = Partial<Record<Lang, string>>;
 
@@ -148,7 +148,7 @@ async function translateBatch(
     const input: Record<string, string> = {};
     for (const k of chunk) input[k] = texts[k];
 
-    const prompt = `Translate each text into: de (German), fr (French), tr (Turkish), nl (Dutch), ru (Russian), zh (Simplified Chinese), pt_BR (Brazilian Portuguese), pt_PT (European Portuguese).
+    const prompt = `Translate each text into: ja (Japanese).
 
 Return ONLY valid JSON, no markdown:
 {"card-id": {"de":"...","fr":"...","tr":"...","nl":"...","ru":"...","zh":"...","pt_BR":"...","pt_PT":"..."}, ...}

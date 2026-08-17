@@ -27,7 +27,7 @@ Complete checklist for adding a new app locale (referred to as `xx` below). Foll
 ## 4. Country names
 
 - [ ] `src/i18n/countries.ts` — add `xx: string` to the `Country` interface and translate all 88 country names.
-  - `getCountryName()` falls back to English if the column is missing, so the app won't break — but the CountryPicker will show English names for the new locale. All 11 current locales have columns; keep it that way.
+  - `getCountryName()` falls back to English if the column is missing, so the app won't break — but the CountryPicker will show English names for the new locale. All 12 current locales have columns; keep it that way.
 
 ## 5. Legal pages
 
@@ -39,15 +39,17 @@ Each legal screen holds its own per-locale content objects. Add an `xx` entry to
 
 ## 6. Public deck translations ⚠️ REQUIRED
 
-19 decks (8 language decks + 11 subject decks) support **all app locales** (`supported_languages` lists every locale). When a new app language ships, these decks must be translated too — otherwise their names, descriptions, and card fronts show English to `xx` users.
+20 decks (9 language decks + 11 subject decks) support **all app locales** (`supported_languages` lists every locale). When a new app language ships, these decks must be translated too — otherwise their names, descriptions, and card fronts show English to `xx` users.
 
 - [ ] `src/data/publicDecks/decks.ts` — for every multilingual deck: add `'xx'` to `supported_languages`, and add `xx` entries to `name_translations` and `description_translations`.
   - Single-language decks (YKS = `['tr']`, SAT/GCSE/Make Money = `['en']`) are left alone.
-- [ ] Card-level translations via `scripts/generate-translations.ts`:
-  1. Set its `LANGUAGES` const to **only the new language** (it currently lists the original 8 — re-running the full list wastes API calls; the script resumes from `scripts/.translation-checkpoint.json`).
-  2. Run: `ANTHROPIC_API_KEY=sk-... npx tsx scripts/generate-translations.ts`
-  3. Coverage rules: **language decks** get `front_translations` only (back = target-language word, unchanged); **subject decks** get `front_translations` AND `back_translations`.
-- [ ] Verify the generated entries landed in `src/data/publicDecks/languages/*.ts` and `subjects/*.ts`.
+- [ ] Card-level translations — **Claude does these itself with a subagent worker pool** (the preferred method; `scripts/generate-translations.ts` is the legacy API-based alternative):
+  1. Launch a Workflow with **one agent per deck data file** (9 language files + 11 subject files = 20 tasks) and a **worker pool of exactly 3 concurrent agents** — as one agent finishes, the next queued file starts. Do not spawn all agents at once.
+  2. Use a cheaper model for the agents (e.g. `model: 'sonnet'`) — translation does not need the top-tier model.
+  3. Each agent: extracts every card's `front` (and `back` for subject decks) with a python script, translates them itself (no API calls), injects `"xx":"…"` into `front_translations` (and `back_translations` for subject decks) on each card line, then verifies `grep -c '"xx":'` equals the expected count (language decks: card count; subject decks: card count × 2) and that the line count is unchanged.
+  4. Make agents **idempotent**: if the file already has the expected count, return OK without editing; if partially done, strip existing `"xx"` entries and redo cleanly.
+  5. Coverage rules: **language decks** get `front_translations` only (back = target-language word, never translated); **subject decks** get `front_translations` AND `back_translations`. This includes `languages/english.ts` (English Vocabulary) — its fronts must be translated into every new language so non-English speakers can learn English from it.
+- [ ] After the workflow: verify totals across `src/data/publicDecks/languages/*.ts` and `subjects/*.ts`, and run `npx tsc --noEmit`.
 
 **Already-downloaded decks:** no migration needed. `repairPublicDeckTranslations()` (called on every cold start from `app/_layout.tsx`) backfills deck- and card-level translations in users' local SQLite from the updated static data.
 

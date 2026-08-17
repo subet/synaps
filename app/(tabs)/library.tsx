@@ -509,7 +509,7 @@ function FilterPickerModal<T extends string>({
 const LANGUAGE_NAMES: Record<string, string> = {
   en: 'English', de: 'Deutsch', es: 'Español', fr: 'Français',
   it: 'Italiano', nl: 'Nederlands', pt_BR: 'Português (BR)',
-  pt_PT: 'Português (PT)', ru: 'Русский', tr: 'Türkçe', zh: '中文',
+  pt_PT: 'Português (PT)', ru: 'Русский', tr: 'Türkçe', zh: '中文', ja: '日本語',
 };
 
 function BrowseTab({

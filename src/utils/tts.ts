@@ -11,6 +11,7 @@ const LOCALE_MAP: Record<string, string> = {
   ru: 'ru-RU',
   ar: 'ar-SA',
   zh: 'zh-CN',
+  ja: 'ja-JP',
   en: 'en-US',
 };
 

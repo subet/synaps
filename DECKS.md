@@ -1,17 +1,18 @@
 # Synaps Public Deck Library
 
-Total: 37 decks, 9,910 cards
+Total: 38 decks, 10,410 cards
 
 Source of truth: `src/data/publicDecks/decks.ts` — keep this file in sync when adding decks.
 
 F = Featured, E = Editor's Choice, N = New
 
-Name/description translations cover all app locales; card-level translations: language decks have front-only translations, subject decks front+back (generated via `scripts/generate-translations.ts`). YKS decks are Turkish-only.
+Name/description translations cover all 12 app locales; card-level translations: language decks have front-only translations, subject decks front+back (produced by Claude subagents — see `ADDING_NEW_LANGUAGE.md` step 6; `scripts/generate-translations.ts` is the legacy method). YKS decks are Turkish-only.
 
-## Languages (8 decks)
+## Languages (9 decks)
 
 | Tags | Deck |
 |------|------|
+| F, N | English Vocabulary (500, EN) |
 | F    | German Vocabulary (500, DE) |
 | F    | Spanish Vocabulary (500, ES) |
 |      | French Vocabulary (500, FR) |

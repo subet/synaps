@@ -45,6 +45,7 @@ const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'ru',    label: 'Русский' },
   { code: 'tr',    label: 'Türkçe' },
   { code: 'zh',    label: '中文' },
+  { code: 'ja',    label: '日本語' },
 ];
 
 const LANGUAGE_NAMES: Record<Language, string> = Object.fromEntries(

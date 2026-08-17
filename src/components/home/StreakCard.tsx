@@ -17,7 +17,7 @@ const BAR_WIDTH = 32;
 
 const LANG_LOCALE: Record<string, string> = {
   en: 'en-US', tr: 'tr-TR', de: 'de-DE', fr: 'fr-FR',
-  nl: 'nl-NL', ru: 'ru-RU', zh: 'zh-CN', pt_BR: 'pt-BR', pt_PT: 'pt-PT',
+  nl: 'nl-NL', ru: 'ru-RU', zh: 'zh-CN', pt_BR: 'pt-BR', pt_PT: 'pt-PT', ja: 'ja-JP',
 };
 
 export function StreakCard({ currentStreak, weekDays }: StreakCardProps) {

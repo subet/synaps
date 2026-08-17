@@ -12,6 +12,7 @@ export const LANGUAGE_FLAGS: Record<Language, string> = {
   zh: '\u{1F1E8}\u{1F1F3}',     // 🇨🇳
   pt_BR: '\u{1F1E7}\u{1F1F7}',  // 🇧🇷
   pt_PT: '\u{1F1F5}\u{1F1F9}',  // 🇵🇹
+  ja: '\u{1F1EF}\u{1F1F5}',     // 🇯🇵
 };
 
 /** A deck is considered multilingual if it supports more than 3 languages. */

@@ -98,3 +98,6 @@ PRO kullanıcıları "Settings > Sync Data" tıkladığında sync yapalım.
 
 # ONBOARDING WIZARD
 İlk açılışta bir wizard gelsin. Yeni deck ekleme veya olanları görme gibi bir ekran olsun.
+
+# RATE US
+Ayarlar menüsünde "Rate us" linki çalışmıyor.
