@@ -2,7 +2,7 @@
   "expo": {
     "name": "Synaps",
     "slug": "synaps",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -70,7 +70,8 @@
           "photosPermission": "Synaps accesses your photo library to add images to flashcards."
         }
       ],
-      "expo-splash-screen"
+      "expo-splash-screen",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
