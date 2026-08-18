@@ -139,7 +139,7 @@ export function FlashCard({
         <View style={styles.topRight}>
           {cornerIcon ? (
             /^[a-z]/.test(cornerIcon) ? (
-              <Ionicons name={cornerIcon as any} size={22} color={colors.text} />
+              <Ionicons name={cornerIcon as any} size={22} color={colors.textPrimary} />
             ) : (
               <Text style={styles.flagText}>{cornerIcon}</Text>
             )

@@ -12,13 +12,13 @@ export function useNetworkStatus() {
     };
 
     const check = () =>
-      Network.getNetworkStateAsync().then((s) => update(s.isConnected));
+      Network.getNetworkStateAsync().then((s) => update(s.isConnected ?? null));
 
     // Seed immediately
     check();
 
     // Native listener for instant updates on real devices
-    const sub = Network.addNetworkStateListener((s) => update(s.isConnected));
+    const sub = Network.addNetworkStateListener((s) => update(s.isConnected ?? null));
 
     // Poll every 2s as fallback — catches simulator gaps
     const interval = setInterval(check, 2000);
