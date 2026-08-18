@@ -1,4 +1,4 @@
-import Purchases, { CustomerInfo, LOG_LEVEL, PurchasesOffering } from 'react-native-purchases';
+import Purchases, { CustomerInfo, LOG_LEVEL, PurchasesOffering, PurchasesPackage } from 'react-native-purchases';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { ENTITLEMENTS, REVENUECAT_API_KEY_ANDROID, REVENUECAT_API_KEY_IOS } from '../constants';
@@ -39,7 +39,7 @@ export async function getOfferings(): Promise<PurchasesOffering | null> {
   }
 }
 
-export async function purchasePackage(packageToPurchase: any): Promise<{ isPro: boolean; customerInfo: CustomerInfo }> {
+export async function purchasePackage(packageToPurchase: PurchasesPackage): Promise<{ isPro: boolean; customerInfo: CustomerInfo }> {
   const { customerInfo } = await Purchases.purchasePackage(packageToPurchase);
   const isPro = customerInfo.entitlements.active[ENTITLEMENTS.PRO] !== undefined;
   return { isPro, customerInfo };

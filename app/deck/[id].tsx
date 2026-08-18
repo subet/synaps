@@ -168,7 +168,7 @@ export default function DeckDetailScreen() {
           {isLocked ? (
             <Pressable
               style={({ pressed }) => [styles.offlineBtn, pressed && styles.offlineBtnPressed]}
-              onPress={() => router.push('/paywall')}
+              onPress={() => router.push('/paywall?source=deck_detail')}
             >
               <View style={styles.proBadge}>
                 <Text style={styles.proBadgeText}>PRO</Text>

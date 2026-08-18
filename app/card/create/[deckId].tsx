@@ -70,7 +70,7 @@ export default function CreateCardScreen() {
         t('limit_cards_message', { limit: FREE_CARDS_PER_DECK_LIMIT }),
         [
           { text: t('cancel'), style: 'cancel' },
-          { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall') },
+          { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall?source=card_limit') },
         ]
       );
       return;
@@ -181,7 +181,7 @@ export default function CreateCardScreen() {
 
           <Pressable
             style={[styles.proRow]}
-            onPress={() => router.push('/paywall')}
+            onPress={() => router.push('/paywall?source=card_limit')}
           >
             <Text style={styles.proRowText}>🎵 {t('add_audio')}</Text>
             <View style={styles.proBadge}><Text style={styles.proBadgeText}>{t('pro_badge')}</Text></View>

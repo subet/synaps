@@ -110,7 +110,7 @@ export default function LibraryScreen() {
         t('limit_downloads_message', { limit: FREE_DOWNLOAD_LIMIT }),
         [
           { text: t('cancel'), style: 'cancel' },
-          { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall') },
+          { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall?source=download_limit') },
         ]
       );
       return;
@@ -212,7 +212,7 @@ export default function LibraryScreen() {
             <Text style={styles.downloadBannerText}>
               {t('downloads_remaining', { count: FREE_DOWNLOAD_LIMIT - freeDownloadsUsed })}
             </Text>
-            <Pressable onPress={() => router.push('/paywall')}>
+            <Pressable onPress={() => router.push('/paywall?source=library_banner')}>
               <Text style={styles.upgradeLink}>{t('upgrade_pro')}</Text>
             </Pressable>
           </View>

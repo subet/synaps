@@ -69,7 +69,7 @@ export default function CreateDeckScreen() {
         t('limit_decks_message', { limit: FREE_DECK_LIMIT }),
         [
           { text: t('cancel'), style: 'cancel' },
-          { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall') },
+          { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall?source=deck_limit') },
         ]
       );
       return;

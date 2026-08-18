@@ -192,7 +192,7 @@ export default function EditDeckScreen() {
                   <Pressable onPress={() => {
                     Alert.alert(t('feature_pro_only'), t('feature_pro_only_message'), [
                       { text: t('cancel'), style: 'cancel' },
-                      { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall') },
+                      { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall?source=pro_feature') },
                     ]);
                   }} style={styles.proBadge}>
                     <Text style={styles.proBadgeText}>{t('pro_badge')}</Text>
@@ -218,7 +218,7 @@ export default function EditDeckScreen() {
                   <Pressable onPress={() => {
                     Alert.alert(t('feature_pro_only'), t('feature_pro_only_message'), [
                       { text: t('cancel'), style: 'cancel' },
-                      { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall') },
+                      { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall?source=pro_feature') },
                     ]);
                   }} style={styles.proBadge}>
                     <Text style={styles.proBadgeText}>{t('pro_badge')}</Text>

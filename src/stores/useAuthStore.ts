@@ -137,6 +137,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       await signOut();
       set({ user: null, profile: null, isLoading: false });
+      // Reset RevenueCat to a fresh anonymous identity and re-read subscription
+      // state so the previous account's PRO/win-back history is not shown to
+      // whoever uses the app next on this device.
+      try {
+        const { logOutUser } = require('../services/revenueCat') as typeof import('../services/revenueCat');
+        await logOutUser();
+        // Lazy import to avoid a static store-to-store require cycle
+        const { useSubscriptionStore } = require('./useSubscriptionStore') as typeof import('./useSubscriptionStore');
+        await useSubscriptionStore.getState().refreshStatus();
+      } catch {}
     } catch {
       set({ isLoading: false });
     }

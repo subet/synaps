@@ -18,7 +18,7 @@ export default function ATTScreen() {
 
   const handleContinue = () => {
     // Navigate first, then request ATT in the background
-    router.replace('/paywall?onboarding=1');
+    router.replace('/paywall?onboarding=1&source=onboarding');
     requestATT().catch(() => {});
   };
 

@@ -25,7 +25,7 @@ export function TabHeader() {
         <Logo height={38} />
       </View>
       {!isPro && (
-        <Pressable style={styles.proButton} onPress={() => router.push('/paywall')}>
+        <Pressable style={styles.proButton} onPress={() => router.push('/paywall?source=tab_header')}>
           <Ionicons name="diamond-outline" size={14} color={colors.white} />
           <Text style={styles.proButtonText}>PRO</Text>
         </Pressable>

@@ -210,7 +210,7 @@ export default function SettingsScreen() {
                   : 'https://play.google.com/store/account/subscriptions';
                 Linking.openURL(url);
               } else {
-                router.push('/paywall');
+                router.push('/paywall?source=settings');
               }
             }} />
             <SettingsRow label={t('sync_data')} onPress={() => {
