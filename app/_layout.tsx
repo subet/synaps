@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { scheduleDailyReminder, scheduleInactivityNudge, scheduleProExpiredWinBack, cancelWinBackNotifications, cancelAllNotifications, registerPushToken, removePushToken, addNotificationResponseListener } from '../src/services/notifications';
+import { logEvent } from '../src/services/analytics';
 import { repairPublicDeckTranslations } from '../src/services/database';
 import { ErrorBoundary } from '../src/components/ui/ErrorBoundary';
 import { setLocale } from '../src/i18n';
@@ -37,6 +38,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     async function bootstrap() {
+      logEvent('app_opened'); // once per cold start
       await loadSettings();
 
       const { language, setLanguage } = useAppStore.getState();

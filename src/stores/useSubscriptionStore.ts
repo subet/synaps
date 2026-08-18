@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import Purchases, { PurchasesError, PurchasesOffering, PurchasesPackage } from 'react-native-purchases';
-import { logEvent, truncate } from '../services/analytics';
+import { identify, logEvent, truncate } from '../services/analytics';
 import { checkProStatus, getOfferings, initializeRevenueCat, purchasePackage, restorePurchases } from '../services/revenueCat';
 import { getUserProfile } from '../services/supabase';
 
@@ -133,6 +133,10 @@ export const useSubscriptionStore = create<SubscriptionState>((set, get) => ({
     const wasPro = await getWasPro(identity);
     const proExpiredAt = await getProExpiredAt(identity);
     set({ wasPro, proExpiredAt, identity });
+
+    // Anonymous users: align the analytics identity with the RevenueCat
+    // appUserID (signed-in users are identified via the auth store).
+    if (!userId && identity) identify(identity);
 
     // 4. Check Supabase profile (for testing / server-granted PRO).
     //    dbPro affects isPro (feature gating) but must NEVER persist wasPro —

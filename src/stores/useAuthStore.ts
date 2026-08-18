@@ -12,6 +12,7 @@ import {
   updateAuthPassword,
 } from '../services/supabase';
 import { signInWithApple, signInWithGoogle } from '../services/socialAuth';
+import { identify, reset as resetAnalytics } from '../services/analytics';
 import { UserProfile } from '../types';
 
 interface AuthState {
@@ -46,6 +47,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const { data: { session } } = await supabase.auth.getSession();
       set({ user: session?.user ?? null, isInitialized: true });
+      if (session?.user) identify(session.user.id);
 
       if (session?.user) {
         try {
@@ -56,6 +58,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       supabase.auth.onAuthStateChange(async (_event, session) => {
         set({ user: session?.user ?? null });
+        if (session?.user) identify(session.user.id);
         if (session?.user) {
           try {
             const profile = await getUserProfile(session.user.id);
@@ -143,6 +146,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       try {
         const { logOutUser } = require('../services/revenueCat') as typeof import('../services/revenueCat');
         await logOutUser();
+        resetAnalytics();
         // Lazy import to avoid a static store-to-store require cycle
         const { useSubscriptionStore } = require('./useSubscriptionStore') as typeof import('./useSubscriptionStore');
         await useSubscriptionStore.getState().refreshStatus();
