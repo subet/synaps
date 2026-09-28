@@ -1,3 +1,8 @@
+# GOOGLE PLAY — release dashboard (seen on 1.0.9 / 19, 2026-09-28)
+- [ ] **Required by Feb 2027:** DEX optimization/obfuscation is 3% (min 25%). Turn on R8 via `expo-build-properties` → `android.enableProguardInReleaseBuilds: true` (+ `enableShrinkResourcesInReleaseBuilds`), test the whole app on internal (RevenueCat, PostHog, Supabase, notifications), and upload `mapping.txt` to Play with each release (edits.deobfuscationfiles). Planned for 1.0.10.
+- [ ] Recommended: "deprecated edge-to-edge APIs" — not from our code (no status/nav bar colour calls in app/ or src/); comes from RN 0.81 / Expo SDK 54 internals, goes away with an Expo SDK upgrade.
+- [ ] Recommended: remove orientation/resizability restrictions (`orientation: portrait`). Android 16+ ignores the lock on large screens anyway (targetSdk 36), so check tablet/landscape layouts on an emulator before deciding.
+
 # LEADERBOARD — anonymous learners
 - [x] Anonymous sign-ins enabled in Supabase (2026-09-28); verified end to end (profile row created, names readable, own row writable, others' rows 403).
 - [x] `profiles_id_fkey` now cascades (migration 20260928000001).
