@@ -48,14 +48,16 @@ export const pt_BR = {
   notifications_onboarding_title: 'Never Miss a Study Session',
   notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
   notifications_enable: 'Enable Notifications',
-  maybe_later: 'Maybe Later',
+  maybe_later: "Talvez mais tarde",
   paywall_skip: 'Continue with Free Plan',
 
   // Home
   my_decks: 'Meus Baralhos',
   no_decks_title: 'Nenhum baralho ainda',
-  no_decks_subtitle: 'Crie seu primeiro baralho para começar a aprender',
+  no_decks_subtitle: "Comece com um baralho pronto da biblioteca ou crie o seu.",
   create_first_deck: 'Criar seu primeiro baralho',
+  browse_ready_decks: "Explorar baralhos prontos",
+  create_own_deck: "Criar meu próprio baralho",
   fab_new_deck: 'Novo Baralho',
   fab_achievements: 'Conquistas',
   fab_friends: 'Amigos',

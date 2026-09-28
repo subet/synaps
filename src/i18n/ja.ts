@@ -53,8 +53,10 @@ export const ja = {
   // Home
   my_decks: 'マイデッキ',
   no_decks_title: 'デッキがまだありません',
-  no_decks_subtitle: '最初のデッキを作成して学習を始めましょう',
+  no_decks_subtitle: "ライブラリのすぐに使えるデッキで始めるか、自分でデッキを作成しましょう。",
   create_first_deck: '最初のデッキを作成',
+  browse_ready_decks: "ライブラリからデッキを選ぶ",
+  create_own_deck: "自分でデッキを作成",
   fab_new_deck: '新しいデッキ',
   fab_achievements: '実績',
   fab_friends: '友達',

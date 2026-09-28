@@ -171,7 +171,25 @@ export default function LibraryScreen() {
       // Track download count in Supabase (fire-and-forget)
       incrementDownloadCount(deck.id).catch(() => {});
       setDownloadCounts((prev) => ({ ...prev, [deck.id]: (prev[deck.id] ?? 0) + 1 }));
-      Alert.alert(t('download_success_title'), t('download_success_message', { name: resolveTranslation(deck.name_translations, deck.name, language) }));
+      // Offer to study right away — a download with no next step was a dead end
+      Alert.alert(
+        t('download_success_title'),
+        t('download_success_message', { name: resolveTranslation(deck.name_translations, deck.name, language) }),
+        [
+          {
+            text: t('maybe_later'),
+            style: 'cancel',
+            onPress: () => logEvent('download_next_step', { choice: 'later', deck_id: deck.id }),
+          },
+          {
+            text: t('study_now'),
+            onPress: () => {
+              logEvent('download_next_step', { choice: 'study', deck_id: deck.id });
+              router.push(`/study/${newDeck.id}`);
+            },
+          },
+        ]
+      );
     } catch {
       logEvent('public_deck_download_failed', { deck_id: deck.id });
       Alert.alert(t('error'), t('download_failed'));

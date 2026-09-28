@@ -53,8 +53,10 @@ export const en = {
   // Home
   my_decks: 'My Decks',
   no_decks_title: 'No decks yet',
-  no_decks_subtitle: 'Create your first deck to start learning',
+  no_decks_subtitle: "Start with a ready-made deck from the library, or create your own.",
   create_first_deck: 'Create your first deck',
+  browse_ready_decks: "Browse ready-made decks",
+  create_own_deck: "Create my own deck",
   fab_new_deck: 'New Deck',
   fab_achievements: 'Achievements',
   fab_friends: 'Friends',

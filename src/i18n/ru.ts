@@ -48,14 +48,16 @@ export const ru = {
   notifications_onboarding_title: 'Never Miss a Study Session',
   notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
   notifications_enable: 'Enable Notifications',
-  maybe_later: 'Maybe Later',
+  maybe_later: "Позже",
   paywall_skip: 'Continue with Free Plan',
 
   // Home
   my_decks: 'Мои колоды',
   no_decks_title: 'Колод пока нет',
-  no_decks_subtitle: 'Создайте первую колоду, чтобы начать учиться',
+  no_decks_subtitle: "Начните с готовой колоды из библиотеки или создайте свою.",
   create_first_deck: 'Создать первую колоду',
+  browse_ready_decks: "Смотреть готовые колоды",
+  create_own_deck: "Создать свою колоду",
   fab_new_deck: 'Новая колода',
   fab_achievements: 'Достижения',
   fab_friends: 'Друзья',

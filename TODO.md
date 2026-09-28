@@ -1,7 +1,7 @@
 # RETENTION (2026-09-28)
 278 of 325 users used the app on a single day; D1 ≈ 6%. The first-run instrumentation (1.0.9) should show exactly where they leave — read the **Activation & Drop-off** dashboard in PostHog once ~1–2 weeks of 1.0.9 data exist, then pick a strategy. Suspects found in the code, to confirm or rule out with that data:
-- Empty home screen's only button is "create your first deck" (manual card typing, 5-card free limit) — not the ready-made library.
-- After a library download there is only a success alert; no "study now" button.
+- ~~Empty home screen's only button is "create your first deck"~~ — 1.0.9 leads with the library (done; watch `empty_home_cta`).
+- ~~After a library download there is only a success alert~~ — 1.0.9 offers "Study now" (done; watch `download_next_step`).
 - Free users are blocked from studying offline (deck screen locked, kicked out mid-session) — likely painful for students.
 - Onboarding is long: 5 slides → ATT → sign-up → notifications before any value.
 - Onboarding paywall removed in 1.0.9 (done).

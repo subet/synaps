@@ -9,10 +9,12 @@ interface EmptyStateProps {
   subtitle?: string;
   ctaLabel?: string;
   onCtaPress?: () => void;
+  secondaryLabel?: string;
+  onSecondaryPress?: () => void;
   style?: ViewStyle;
 }
 
-export function EmptyState({ title, subtitle, ctaLabel, onCtaPress, style }: EmptyStateProps) {
+export function EmptyState({ title, subtitle, ctaLabel, onCtaPress, secondaryLabel, onSecondaryPress, style }: EmptyStateProps) {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.iconContainer}>
@@ -25,6 +27,15 @@ export function EmptyState({ title, subtitle, ctaLabel, onCtaPress, style }: Emp
           label={ctaLabel}
           onPress={onCtaPress}
           style={styles.cta}
+          fullWidth={false}
+        />
+      )}
+      {secondaryLabel && onSecondaryPress && (
+        <Button
+          label={secondaryLabel}
+          onPress={onSecondaryPress}
+          variant="ghost"
+          style={styles.secondary}
           fullWidth={false}
         />
       )}
@@ -61,6 +72,10 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   cta: {
+    paddingHorizontal: spacing.xl,
+  },
+  secondary: {
+    marginTop: spacing.sm,
     paddingHorizontal: spacing.xl,
   },
 });

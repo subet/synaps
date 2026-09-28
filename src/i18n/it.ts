@@ -54,8 +54,10 @@ export const it = {
   // Home
   my_decks: 'I miei mazzi',
   no_decks_title: 'Nessun mazzo ancora',
-  no_decks_subtitle: 'Crea il tuo primo mazzo per iniziare a studiare',
+  no_decks_subtitle: "Inizia con un mazzo pronto dalla libreria o crea il tuo.",
   create_first_deck: 'Crea il tuo primo mazzo',
+  browse_ready_decks: "Sfoglia i mazzi pronti",
+  create_own_deck: "Crea il mio mazzo",
   fab_new_deck: 'Nuovo Mazzo',
   fab_achievements: 'Traguardi',
   fab_friends: 'Amici',

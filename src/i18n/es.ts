@@ -54,8 +54,10 @@ export const es = {
   // Home
   my_decks: 'Mis mazos',
   no_decks_title: 'Aún no hay mazos',
-  no_decks_subtitle: 'Crea tu primer mazo para empezar a aprender',
+  no_decks_subtitle: "Empieza con un mazo listo de la biblioteca o crea el tuyo.",
   create_first_deck: 'Crea tu primer mazo',
+  browse_ready_decks: "Explorar mazos listos",
+  create_own_deck: "Crear mi propio mazo",
   fab_new_deck: 'Nuevo Mazo',
   fab_achievements: 'Logros',
   fab_friends: 'Amigos',

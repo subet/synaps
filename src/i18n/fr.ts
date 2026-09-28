@@ -48,14 +48,16 @@ export const fr = {
   notifications_onboarding_title: 'Never Miss a Study Session',
   notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
   notifications_enable: 'Enable Notifications',
-  maybe_later: 'Maybe Later',
+  maybe_later: "Plus tard",
   paywall_skip: 'Continue with Free Plan',
 
   // Home
   my_decks: 'Mes paquets',
   no_decks_title: 'Aucun paquet pour l\'instant',
-  no_decks_subtitle: 'Crée ton premier paquet pour commencer à apprendre',
+  no_decks_subtitle: "Commence avec un paquet prêt à l'emploi de la bibliothèque ou crée le tien.",
   create_first_deck: 'Crée ton premier paquet',
+  browse_ready_decks: "Parcourir les paquets prêts",
+  create_own_deck: "Créer mon propre paquet",
   fab_new_deck: 'Nouveau Paquet',
   fab_achievements: 'Succès',
   fab_friends: 'Amis',

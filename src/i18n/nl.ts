@@ -48,14 +48,16 @@ export const nl = {
   notifications_onboarding_title: 'Never Miss a Study Session',
   notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
   notifications_enable: 'Enable Notifications',
-  maybe_later: 'Maybe Later',
+  maybe_later: "Misschien later",
   paywall_skip: 'Continue with Free Plan',
 
   // Home
   my_decks: 'Mijn stapels',
   no_decks_title: 'Nog geen stapels',
-  no_decks_subtitle: 'Maak je eerste stapel aan om te beginnen met leren',
+  no_decks_subtitle: "Begin met een kant-en-klare stapel uit de bibliotheek of maak je eigen stapel.",
   create_first_deck: 'Maak je eerste stapel aan',
+  browse_ready_decks: "Kant-en-klare stapels bekijken",
+  create_own_deck: "Eigen stapel maken",
   fab_new_deck: 'Nieuw Stapel',
   fab_achievements: 'Prestaties',
   fab_friends: 'Vrienden',

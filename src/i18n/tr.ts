@@ -53,8 +53,10 @@ export const tr = {
   // Home
   my_decks: 'Destelerim',
   no_decks_title: 'Henüz deste yok',
-  no_decks_subtitle: 'Öğrenmeye başlamak için ilk destinizi oluşturun',
+  no_decks_subtitle: "Kütüphaneden hazır bir desteyle başlayın ya da kendi destenizi oluşturun.",
   create_first_deck: 'İlk destinizi oluşturun',
+  browse_ready_decks: "Hazır destelere göz atın",
+  create_own_deck: "Kendi destemi oluştur",
   fab_new_deck: 'Yeni Deste',
   fab_achievements: 'Başarılar',
   fab_friends: 'Arkadaşlar',

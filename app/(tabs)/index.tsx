@@ -18,6 +18,7 @@ import { FABMenu, FABMenuItem } from '../../src/components/ui/FABMenu';
 import { colors, spacing, typography } from '../../src/constants';
 import { getHiddenVocabDeckId } from '../../src/data/publicDecks';
 import { useTranslation } from '../../src/i18n';
+import { logEvent } from '../../src/services/analytics';
 import { TabHeader } from '../../src/components/ui/TabHeader';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStreakStore } from '../../src/stores/useStreakStore';
@@ -107,8 +108,16 @@ export default function HomeScreen() {
           <EmptyState
             title={t('no_decks_title')}
             subtitle={t('no_decks_subtitle')}
-            ctaLabel={t('create_first_deck')}
-            onCtaPress={() => router.push('/deck/create')}
+            ctaLabel={t('browse_ready_decks')}
+            onCtaPress={() => {
+              logEvent('empty_home_cta', { choice: 'library' });
+              router.navigate('/(tabs)/library');
+            }}
+            secondaryLabel={t('create_own_deck')}
+            onSecondaryPress={() => {
+              logEvent('empty_home_cta', { choice: 'create' });
+              router.push('/deck/create');
+            }}
           />
         }
         contentContainerStyle={{ paddingBottom: 32 }}

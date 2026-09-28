@@ -48,14 +48,16 @@ export const zh = {
   notifications_onboarding_title: 'Never Miss a Study Session',
   notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
   notifications_enable: 'Enable Notifications',
-  maybe_later: 'Maybe Later',
+  maybe_later: "以后再说",
   paywall_skip: 'Continue with Free Plan',
 
   // Home
   my_decks: '我的牌组',
   no_decks_title: '暂无牌组',
-  no_decks_subtitle: '创建您的第一个牌组以开始学习',
+  no_decks_subtitle: "从资料库选择现成的牌组开始，或创建您自己的牌组。",
   create_first_deck: '创建第一个牌组',
+  browse_ready_decks: "浏览现成牌组",
+  create_own_deck: "创建我自己的牌组",
   fab_new_deck: '新建牌组',
   fab_achievements: '成就',
   fab_friends: '朋友',
