@@ -1,4 +1,4 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -29,6 +29,10 @@ import { useAppStore } from '../../src/stores/useAppStore';
 export default function DeckDetailScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
+  // The study bar is absolutely positioned, so it must clear the system nav
+  // itself: 32 fits the iOS home indicator, Android 3-button nav needs ~48.
+  const insets = useSafeAreaInsets();
+  const studyBarBottom = Math.max(32, insets.bottom + spacing.sm);
   const { getDeckById, deckStats, loadDeckStats } = useDeckStore();
   const { loadDeckCards, deckCards, isLoadingCards } = useStudyStore();
   const { isPro } = useSubscriptionStore();
@@ -161,14 +165,14 @@ export default function DeckDetailScreen() {
           ) : null
         }
         contentContainerStyle={[
-          { paddingBottom: 120 },
+          { paddingBottom: 88 + studyBarBottom },
           filteredCards.length === 0 && { flex: 1 },
         ]}
         getItemLayout={(_, index) => ({ length: 58, offset: 58 * index, index })}
       />
 
       {(stats?.total ?? 0) > 0 && (
-        <View style={styles.studyBtnContainer}>
+        <View style={[styles.studyBtnContainer, { paddingBottom: studyBarBottom }]}>
           {isLocked ? (
             <Pressable
               style={({ pressed }) => [styles.offlineBtn, pressed && styles.offlineBtnPressed]}
@@ -295,7 +299,6 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: colors.background,
     paddingHorizontal: spacing.md,
-    paddingBottom: 32,
     paddingTop: spacing.sm,
     borderTopWidth: 1,
     borderTopColor: colors.border,
