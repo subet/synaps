@@ -1,3 +1,7 @@
+# LEADERBOARD — anonymous learners (code done in 1.0.9, needs Supabase)
+- [ ] Supabase dashboard → Authentication → Sign In / Providers → turn on **Allow anonymous sign-ins** (currently off).
+- [ ] Check that the profile trigger on `auth.users` works for users with no email/display_name, and that `weekly_stats` insert/update RLS allows `auth.uid() = user_id` for anonymous users (FK `weekly_stats_user_id_fkey` needs the profile row). Claude has no management access to the Synaps Supabase project (the CLI login only sees KalTrack / Lens & Muse).
+
 # RETENTION (2026-09-28)
 278 of 325 users used the app on a single day; D1 ≈ 6%. The first-run instrumentation (1.0.9) should show exactly where they leave — read the **Activation & Drop-off** dashboard in PostHog once ~1–2 weeks of 1.0.9 data exist, then pick a strategy. Suspects found in the code, to confirm or rule out with that data:
 - ~~Empty home screen's only button is "create your first deck"~~ — 1.0.9 leads with the library (done; watch `empty_home_cta`).

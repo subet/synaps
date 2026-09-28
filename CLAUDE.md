@@ -33,7 +33,7 @@ npx tsc --noEmit     # type check — there is no lint or test setup
 
 ### Cloud (Supabase)
 
-Supabase (`src/services/supabase.ts`) handles auth (email + Apple/Google via `socialAuth.ts`), friends, weekly leaderboards (weeks start Monday UTC, see `leaderboard.ts`), and push tokens. SQL migrations live in `supabase/migrations/`; the `send-push` edge function is in `supabase/functions/`. Auth sessions persist in AsyncStorage (not SecureStore — 2KB cap).
+Supabase (`src/services/supabase.ts`) handles auth (email + Apple/Google via `socialAuth.ts`), friends, weekly leaderboards (weeks start Monday UTC, see `leaderboard.ts`), and push tokens. SQL migrations live in `supabase/migrations/`; the `send-push` edge function is in `supabase/functions/`. Auth sessions persist in AsyncStorage (not SecureStore — 2KB cap). Signed-out devices hold a background **anonymous Supabase session** (`useAuthStore.anonUserId`) so their study counts on the weekly leaderboard, shown as "Anonymous #ABCD" (first 4 hex of the user id); `useAuthStore.user` stays null for it, so the rest of the app still treats the device as signed out. It only works while *Allow anonymous sign-ins* is on in Supabase Auth; if it is off or the sign-in fails, nothing is written (the pre-1.0.9 behaviour). Registering while anonymous creates a new account; the anonymous week row is left behind.
 
 ### App bootstrap
 

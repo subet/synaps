@@ -32,7 +32,8 @@ const MEDAL_COLORS = ['#F59E0B', '#9CA3AF', '#CD7F32'] as const;
 
 export default function LeaderboardTab() {
   const { t } = useTranslation();
-  const { user, profile } = useAuthStore();
+  const { user, profile, anonUserId } = useAuthStore();
+  const myId = user?.id ?? anonUserId;
   const { pendingRequestCount } = useFriendsStore();
   const hasCountry = !!profile?.country;
 
@@ -70,7 +71,7 @@ export default function LeaderboardTab() {
   const entries = activeTab === 'world' ? worldEntries : countryEntries;
   const showFlag = activeTab === 'world';
 
-  const userEntry = entries.find((e) => e.userId === user?.id);
+  const userEntry = entries.find((e) => e.userId === myId);
   const userInTop20 = userEntry ? userEntry.rank <= 20 : false;
   const top20 = entries.slice(0, 20);
 
@@ -180,7 +181,7 @@ export default function LeaderboardTab() {
           renderItem={({ item }) => (
             <EntryRow
               entry={item}
-              isMe={item.userId === user?.id}
+              isMe={item.userId === myId}
               showFlag={showFlag}
               onPress={() => setSelectedUserId(item.userId)}
             />
@@ -210,9 +211,18 @@ function EntryRow({
 }) {
   const { t } = useTranslation();
   const medalColor = entry.rank <= 3 ? MEDAL_COLORS[entry.rank - 1] : null;
+  // No profile name = a signed-out learner; show a stable short code instead
+  const isAnonymous = !entry.displayName || entry.displayName === '—';
+  const name = isAnonymous
+    ? `${t('leaderboard_anonymous')} #${entry.userId.replace(/-/g, '').slice(0, 4).toUpperCase()}`
+    : entry.displayName;
 
   return (
-    <Pressable style={[styles.row, isMe && styles.rowMe]} onPress={onPress} onPressIn={tap}>
+    <Pressable
+      style={[styles.row, isMe && styles.rowMe]}
+      onPress={isAnonymous ? undefined : onPress}
+      onPressIn={isAnonymous ? undefined : tap}
+    >
       <View style={[styles.rankBox, medalColor ? { backgroundColor: medalColor + '22' } : null]}>
         <Text style={[styles.rankText, medalColor ? { color: medalColor } : null]}>
           #{entry.rank}
@@ -223,15 +233,19 @@ function EntryRow({
         <Image source={{ uri: entry.avatarUrl }} style={styles.avatarImg} />
       ) : (
         <View style={[styles.avatar, isMe && styles.avatarMe]}>
-          <Text style={[styles.avatarInitial, isMe && styles.avatarInitialMe]}>
-            {(entry.displayName?.[0] ?? '?').toUpperCase()}
-          </Text>
+          {isAnonymous ? (
+            <Ionicons name="person-outline" size={18} color={isMe ? colors.white : colors.primary} />
+          ) : (
+            <Text style={[styles.avatarInitial, isMe && styles.avatarInitialMe]}>
+              {(entry.displayName?.[0] ?? '?').toUpperCase()}
+            </Text>
+          )}
         </View>
       )}
 
       <View style={styles.nameBox}>
         <Text style={[styles.nameText, isMe && styles.nameTextMe]} numberOfLines={1}>
-          {entry.displayName}
+          {name}
           {isMe ? `  ${t('leaderboard_you')}` : ''}
         </Text>
         {showFlag && entry.country ? (

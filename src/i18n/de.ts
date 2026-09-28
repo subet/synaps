@@ -161,6 +161,7 @@ export const de = {
   leaderboard_empty: 'Diese Woche hat noch niemand gelernt',
   leaderboard_no_rank: 'Lerne heute, um hier zu erscheinen',
   leaderboard_you: '(du)',
+  leaderboard_anonymous: "Anonym",
   leaderboard_go_to_profile: 'Zum Profil',
 
   // Library

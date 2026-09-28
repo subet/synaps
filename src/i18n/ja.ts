@@ -161,6 +161,7 @@ export const ja = {
   leaderboard_empty: '今週はまだ誰も学習していません',
   leaderboard_no_rank: '今日学習してランキングに登場しよう',
   leaderboard_you: '（あなた）',
+  leaderboard_anonymous: "匿名",
   leaderboard_go_to_profile: 'プロフィールへ',
 
   // Library

@@ -161,6 +161,7 @@ export const nl = {
   leaderboard_empty: 'Niemand heeft deze week nog gestudeerd',
   leaderboard_no_rank: 'Studeer vandaag om hier te verschijnen',
   leaderboard_you: '(jij)',
+  leaderboard_anonymous: "Anoniem",
   leaderboard_go_to_profile: 'Naar Profiel',
 
   // Library

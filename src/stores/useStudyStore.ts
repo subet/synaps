@@ -146,8 +146,10 @@ export const useStudyStore = create<StudyState>((set, get) => ({
 
     // Write to remote leaderboard immediately after each card — so partial sessions count too.
     try {
-      const { user } = useAuthStore.getState();
-      if (user?.id) {
+      // Signed-out devices count too, under their anonymous session
+      const { user, anonUserId } = useAuthStore.getState();
+      const leaderboardUserId = user?.id ?? anonUserId;
+      if (leaderboardUserId) {
         const isFirstStudyToday = reviewsToday === 0;
         const streakData = await getStreakData().catch(() => ({ currentStreak: 0, longestStreak: 0, weekDays: [] }));
 
@@ -165,7 +167,7 @@ export const useStudyStore = create<StudyState>((set, get) => ({
           isFirstStudyToday,
         };
 
-        upsertWeeklyStats(user.id, 1, scoreDelta).catch((e) => {
+        upsertWeeklyStats(leaderboardUserId, 1, scoreDelta).catch((e) => {
           if (__DEV__) console.warn('[leaderboard] upsertWeeklyStats failed:', e?.message ?? e);
         });
       }

@@ -16,7 +16,14 @@ import { identify, logEvent, reset as resetAnalytics, setSuperProperties } from 
 import { UserProfile } from '../types';
 
 interface AuthState {
+  /** Signed-in account (email/Apple/Google). Never an anonymous session. */
   user: User | null;
+  /**
+   * Id of the background anonymous Supabase session a signed-out device holds,
+   * so its study still counts on the weekly leaderboard. Null when signed in,
+   * or when anonymous sign-ins are disabled/failed (then nothing is written).
+   */
+  anonUserId: string | null;
   profile: UserProfile | null;
   isLoading: boolean;
   isInitialized: boolean;
@@ -42,8 +49,26 @@ function authSucceeded(method: 'email' | 'google' | 'apple', mode: 'login' | 're
   setSuperProperties({ signed_in: true });
 }
 
+/**
+ * Starts an anonymous session when there is none; failures are harmless.
+ * Single-flight, since INITIAL_SESSION and SIGNED_OUT can both call it.
+ */
+let anonSignIn: Promise<void> | null = null;
+function ensureAnonymousSession(): Promise<void> {
+  anonSignIn ??= (async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) await supabase.auth.signInAnonymously();
+    } catch {}
+  })().finally(() => {
+    anonSignIn = null;
+  });
+  return anonSignIn;
+}
+
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
+  anonUserId: null,
   profile: null,
   isLoading: false,
   isInitialized: false,
@@ -52,27 +77,37 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   initialize: async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      set({ user: session?.user ?? null, isInitialized: true });
-      if (session?.user) identify(session.user.id);
+      const initialUser = session?.user && !session.user.is_anonymous ? session.user : null;
+      set({
+        user: initialUser,
+        anonUserId: session?.user?.is_anonymous ? session.user.id : null,
+        isInitialized: true,
+      });
+      if (initialUser) identify(initialUser.id);
 
-      if (session?.user) {
+      if (initialUser) {
         try {
-          const profile = await getUserProfile(session.user.id);
+          const profile = await getUserProfile(initialUser.id);
           set({ profile });
         } catch {}
       }
 
       supabase.auth.onAuthStateChange(async (_event, session) => {
-        set({ user: session?.user ?? null });
-        if (session?.user) identify(session.user.id);
-        if (session?.user) {
+        // Anonymous sessions only feed the leaderboard; to the rest of the app
+        // the device stays signed out.
+        const realUser = session?.user && !session.user.is_anonymous ? session.user : null;
+        set({ user: realUser, anonUserId: session?.user?.is_anonymous ? session.user.id : null });
+        if (realUser) identify(realUser.id);
+        if (realUser) {
           try {
-            const profile = await getUserProfile(session.user.id);
+            const profile = await getUserProfile(realUser.id);
             set({ profile });
           } catch {}
         } else {
           set({ profile: null });
         }
+        // Signed out (or logged out) — fall back to an anonymous session
+        if (!session) ensureAnonymousSession();
       });
     } catch {
       set({ isInitialized: true });
