@@ -44,6 +44,7 @@ const LANGUAGE_CODES: Record<string, string> = {
   'deck-russian-vocab': 'ru',
   'deck-arabic-vocab': 'ar',
   'deck-chinese-vocab': 'zh',
+  'deck-english-vocab': 'en',
 };
 
 export default function StudyScreen() {

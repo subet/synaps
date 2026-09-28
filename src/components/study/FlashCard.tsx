@@ -23,6 +23,7 @@ const LANGUAGE_META: Record<string, { color: string; flag: string }> = {
   ru: { color: '#a18cd1', flag: '🇷🇺' },
   ar: { color: '#43e97b', flag: '🇸🇦' },
   zh: { color: '#ff0844', flag: '🇨🇳' },
+  en: { color: '#0ea5e9', flag: '🇬🇧' },
 };
 
 const DEFAULT_COLOR = '#4361EE';

@@ -23,6 +23,7 @@ Complete checklist for adding a new app locale (referred to as `xx` below). Foll
 - [ ] `src/utils/languages.ts` — add the flag emoji to `LANGUAGE_FLAGS`. Type-checked.
 - [ ] `src/components/home/StreakCard.tsx` — add the BCP-47 code to `LANG_LOCALE` (date formatting, e.g. `xx: 'xx-XX'`). **Not type-checked.**
 - [ ] `src/utils/tts.ts` — add to `LOCALE_MAP` if text-to-speech should support it. Keyed by *deck* language codes (note `ar` exists here for Arabic decks even though it's not an app locale). **Not type-checked.**
+- [ ] If the language gets a **vocabulary deck**: add `'deck-<lang>-vocab': '<code>'` to `LANGUAGE_CODES` in `app/study/[deckId].tsx` (without it the card has no speaker button and no audio) and a `{ color, flag }` entry to `LANGUAGE_META` in `src/components/study/FlashCard.tsx`. **Not type-checked** — the English deck shipped without either until 1.0.9.
 
 ## 4. Country names
 
