@@ -161,7 +161,6 @@ export const ru = {
   leaderboard_empty: 'На этой неделе ещё никто не занимался',
   leaderboard_no_rank: 'Занимайтесь сегодня, чтобы попасть в рейтинг',
   leaderboard_you: '(вы)',
-  leaderboard_anonymous: "Аноним",
   leaderboard_go_to_profile: 'Перейти в Профиль',
 
   // Library

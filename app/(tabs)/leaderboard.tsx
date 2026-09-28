@@ -219,7 +219,7 @@ function EntryRow({
   // No profile name = a signed-out learner; show a stable short code instead
   const isAnonymous = canSeeNames && (!entry.displayName || entry.displayName === '—');
   const name = isAnonymous
-    ? `${t('leaderboard_anonymous')} #${entry.userId.replace(/-/g, '').slice(0, 4).toUpperCase()}`
+    ? `#${entry.userId.replace(/-/g, '').slice(0, 4).toUpperCase()}`
     : entry.displayName;
 
   return (

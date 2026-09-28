@@ -161,7 +161,6 @@ export const zh = {
   leaderboard_empty: '本周还没有人学习',
   leaderboard_no_rank: '今天学习以出现在排行榜中',
   leaderboard_you: '（你）',
-  leaderboard_anonymous: "匿名",
   leaderboard_go_to_profile: '前往个人资料',
 
   // Library

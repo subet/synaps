@@ -161,7 +161,6 @@ export const pt_BR = {
   leaderboard_empty: 'Ninguém estudou esta semana ainda',
   leaderboard_no_rank: 'Estude hoje para aparecer aqui',
   leaderboard_you: '(você)',
-  leaderboard_anonymous: "Anônimo",
   leaderboard_go_to_profile: 'Ir ao Perfil',
 
   // Library

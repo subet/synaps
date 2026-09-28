@@ -161,7 +161,6 @@ export const tr = {
   leaderboard_empty: 'Bu hafta henüz kimse çalışmadı',
   leaderboard_no_rank: 'Sıralamada görünmek için bugün çalış',
   leaderboard_you: '(sen)',
-  leaderboard_anonymous: "Anonim",
   leaderboard_go_to_profile: 'Profile Git',
 
   // Library
