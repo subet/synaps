@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import Purchases, { PurchasesError, PurchasesOffering, PurchasesPackage } from 'react-native-purchases';
-import { identify, logEvent, truncate } from '../services/analytics';
+import { identify, logEvent, setSuperProperties, truncate } from '../services/analytics';
 import { checkProStatus, getOfferings, initializeRevenueCat, purchasePackage, restorePurchases } from '../services/revenueCat';
 import { getUserProfile } from '../services/supabase';
 
@@ -44,6 +44,7 @@ async function getCachedPro(): Promise<boolean> {
 }
 
 async function setCachedPro(isPro: boolean): Promise<void> {
+  setSuperProperties({ is_pro: isPro });
   try {
     await AsyncStorage.setItem(PRO_CACHE_KEY, isPro ? 'true' : 'false');
   } catch {}

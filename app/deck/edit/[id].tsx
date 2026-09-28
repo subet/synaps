@@ -17,6 +17,7 @@ import { Input } from '../../../src/components/ui/Input';
 import { Toggle } from '../../../src/components/ui/Toggle';
 import { borderRadius, colors, spacing, typography } from '../../../src/constants';
 import { useTranslation } from '../../../src/i18n';
+import { logEvent } from '../../../src/services/analytics';
 import { useDeckStore } from '../../../src/stores/useDeckStore';
 import { useSubscriptionStore } from '../../../src/stores/useSubscriptionStore';
 import { useResolvedDeckDescription, useResolvedDeckName } from '../../../src/utils/translations';
@@ -190,6 +191,7 @@ export default function EditDeckScreen() {
                   <Toggle value={autoPlayAudio} onValueChange={setAutoPlayAudio} />
                 ) : (
                   <Pressable onPress={() => {
+                    logEvent('free_limit_hit', { limit: 'pro_feature' });
                     Alert.alert(t('feature_pro_only'), t('feature_pro_only_message'), [
                       { text: t('cancel'), style: 'cancel' },
                       { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall?source=pro_feature') },
@@ -216,6 +218,7 @@ export default function EditDeckScreen() {
                   <Text style={styles.availableText}>{t('available')}</Text>
                 ) : (
                   <Pressable onPress={() => {
+                    logEvent('free_limit_hit', { limit: 'pro_feature' });
                     Alert.alert(t('feature_pro_only'), t('feature_pro_only_message'), [
                       { text: t('cancel'), style: 'cancel' },
                       { text: wasPro ? t('resubscribe') : t('upgrade'), onPress: () => router.push('/paywall?source=pro_feature') },

@@ -52,7 +52,18 @@ Ready-made decks are **statically bundled** in `src/data/publicDecks/` (metadata
 
 ### Analytics (PostHog)
 
-`src/services/analytics.ts` wraps `posthog-react-native` (EU, project **Synaps Mobile**, id 251689 — a separate PostHog account from the other Mudimedia apps). Production builds only; `__DEV__` logs to console. Identity is the Supabase user id when signed in, else the RevenueCat appUserID, so one device = one PostHog person. Custom events today: `app_opened`, `paywall_view` (`source`, `variant`, `trial_available`), `purchase_error` (`error_code`, `user_cancelled`, `package_id`); the SDK adds `Application Installed/Opened/Became Active/Backgrounded`. The project's home dashboard is **Synaps — Growth & Monetization** (id 979762); new events need new tiles there. There is no purchase-success, study, or deck event yet, so the dashboard cannot show learning activity or conversion to paid.
+`src/services/analytics.ts` wraps `posthog-react-native` (EU, project **Synaps Mobile**, id 251689 — a separate PostHog account from the other Mudimedia apps). Production builds only; `__DEV__` logs to console. Identity is the Supabase user id when signed in, else the RevenueCat appUserID, so one device = one PostHog person. Super properties on every event: `app_language`, `is_pro`, `onboarding_done`, `signed_in`.
+
+- **Screens:** `app/_layout.tsx` sends one `$screen` per route change, named by route pattern (`(tabs)/index`, `deck/[id]`, `auth/register`, …).
+- **Onboarding:** `onboarding_step_viewed` (`step`, `index`), `auth_completed` / `auth_failed` / `auth_cancelled` (in `useAuthStore`), `auth_skipped` (`screen`, `via`), `notification_permission` (`choice`, `granted`), `onboarding_completed`.
+- **Content:** `library_searched` (`query`, `results`), `library_deck_previewed`, `public_deck_downloaded`, `public_deck_download_failed`, `deck_created`, `card_created`.
+- **Study (in `useStudyStore`):** `study_session_started`, `study_card_graded`, `study_session_completed`, `study_session_abandoned` (logged by `resetSession` when the session was not finished), `study_blocked_offline` (`where`: `deck_detail` | `mid_session`).
+- **Money:** `paywall_view`, `paywall_closed`, `purchase_started`, `purchase_completed`, `purchase_error`, `restore_result` (all except `purchase_error` carry the paywall `source`), `free_limit_hit` (`limit`: `decks` | `cards_per_deck` | `downloads` | `pro_feature`).
+- **Other:** `app_opened`, `notification_opened`, `language_changed`. The SDK adds `Application Installed/Opened/Became Active/Backgrounded`.
+
+Dashboards: **Synaps — Growth & Monetization** (id 979762, project home) and **Synaps — Activation & Drop-off** (id 979791; first-run funnel, library funnel, study and retention by activation). The action **Got a deck** = `public_deck_downloaded` OR `deck_created`. A new event needs a tile there too. There is no OTA updates channel (`expo-updates` is not installed), so new events only arrive once a store build ships.
+
+**Onboarding has no paywall** (since 1.0.9): slides → ATT → sign-up (skippable) → notifications → home. Students try the app first and meet the paywall at a free limit or via the Pro button.
 
 ### Roadmap
 

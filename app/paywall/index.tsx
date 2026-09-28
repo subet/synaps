@@ -68,6 +68,13 @@ export default function PaywallScreen() {
   const inOnboarding = !hasSeenOnboarding || onboarding === '1';
   const isWinback = wasPro && !inOnboarding;
   const viewLogged = useRef(false);
+  const openedAt = useRef(Date.now());
+  const eventProps = () => ({
+    source: source ?? 'unknown',
+    in_onboarding: inOnboarding,
+    plan: selectedPlan,
+    has_trial: !!selected?.trialDays,
+  });
 
   useEffect(() => {
     loadOfferings();
@@ -148,8 +155,10 @@ export default function PaywallScreen() {
       Alert.alert(t('error'), t('plan_unavailable'));
       return;
     }
+    logEvent('purchase_started', { ...eventProps(), package_id: pkg.identifier });
     const success = await purchase(pkg);
     if (success) {
+      logEvent('purchase_completed', { ...eventProps(), package_id: pkg.identifier });
       Alert.alert(t('welcome_pro_title'), t('welcome_pro_message'), [
         { text: t('get_started'), onPress: goNext },
       ]);
@@ -158,6 +167,7 @@ export default function PaywallScreen() {
 
   const handleRestore = async () => {
     const success = await restore();
+    logEvent('restore_result', { ...eventProps(), success });
     if (success) {
       Alert.alert(t('restored_title'), t('restored_message'), [
         { text: t('done'), onPress: goNext },
@@ -165,6 +175,16 @@ export default function PaywallScreen() {
     } else {
       Alert.alert(t('no_purchases_title'), t('no_purchases_message'));
     }
+  };
+
+  const handleClose = () => {
+    logEvent('paywall_closed', {
+      ...eventProps(),
+      seconds_open: Math.round((Date.now() - openedAt.current) / 1000),
+      offers_loaded: !!offerings,
+    });
+    if (inOnboarding) goNext();
+    else router.back();
   };
 
   const ctaLabel = () => {
@@ -178,7 +198,7 @@ export default function PaywallScreen() {
       {inOnboarding && <Stack.Screen options={{ gestureEnabled: false }} />}
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {/* Close button — skips to next step during onboarding, goes back otherwise */}
-        <Pressable style={styles.closeBtn} onPress={() => inOnboarding ? goNext() : router.back()}>
+        <Pressable style={styles.closeBtn} onPress={handleClose}>
           <Ionicons name="close" size={22} color={colors.textSecondary} />
         </Pressable>
 

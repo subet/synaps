@@ -17,8 +17,9 @@ export default function ATTScreen() {
   const { t } = useTranslation();
 
   const handleContinue = () => {
-    // Navigate first, then request ATT in the background
-    router.replace('/paywall?onboarding=1&source=onboarding');
+    // Navigate first, then request ATT in the background. No paywall during
+    // onboarding: students try the app first and meet the paywall at a free limit.
+    router.replace('/auth/register');
     requestATT().catch(() => {});
   };
 

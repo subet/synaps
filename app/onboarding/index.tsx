@@ -29,6 +29,7 @@ import { AchievementsHero } from '../../src/components/onboarding/AchievementsHe
 import { LeaderboardHero } from '../../src/components/onboarding/LeaderboardHero';
 import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
+import { logEvent } from '../../src/services/analytics';
 
 const { width } = Dimensions.get('window');
 
@@ -95,6 +96,10 @@ export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const listRef = useRef<FlatList>(null);
   const scrollX = useSharedValue(0);
+
+  useEffect(() => {
+    logEvent('onboarding_step_viewed', { step: SLIDES[currentIndex].key, index: currentIndex });
+  }, [currentIndex]);
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
     scrollX.value = event.contentOffset.x;

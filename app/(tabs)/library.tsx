@@ -25,6 +25,7 @@ import {
 import { bulkInsertCards, createDeck } from '../../src/services/database';
 import { incrementDownloadCount, fetchDownloadCounts } from '../../src/services/supabase';
 import { useTranslation } from '../../src/i18n';
+import { logEvent } from '../../src/services/analytics';
 import { TabHeader } from '../../src/components/ui/TabHeader';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useAppStore } from '../../src/stores/useAppStore';
@@ -97,13 +98,21 @@ export default function LibraryScreen() {
     }
     const timer = setTimeout(() => {
       const results = searchStaticDecks(searchQuery, language);
-      setSearchResults(hiddenDeckId ? results.filter((d) => d.id !== hiddenDeckId) : results);
+      const visible = hiddenDeckId ? results.filter((d) => d.id !== hiddenDeckId) : results;
+      setSearchResults(visible);
+      logEvent('library_searched', { query: searchQuery.trim().slice(0, 50), results: visible.length });
     }, 400);
     return () => clearTimeout(timer);
   }, [searchQuery, hiddenDeckId]);
 
+  const handlePreview = (deck: PublicDeck) => {
+    logEvent('library_deck_previewed', { deck_id: deck.id, category: deck.category, tab: activeTab });
+    setSelectedDeck(deck);
+  };
+
   const handleDownload = async (deck: PublicDeck) => {
     if (!isPro && freeDownloadsUsed >= FREE_DOWNLOAD_LIMIT) {
+      logEvent('free_limit_hit', { limit: 'downloads', used: freeDownloadsUsed });
       setSelectedDeck(null);
       Alert.alert(
         t('limit_downloads_title'),
@@ -151,12 +160,20 @@ export default function LibraryScreen() {
         }))
       );
       if (!isPro) await incrementFreeDownloads();
+      logEvent('public_deck_downloaded', {
+        deck_id: deck.id,
+        category: deck.category,
+        card_count: cards.length,
+        tab: activeTab,
+        free_downloads_used: isPro ? null : freeDownloadsUsed + 1,
+      });
       await loadDecks();
       // Track download count in Supabase (fire-and-forget)
       incrementDownloadCount(deck.id).catch(() => {});
       setDownloadCounts((prev) => ({ ...prev, [deck.id]: (prev[deck.id] ?? 0) + 1 }));
       Alert.alert(t('download_success_title'), t('download_success_message', { name: resolveTranslation(deck.name_translations, deck.name, language) }));
     } catch {
+      logEvent('public_deck_download_failed', { deck_id: deck.id });
       Alert.alert(t('error'), t('download_failed'));
     } finally {
       setDownloading(null);
@@ -229,7 +246,7 @@ export default function LibraryScreen() {
           downloadedIds={downloadedIds}
           downloadCounts={downloadCounts}
           onDownload={handleDownload}
-          onSelect={setSelectedDeck}
+          onSelect={handlePreview}
         />
       ) : activeTab === 'discover' ? (
         <DiscoverTab
@@ -239,7 +256,7 @@ export default function LibraryScreen() {
           downloadedIds={downloadedIds}
           downloadCounts={downloadCounts}
           onDownload={handleDownload}
-          onSelect={setSelectedDeck}
+          onSelect={handlePreview}
           hiddenDeckId={hiddenDeckId}
         />
       ) : (
@@ -254,7 +271,7 @@ export default function LibraryScreen() {
           downloadedIds={downloadedIds}
           downloadCounts={downloadCounts}
           onDownload={handleDownload}
-          onSelect={setSelectedDeck}
+          onSelect={handlePreview}
         />
       )}
 

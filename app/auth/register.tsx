@@ -19,6 +19,7 @@ import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
 import { useAuthStore } from '../../src/stores/useAuthStore';
 import { useAppStore } from '../../src/stores/useAppStore';
+import { logEvent } from '../../src/services/analytics';
 import { SocialAuthButtons } from '../../src/components/auth/SocialAuthButtons';
 
 const LOGO_ICON_SVG = `<svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
@@ -97,7 +98,13 @@ export default function RegisterScreen() {
     <SafeAreaView style={styles.safe}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.flex}>
         <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-          <Pressable style={styles.backBtn} onPress={() => inOnboarding ? router.replace('/onboarding/notifications') : router.replace('/(tabs)')}>
+          <Pressable
+            style={styles.backBtn}
+            onPress={() => {
+              logEvent('auth_skipped', { screen: 'register', via: 'close' });
+              router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+            }}
+          >
             <Ionicons name="close" size={24} color={colors.textSecondary} />
           </Pressable>
 
@@ -169,7 +176,13 @@ export default function RegisterScreen() {
           </Pressable>
 
           {inOnboarding && (
-            <Pressable onPress={() => router.replace('/onboarding/notifications')} style={styles.switchLink}>
+            <Pressable
+              onPress={() => {
+                logEvent('auth_skipped', { screen: 'register', via: 'continue_without' });
+                router.replace('/onboarding/notifications');
+              }}
+              style={styles.switchLink}
+            >
               <Text style={[styles.switchText, { color: colors.textMuted }]}>{t('onboarding_continue_without')}</Text>
             </Pressable>
           )}

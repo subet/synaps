@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { setLocale } from '../i18n';
+import { logEvent, setSuperProperties } from '../services/analytics';
 import { AppSettings, Language } from '../types';
 
 interface AppState extends AppSettings {
@@ -45,8 +46,12 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   setLanguage: async (language) => {
+    const previous = get().language;
     setLocale(language); // sync — i18n.locale updated before Zustand subscribers re-render
     set({ language });
+    setSuperProperties({ app_language: language });
+    // First-launch detection has no previous language; only log real switches
+    if (previous && previous !== language) logEvent('language_changed', { from: previous, to: language });
     await saveSettings({ ...get(), language });
   },
 
@@ -75,6 +80,7 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   markOnboardingComplete: async () => {
     set({ hasSeenOnboarding: true });
+    setSuperProperties({ onboarding_done: true });
     await saveSettings({ ...get(), hasSeenOnboarding: true });
   },
 

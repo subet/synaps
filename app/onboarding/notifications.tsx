@@ -8,18 +8,23 @@ import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
 import { requestNotificationPermissions } from '../../src/services/notifications';
 import { useAppStore } from '../../src/stores/useAppStore';
+import { logEvent } from '../../src/services/analytics';
 
 export default function NotificationsOnboardingScreen() {
   const { t } = useTranslation();
   const { markOnboardingComplete } = useAppStore();
 
   const handleEnable = async () => {
-    await requestNotificationPermissions();
+    const granted = await requestNotificationPermissions();
+    logEvent('notification_permission', { choice: 'enable', granted });
+    logEvent('onboarding_completed', { notifications: granted });
     await markOnboardingComplete();
     router.replace('/(tabs)');
   };
 
   const handleSkip = async () => {
+    logEvent('notification_permission', { choice: 'skip', granted: false });
+    logEvent('onboarding_completed', { notifications: false });
     await markOnboardingComplete();
     router.replace('/(tabs)');
   };

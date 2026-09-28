@@ -18,6 +18,7 @@ import { Button } from '../../../src/components/ui/Button';
 import { Input } from '../../../src/components/ui/Input';
 import { borderRadius, colors, FREE_CARDS_PER_DECK_LIMIT, spacing, typography } from '../../../src/constants';
 import { useTranslation } from '../../../src/i18n';
+import { logEvent } from '../../../src/services/analytics';
 import { useStudyStore } from '../../../src/stores/useStudyStore';
 import { useSubscriptionStore } from '../../../src/stores/useSubscriptionStore';
 
@@ -65,6 +66,7 @@ export default function CreateCardScreen() {
     if (!validate()) return;
 
     if (!isPro && deckCards.length >= FREE_CARDS_PER_DECK_LIMIT) {
+      logEvent('free_limit_hit', { limit: 'cards_per_deck', used: deckCards.length });
       Alert.alert(
         t('limit_cards_title'),
         t('limit_cards_message', { limit: FREE_CARDS_PER_DECK_LIMIT }),
@@ -89,6 +91,11 @@ export default function CreateCardScreen() {
         ease_factor: 2.5,
         interval: 0,
         repetitions: 0,
+      });
+      logEvent('card_created', {
+        cards_in_deck: deckCards.length + 1,
+        has_image: !!(frontImage || backImage),
+        continue_adding: continueAdding,
       });
 
       if (continueAdding) {

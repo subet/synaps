@@ -18,6 +18,7 @@ import { Button } from '../../src/components/ui/Button';
 import { Input } from '../../src/components/ui/Input';
 import { borderRadius, colors, FREE_DECK_LIMIT, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
+import { logEvent } from '../../src/services/analytics';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
 
@@ -64,6 +65,7 @@ export default function CreateDeckScreen() {
     }
 
     if (!isPro && decks.length >= FREE_DECK_LIMIT) {
+      logEvent('free_limit_hit', { limit: 'decks', used: decks.length });
       Alert.alert(
         t('limit_decks_title'),
         t('limit_decks_message', { limit: FREE_DECK_LIMIT }),
@@ -88,6 +90,7 @@ export default function CreateDeckScreen() {
         reverse_cards: false,
         is_public_download: false,
       });
+      logEvent('deck_created', { decks_total: decks.length + 1, has_description: !!description.trim() });
       router.replace(`/deck/${deck.id}`);
     } catch {
       Alert.alert(t('error'), t('failed_create_deck'));

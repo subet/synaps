@@ -20,7 +20,11 @@ import { getStreakData, getWeeklyStudyStats } from '../services/database';
 import { useAppStore } from './useAppStore';
 import { useAuthStore } from './useAuthStore';
 import { upsertWeeklyStats } from '../services/leaderboard';
+import { logEvent } from '../services/analytics';
 import { Card, FriendScoreDelta, SRSGrade, StudySessionResult } from '../types';
+
+// Analytics context for the running session (not UI state, so kept out of the store)
+let sessionMeta = { deckId: '', isPublic: false, extra: false };
 
 interface StudyState {
   // Current study session
@@ -77,6 +81,14 @@ export const useStudyStore = create<StudyState>((set, get) => ({
     const queue = deck?.shuffle_cards
       ? [...dueCards].sort(() => Math.random() - 0.5)
       : dueCards;
+
+    sessionMeta = { deckId, isPublic: !!deck?.source_id, extra: !!extra };
+    logEvent('study_session_started', {
+      deck_id: deckId,
+      is_public_deck: sessionMeta.isPublic,
+      extra: sessionMeta.extra,
+      due_cards: dueCards.length,
+    });
 
     set({
       sessionId: session.id,
@@ -159,6 +171,14 @@ export const useStudyStore = create<StudyState>((set, get) => ({
       }
     } catch {}
 
+    logEvent('study_card_graded', {
+      grade: (['again', 'hard', 'good', 'easy'] as const)[grade],
+      position: currentIndex + 1,
+      queue_size: queue.length,
+      card_status: card.status,
+      seconds: elapsedSeconds,
+    });
+
     // Track grade distribution
     const gradeKey = (['again', 'hard', 'good', 'easy'] as const)[grade];
     const newDist = { ...gradeDistribution, [gradeKey]: gradeDistribution[gradeKey] + 1 };
@@ -186,6 +206,15 @@ export const useStudyStore = create<StudyState>((set, get) => ({
     const cardsCorrect = gradeDistribution.good + gradeDistribution.easy;
 
     await completeStudySession(sessionId, {
+      cards_studied: cardsStudied,
+      cards_correct: cardsCorrect,
+      duration_seconds: durationSeconds,
+    });
+
+    logEvent('study_session_completed', {
+      deck_id: sessionMeta.deckId,
+      is_public_deck: sessionMeta.isPublic,
+      extra: sessionMeta.extra,
       cards_studied: cardsStudied,
       cards_correct: cardsCorrect,
       duration_seconds: durationSeconds,
@@ -227,6 +256,17 @@ export const useStudyStore = create<StudyState>((set, get) => ({
   },
 
   resetSession: () => {
+    // Leaving before the last card counts as abandoned
+    const { sessionId, isSessionComplete, currentIndex, queue, sessionStartTime } = get();
+    if (sessionId && !isSessionComplete) {
+      logEvent('study_session_abandoned', {
+        deck_id: sessionMeta.deckId,
+        is_public_deck: sessionMeta.isPublic,
+        cards_graded: currentIndex,
+        queue_size: queue.length,
+        seconds: sessionStartTime ? Math.round((Date.now() - sessionStartTime) / 1000) : 0,
+      });
+    }
     set({
       sessionId: null,
       queue: [],

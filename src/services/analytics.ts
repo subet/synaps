@@ -60,6 +60,28 @@ export function identify(userId: string): void {
   } catch {}
 }
 
+/** Records a screen view; `name` is the route pattern, e.g. `deck/[id]`. */
+export function screen(name: string, props: AnalyticsProps = {}): void {
+  if (__DEV__) {
+    console.log(`[analytics] screen ${name}`, props);
+    return;
+  }
+  try {
+    getClient()?.screen(name, props);
+  } catch {}
+}
+
+/** Properties attached to every later event (e.g. is_pro, app_language). */
+export function setSuperProperties(props: AnalyticsProps): void {
+  if (__DEV__) {
+    console.log('[analytics] super', props);
+    return;
+  }
+  try {
+    getClient()?.register(props);
+  } catch {}
+}
+
 /** Clears the current identity — call on logout, after RevenueCat logOut. */
 export function reset(): void {
   if (__DEV__) {

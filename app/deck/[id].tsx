@@ -1,6 +1,6 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams, useFocusEffect } from 'expo-router';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   FlatList,
@@ -18,6 +18,7 @@ import { EmptyState } from '../../src/components/ui/EmptyState';
 import { SearchBar } from '../../src/components/ui/SearchBar';
 import { borderRadius, colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
+import { logEvent } from '../../src/services/analytics';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useStudyStore } from '../../src/stores/useStudyStore';
 import { useSubscriptionStore } from '../../src/stores/useSubscriptionStore';
@@ -33,6 +34,9 @@ export default function DeckDetailScreen() {
   const { isPro } = useSubscriptionStore();
   const { isOffline } = useNetworkStatus();
   const isLocked = isOffline && !isPro;
+  useEffect(() => {
+    if (isLocked) logEvent('study_blocked_offline', { deck_id: id, where: 'deck_detail' });
+  }, [isLocked]);
   const [searchQuery, setSearchQuery] = useState('');
 
   const language = useAppStore((s) => s.language);

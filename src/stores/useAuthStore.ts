@@ -12,7 +12,7 @@ import {
   updateAuthPassword,
 } from '../services/supabase';
 import { signInWithApple, signInWithGoogle } from '../services/socialAuth';
-import { identify, reset as resetAnalytics } from '../services/analytics';
+import { identify, logEvent, reset as resetAnalytics, setSuperProperties } from '../services/analytics';
 import { UserProfile } from '../types';
 
 interface AuthState {
@@ -34,6 +34,12 @@ interface AuthState {
   uploadProfileAvatar: (localUri: string) => Promise<void>;
   updateEmail: (newEmail: string) => Promise<void>;
   updatePassword: (newPassword: string) => Promise<void>;
+}
+
+/** Social sign-in cannot tell a new account from a returning one, so its mode is 'social'. */
+function authSucceeded(method: 'email' | 'google' | 'apple', mode: 'login' | 'register' | 'social' = 'social') {
+  logEvent('auth_completed', { method, mode });
+  setSuperProperties({ signed_in: true });
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -78,7 +84,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const data = await signIn(email, password);
       set({ user: data.user, isLoading: false });
+      authSucceeded('email', 'login');
     } catch (e: any) {
+      logEvent('auth_failed', { method: 'email', mode: 'login', error_code: e?.code ?? null });
       set({ error: e.message ?? 'Login failed', isLoading: false });
       throw e;
     }
@@ -89,7 +97,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const data = await signUp(email, password, displayName);
       set({ user: data.user ?? null, isLoading: false });
+      authSucceeded('email', 'register');
     } catch (e: any) {
+      logEvent('auth_failed', { method: 'email', mode: 'register', error_code: e?.code ?? null });
       const parts = [
         e.message,
         e.code ? `code: ${e.code}` : null,
@@ -108,12 +118,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const data = await signInWithGoogle();
       set({ user: data.user, isLoading: false });
+      authSucceeded('google');
     } catch (e: any) {
       // User cancelled = not an error
       if (e?.code === 'SIGN_IN_CANCELLED' || e?.message?.includes('cancel')) {
+        logEvent('auth_cancelled', { method: 'google' });
         set({ isLoading: false });
         return;
       }
+      logEvent('auth_failed', { method: 'google', mode: 'social', error_code: e?.code ?? null });
       set({ error: e.message ?? 'Google sign-in failed', isLoading: false });
       throw e;
     }
@@ -124,12 +137,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const data = await signInWithApple();
       set({ user: data.user, isLoading: false });
+      authSucceeded('apple');
     } catch (e: any) {
       // ERR_CANCELED = user dismissed the Apple sheet
       if (e?.code === 'ERR_CANCELED') {
+        logEvent('auth_cancelled', { method: 'apple' });
         set({ isLoading: false });
         return;
       }
+      logEvent('auth_failed', { method: 'apple', mode: 'social', error_code: e?.code ?? null });
       set({ error: e.message ?? 'Apple sign-in failed', isLoading: false });
       throw e;
     }

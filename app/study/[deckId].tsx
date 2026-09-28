@@ -22,6 +22,7 @@ import { FlashCard } from '../../src/components/study/FlashCard';
 import { Button } from '../../src/components/ui/Button';
 import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
+import { logEvent } from '../../src/services/analytics';
 import { getPreviewIntervals } from '../../src/services/srs';
 import { useBadgeStore } from '../../src/stores/useBadgeStore';
 import { useDeckStore } from '../../src/stores/useDeckStore';
@@ -84,6 +85,7 @@ export default function StudyScreen() {
   // Kick free users back to deck screen when they go offline mid-session
   useEffect(() => {
     if (isOffline && !isPro) {
+      logEvent('study_blocked_offline', { deck_id: deckId, where: 'mid_session' });
       stopSpeech();
       resetSession();
       router.back();

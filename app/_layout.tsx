@@ -1,11 +1,11 @@
 import { useLocales } from 'expo-localization';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { scheduleDailyReminder, scheduleInactivityNudge, scheduleProExpiredWinBack, cancelWinBackNotifications, cancelAllNotifications, registerPushToken, removePushToken, addNotificationResponseListener } from '../src/services/notifications';
-import { logEvent } from '../src/services/analytics';
+import { logEvent, screen, setSuperProperties } from '../src/services/analytics';
 import { repairPublicDeckTranslations } from '../src/services/database';
 import { ErrorBoundary } from '../src/components/ui/ErrorBoundary';
 import { setLocale } from '../src/i18n';
@@ -33,6 +33,7 @@ export default function RootLayout() {
   const { initialize: initSubscription } = useSubscriptionStore();
   const locales = useLocales();
   const router = useRouter();
+  const segments = useSegments();
   const [animationDone, setAnimationDone] = useState(false);
   const appReady = !isLoading && isInitialized;
 
@@ -41,7 +42,7 @@ export default function RootLayout() {
       logEvent('app_opened'); // once per cold start
       await loadSettings();
 
-      const { language, setLanguage } = useAppStore.getState();
+      const { language, setLanguage, hasSeenOnboarding: onboardingDone } = useAppStore.getState();
       if (language) {
         // Returning user — apply stored locale
         setLocale(language);
@@ -56,6 +57,13 @@ export default function RootLayout() {
       await initAuth();
       const { user } = useAuthStore.getState();
       await initSubscription(user?.id);
+
+      setSuperProperties({
+        app_language: useAppStore.getState().language,
+        onboarding_done: onboardingDone,
+        is_pro: useSubscriptionStore.getState().isPro,
+        signed_in: !!user,
+      });
 
       // Register Expo push token for remote notifications
       if (user) {
@@ -89,12 +97,23 @@ export default function RootLayout() {
   useEffect(() => {
     const sub = addNotificationResponseListener((response) => {
       const data = response.notification.request.content.data;
+      logEvent('notification_opened', {
+        url: typeof data?.url === 'string' ? data.url : null,
+        kind: typeof data?.type === 'string' ? data.type : null,
+      });
       if (data?.url && typeof data.url === 'string') {
         router.push(data.url as never);
       }
     });
     return () => sub.remove();
   }, []);
+
+  // One $screen per route change, named by route pattern (e.g. `deck/[id]`)
+  const routeName = segments.join('/') || 'index';
+  useEffect(() => {
+    if (!appReady || !animationDone) return;
+    screen(routeName === '(tabs)' ? '(tabs)/index' : routeName);
+  }, [routeName, appReady, animationDone]);
 
   // Hide native splash immediately — our animated splash takes over
   useEffect(() => {
