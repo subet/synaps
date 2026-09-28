@@ -701,9 +701,8 @@ function FeaturedDeckCard({
         <Text style={styles.downloadCountText}>{formatCount(downloadCount)} {t('download').toLowerCase()}s</Text>
       )}
       {isDownloaded && (
-        <View style={styles.downloadedBadge}>
-          <Ionicons name="checkmark" size={14} color={colors.white} />
-          <Text style={styles.downloadedBadgeText}> {t('downloaded')}</Text>
+        <View style={styles.downloadedBadge} accessibilityLabel={t('downloaded')}>
+          <Ionicons name="download-outline" size={16} color={colors.white} />
         </View>
       )}
     </Pressable>
@@ -745,8 +744,8 @@ function EditorsChoiceDeckCard({
       <View style={styles.editorsCardRight}>
         {renderIcon(deck.icon_url, deck.category, 36, colors.primary)}
         {isDownloaded && (
-          <View style={styles.downloadedBadgeSmall}>
-            <Ionicons name="checkmark" size={18} color={colors.white} />
+          <View style={styles.downloadedBadgeSmall} accessibilityLabel={t('downloaded')}>
+            <Ionicons name="download-outline" size={18} color={colors.white} />
           </View>
         )}
       </View>
@@ -790,9 +789,8 @@ function BrowseDeckCard({
         </View>
       </View>
       {isDownloaded && (
-        <View style={styles.downloadedBadge}>
-          <Ionicons name="checkmark" size={14} color={colors.white} />
-          <Text style={styles.downloadedBadgeText}> {t('downloaded')}</Text>
+        <View style={styles.downloadedBadge} accessibilityLabel={t('downloaded')}>
+          <Ionicons name="download-outline" size={16} color={colors.white} />
         </View>
       )}
     </Pressable>
@@ -1163,18 +1161,15 @@ const styles = StyleSheet.create({
   },
   downloadBtnDisabled: { opacity: 0.6 },
   downloadBtnText: { ...typography.smallBold, color: colors.white },
+  // Icon-only "downloaded" marker: same height as the Download button, square
   downloadedBadge: {
     backgroundColor: colors.learning,
     borderRadius: borderRadius.sm,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    minWidth: 64,
-    flexDirection: 'row',
+    width: 30,
+    height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 30,
   },
-  downloadedBadgeText: { ...typography.smallBold, color: colors.white },
   downloadedBadgeSmall: {
     backgroundColor: colors.learning,
     width: 36,
