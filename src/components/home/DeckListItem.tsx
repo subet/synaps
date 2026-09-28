@@ -8,6 +8,24 @@ import { Deck, DeckStats } from '../../types';
 import { useResolvedDeckDescription, useResolvedDeckName } from '../../utils/translations';
 import { LanguageBadge } from '../ui/LanguageBadge';
 
+/**
+ * Opaque version of `hex` at `alpha` over `base`. The due pill casts a shadow,
+ * and Android draws elevation through a translucent background (grey fill,
+ * thick edge), so the tint must be solid there. Non-hex colors fall back to
+ * the translucent tint.
+ */
+function solidTint(hex: string, alpha: number, base: string = colors.surface): string {
+  const parse = (c: string) => {
+    const m = /^#?([0-9a-f]{6})$/i.exec(c);
+    return m ? [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16)) : null;
+  };
+  const fg = parse(hex);
+  const bg = parse(base);
+  if (!fg || !bg) return `${hex}${Math.round(alpha * 255).toString(16).padStart(2, '0')}`;
+  const mix = fg.map((v, i) => Math.round(v * alpha + bg[i] * (1 - alpha)));
+  return `#${mix.map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+}
+
 interface DeckListItemProps {
   deck: Deck;
   stats?: DeckStats;
@@ -50,7 +68,7 @@ export function DeckListItem({ deck, stats, onPress }: DeckListItemProps) {
       </View>
 
       {/* Due pill */}
-      <View style={[styles.duePill, { backgroundColor: `${accentColor}12` }]}>
+      <View style={[styles.duePill, { backgroundColor: solidTint(accentColor, 0x12 / 255) }]}>
         <Text style={[styles.dueCount, { color: accentColor }]}>{dueCount}</Text>
         <Text style={[styles.dueLabel, { color: accentColor }]}>{t('due')}</Text>
       </View>
