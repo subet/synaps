@@ -93,7 +93,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export default function SettingsScreen() {
   const { t } = useTranslation();
   const { notifications, language, hapticsEnabled, setNotificationsEnabled, setNotificationTime, setWeeklyRecapEnabled, setLanguage, setHapticsEnabled } = useAppStore();
-  const { user, profile, logout } = useAuthStore();
+  const { user, profile, logout, deleteAccount } = useAuthStore();
   const { isPro } = useSubscriptionStore();
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showLanguagePicker, setShowLanguagePicker] = useState(false);
@@ -179,6 +179,24 @@ export default function SettingsScreen() {
     ]);
   };
 
+  const handleDeleteAccount = () => {
+    Alert.alert(t('delete_account'), t('delete_account_confirm'), [
+      { text: t('cancel'), style: 'cancel' },
+      {
+        text: t('delete'),
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await deleteAccount();
+            Alert.alert(t('done'), t('account_deleted'));
+          } catch {
+            Alert.alert(t('error'), t('delete_account_failed'));
+          }
+        },
+      },
+    ]);
+  };
+
   const version = Constants.expoConfig?.version ?? '1.0.0';
 
   return (
@@ -221,6 +239,7 @@ export default function SettingsScreen() {
               Alert.alert('Sync', t('sync_coming_soon'));
             }} />
             <SettingsRow label={t('sign_out')} onPress={handleSignOut} danger />
+            <SettingsRow label={t('delete_account')} onPress={handleDeleteAccount} danger />
           </Section>
         ) : (
           <Section title={t('account')}>

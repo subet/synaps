@@ -233,6 +233,10 @@ export const zh = {
   sign_out: '退出登录',
   sign_out_title: '退出登录',
   sign_out_confirm: '确定要退出登录吗？',
+  delete_account: "删除账户",
+  delete_account_confirm: "您的账户、个人资料、好友和排行榜记录将被永久删除。此设备上的牌组和学习进度会保留。有效的订阅不会自动取消，请在 App Store 或 Google Play 设置中取消。",
+  account_deleted: "您的账户已删除。",
+  delete_account_failed: "无法删除账户。请检查网络连接后重试。",
   notifications_permission: '请在设备设置中启用通知。',
   app_store_pending: 'App Store 页面暂未上线。',
 

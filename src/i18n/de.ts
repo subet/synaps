@@ -233,6 +233,10 @@ export const de = {
   sign_out: 'Abmelden',
   sign_out_title: 'Abmelden',
   sign_out_confirm: 'Möchtest du dich wirklich abmelden?',
+  delete_account: "Konto löschen",
+  delete_account_confirm: "Dein Konto, Profil, deine Freunde und dein Ranglistenverlauf werden dauerhaft gelöscht. Stapel und Fortschritt auf diesem Gerät bleiben erhalten. Ein aktives Abo wird nicht gekündigt – kündige es in den Einstellungen von App Store oder Google Play.",
+  account_deleted: "Dein Konto wurde gelöscht.",
+  delete_account_failed: "Dein Konto konnte nicht gelöscht werden. Prüfe deine Verbindung und versuche es erneut.",
   notifications_permission: 'Bitte aktiviere Benachrichtigungen in deinen Geräteeinstellungen.',
   app_store_pending: 'Der App Store-Eintrag ist noch nicht verfügbar.',
 

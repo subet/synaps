@@ -234,6 +234,10 @@ export const en = {
   sign_out: 'Sign Out',
   sign_out_title: 'Sign Out',
   sign_out_confirm: 'Are you sure you want to sign out?',
+  delete_account: "Delete account",
+  delete_account_confirm: "This permanently deletes your account, profile, friends and leaderboard history. Decks and progress on this device stay. An active subscription is not cancelled — cancel it in your App Store or Google Play settings.",
+  account_deleted: "Your account has been deleted.",
+  delete_account_failed: "Could not delete your account. Check your connection and try again.",
   notifications_permission: 'Please enable notifications in your device settings.',
   app_store_pending: 'The App Store listing is not available yet.',
 

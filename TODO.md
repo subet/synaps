@@ -1,7 +1,8 @@
 # LEADERBOARD — anonymous learners
 - [x] Anonymous sign-ins enabled in Supabase (2026-09-28); verified end to end (profile row created, names readable, own row writable, others' rows 403).
-- [ ] Decide: add `ON DELETE CASCADE` to `profiles_id_fkey` (auth.users → profiles) so deleting a user — or pruning old anonymous users — doesn't fail.
-- [ ] No in-app account deletion exists; App Store guideline 5.1.1(v) requires it for apps that let users create accounts.
+- [x] `profiles_id_fkey` now cascades (migration 20260928000001).
+- [x] In-app account deletion (Settings → Delete account, edge function `delete-account`) — App Store guideline 5.1.1(v). Ships in Android 1.0.9 (19+) / iOS 1.0.10.
+- [ ] Optional: prune anonymous users inactive for 30+ days (Supabase recommends it); deletes now cascade.
 
 # RETENTION (2026-09-28)
 278 of 325 users used the app on a single day; D1 ≈ 6%. The first-run instrumentation (1.0.9) should show exactly where they leave — read the **Activation & Drop-off** dashboard in PostHog once ~1–2 weeks of 1.0.9 data exist, then pick a strategy. Suspects found in the code, to confirm or rule out with that data:

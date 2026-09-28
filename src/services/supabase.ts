@@ -141,6 +141,20 @@ export async function signOut() {
   if (error) throw error;
 }
 
+/**
+ * Permanently deletes the signed-in account server-side (edge function
+ * `delete-account`: avatar + auth user; all user tables cascade).
+ */
+export async function deleteAccountRemote() {
+  const { error } = await supabase.functions.invoke('delete-account', { method: 'POST' });
+  if (error) throw error;
+}
+
+/** Drops the local session only — for when the server-side user no longer exists. */
+export async function signOutLocal() {
+  await supabase.auth.signOut({ scope: 'local' });
+}
+
 export async function getCurrentUser() {
   const { data: { user } } = await supabase.auth.getUser();
   return user;

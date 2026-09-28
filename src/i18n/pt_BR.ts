@@ -233,6 +233,10 @@ export const pt_BR = {
   sign_out: 'Sair',
   sign_out_title: 'Sair',
   sign_out_confirm: 'Tem certeza que deseja sair?',
+  delete_account: "Excluir conta",
+  delete_account_confirm: "Sua conta, perfil, amigos e histórico no ranking serão excluídos permanentemente. Os baralhos e o progresso neste dispositivo continuam. Uma assinatura ativa não é cancelada: cancele-a nos ajustes da App Store ou do Google Play.",
+  account_deleted: "Sua conta foi excluída.",
+  delete_account_failed: "Não foi possível excluir sua conta. Verifique sua conexão e tente novamente.",
   notifications_permission: 'Por favor, ative as notificações nas configurações do seu celular.',
   app_store_pending: 'A listagem na App Store ainda não está disponível.',
 

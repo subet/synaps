@@ -233,6 +233,10 @@ export const es = {
   sign_out: 'Cerrar sesión',
   sign_out_title: 'Cerrar sesión',
   sign_out_confirm: '¿Estás seguro de que quieres cerrar sesión?',
+  delete_account: "Eliminar cuenta",
+  delete_account_confirm: "Se eliminarán de forma permanente tu cuenta, tu perfil, tus amigos y tu historial en la clasificación. Los mazos y el progreso de este dispositivo se conservan. Una suscripción activa no se cancela: cancélala en los ajustes de App Store o Google Play.",
+  account_deleted: "Tu cuenta ha sido eliminada.",
+  delete_account_failed: "No se pudo eliminar tu cuenta. Comprueba tu conexión e inténtalo de nuevo.",
   notifications_permission: 'Por favor, activa las notificaciones en los ajustes de tu dispositivo.',
   app_store_pending: 'La ficha de la App Store aún no está disponible.',
 

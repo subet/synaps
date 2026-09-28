@@ -233,6 +233,10 @@ export const fr = {
   sign_out: 'Se déconnecter',
   sign_out_title: 'Se déconnecter',
   sign_out_confirm: 'Es-tu sûr de vouloir te déconnecter ?',
+  delete_account: "Supprimer le compte",
+  delete_account_confirm: "Ton compte, ton profil, tes amis et ton historique de classement seront définitivement supprimés. Les paquets et la progression sur cet appareil sont conservés. Un abonnement actif n'est pas résilié : résilie-le dans les réglages de l'App Store ou de Google Play.",
+  account_deleted: "Ton compte a été supprimé.",
+  delete_account_failed: "Impossible de supprimer ton compte. Vérifie ta connexion et réessaie.",
   notifications_permission: 'Veuillez activer les notifications dans les paramètres de ton appareil.',
   app_store_pending: 'La fiche App Store n\'est pas encore disponible.',
 

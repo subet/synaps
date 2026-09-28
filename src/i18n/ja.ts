@@ -234,6 +234,10 @@ export const ja = {
   sign_out: 'サインアウト',
   sign_out_title: 'サインアウト',
   sign_out_confirm: 'サインアウトしてもよろしいですか？',
+  delete_account: "アカウントを削除",
+  delete_account_confirm: "アカウント、プロフィール、フレンド、ランキング履歴が完全に削除されます。この端末のデッキと学習データは残ります。有効なサブスクリプションは自動でキャンセルされません。App Store または Google Play の設定から解約してください。",
+  account_deleted: "アカウントを削除しました。",
+  delete_account_failed: "アカウントを削除できませんでした。接続を確認して、もう一度お試しください。",
   notifications_permission: '端末の設定で通知を有効にしてください。',
   app_store_pending: 'App Storeのページはまだ利用できません。',
 

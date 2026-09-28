@@ -233,6 +233,10 @@ export const nl = {
   sign_out: 'Afmelden',
   sign_out_title: 'Afmelden',
   sign_out_confirm: 'Weet je zeker dat je wilt afmelden?',
+  delete_account: "Account verwijderen",
+  delete_account_confirm: "Je account, profiel, vrienden en ranglijstgeschiedenis worden permanent verwijderd. Stapels en voortgang op dit apparaat blijven bewaard. Een actief abonnement wordt niet opgezegd: zeg het op in de instellingen van de App Store of Google Play.",
+  account_deleted: "Je account is verwijderd.",
+  delete_account_failed: "Je account kon niet worden verwijderd. Controleer je verbinding en probeer het opnieuw.",
   notifications_permission: 'Schakel meldingen in via je apparaatinstellingen.',
   app_store_pending: 'De App Store-vermelding is nog niet beschikbaar.',
 

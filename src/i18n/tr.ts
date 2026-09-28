@@ -233,6 +233,10 @@ export const tr = {
   sign_out: 'Çıkış Yap',
   sign_out_title: 'Çıkış Yap',
   sign_out_confirm: 'Çıkış yapmak istediğinizden emin misiniz?',
+  delete_account: "Hesabı sil",
+  delete_account_confirm: "Hesabınız, profiliniz, arkadaşlarınız ve liderlik geçmişiniz kalıcı olarak silinir. Bu cihazdaki desteleriniz ve ilerlemeniz kalır. Aktif bir aboneliğiniz varsa otomatik iptal edilmez; App Store veya Google Play ayarlarından iptal edin.",
+  account_deleted: "Hesabınız silindi.",
+  delete_account_failed: "Hesabınız silinemedi. Bağlantınızı kontrol edip tekrar deneyin.",
   notifications_permission: 'Lütfen cihaz ayarlarından bildirimleri etkinleştirin.',
   app_store_pending: 'App Store listesi henüz mevcut değil.',
 

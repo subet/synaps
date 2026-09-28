@@ -233,6 +233,10 @@ export const it = {
   sign_out: 'Esci',
   sign_out_title: 'Esci',
   sign_out_confirm: 'Sei sicuro di voler uscire?',
+  delete_account: "Elimina account",
+  delete_account_confirm: "Il tuo account, il profilo, gli amici e lo storico della classifica verranno eliminati definitivamente. I mazzi e i progressi su questo dispositivo restano. Un abbonamento attivo non viene annullato: annullalo nelle impostazioni di App Store o Google Play.",
+  account_deleted: "Il tuo account è stato eliminato.",
+  delete_account_failed: "Impossibile eliminare l'account. Controlla la connessione e riprova.",
   notifications_permission: 'Attiva le notifiche nelle impostazioni del dispositivo.',
   app_store_pending: 'La scheda dell\'App Store non è ancora disponibile.',
 

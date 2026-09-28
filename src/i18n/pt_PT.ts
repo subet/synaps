@@ -233,6 +233,10 @@ export const pt_PT = {
   sign_out: 'Terminar Sessão',
   sign_out_title: 'Terminar Sessão',
   sign_out_confirm: 'Tem a certeza de que pretende terminar sessão?',
+  delete_account: "Eliminar conta",
+  delete_account_confirm: "A sua conta, perfil, amigos e histórico na classificação serão eliminados permanentemente. Os baralhos e o progresso neste dispositivo mantêm-se. Uma subscrição ativa não é cancelada: cancele-a nas definições da App Store ou do Google Play.",
+  account_deleted: "A sua conta foi eliminada.",
+  delete_account_failed: "Não foi possível eliminar a sua conta. Verifique a ligação e tente novamente.",
   notifications_permission: 'Por favor, active as notificações nas definições do seu telemóvel.',
   app_store_pending: 'A listagem na App Store ainda não está disponível.',
 

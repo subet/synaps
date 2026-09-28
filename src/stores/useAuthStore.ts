@@ -4,6 +4,8 @@ import {
   supabase,
   signIn,
   signOut,
+  signOutLocal,
+  deleteAccountRemote,
   signUp,
   getUserProfile,
   updateUserProfile,
@@ -35,6 +37,8 @@ interface AuthState {
   loginWithGoogle: () => Promise<void>;
   loginWithApple: () => Promise<void>;
   logout: () => Promise<void>;
+  /** Deletes the account for good, then leaves the device signed out. Throws on failure. */
+  deleteAccount: () => Promise<void>;
   clearError: () => void;
   loadProfile: (userId: string) => Promise<void>;
   updateProfile: (updates: { display_name?: string; avatar_url?: string; country?: string }) => Promise<void>;
@@ -205,6 +209,31 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } catch {
       set({ isLoading: false });
     }
+  },
+
+  deleteAccount: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      await deleteAccountRemote();
+    } catch (e) {
+      logEvent('account_delete_failed');
+      set({ isLoading: false });
+      throw e;
+    }
+    logEvent('account_deleted');
+    // The server-side user is gone, so only the local session is left to drop
+    try {
+      await signOutLocal();
+    } catch {}
+    set({ user: null, profile: null, isLoading: false });
+    // Same identity reset as logout: fresh RevenueCat + analytics identity
+    try {
+      const { logOutUser } = require('../services/revenueCat') as typeof import('../services/revenueCat');
+      await logOutUser();
+      resetAnalytics();
+      const { useSubscriptionStore } = require('./useSubscriptionStore') as typeof import('./useSubscriptionStore');
+      await useSubscriptionStore.getState().refreshStatus();
+    } catch {}
   },
 
   clearError: () => set({ error: null }),
