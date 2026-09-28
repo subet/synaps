@@ -50,6 +50,10 @@ Supabase (`src/services/supabase.ts`) handles auth (email + Apple/Google via `so
 
 Ready-made decks are **statically bundled** in `src/data/publicDecks/` (metadata in `decks.ts`, cards per category under `languages/`, `subjects/`, `exams/`, `make_money/`). Downloading a deck copies it into local SQLite (`source_id`, `is_public_download` flags). Deck catalog is documented in `DECKS.md` — keep it in sync when adding decks. Static cards carry `front_translations`/`back_translations` maps produced by the scripts in `scripts/`.
 
+### Analytics (PostHog)
+
+`src/services/analytics.ts` wraps `posthog-react-native` (EU, project **Synaps Mobile**, id 251689 — a separate PostHog account from the other Mudimedia apps). Production builds only; `__DEV__` logs to console. Identity is the Supabase user id when signed in, else the RevenueCat appUserID, so one device = one PostHog person. Custom events today: `app_opened`, `paywall_view` (`source`, `variant`, `trial_available`), `purchase_error` (`error_code`, `user_cancelled`, `package_id`); the SDK adds `Application Installed/Opened/Became Active/Backgrounded`. The project's home dashboard is **Synaps — Growth & Monetization** (id 979762); new events need new tiles there. There is no purchase-success, study, or deck event yet, so the dashboard cannot show learning activity or conversion to paid.
+
 ### Roadmap
 
 `TODO.md` tracks planned features (user-shared decks, locked deck tiers, new deck subjects, exam-specific decks).
