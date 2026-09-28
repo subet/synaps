@@ -1,6 +1,7 @@
-# LEADERBOARD — anonymous learners (code done in 1.0.9, needs Supabase)
-- [ ] Supabase dashboard → Authentication → Sign In / Providers → turn on **Allow anonymous sign-ins** (currently off).
-- [ ] Check that the profile trigger on `auth.users` works for users with no email/display_name, and that `weekly_stats` insert/update RLS allows `auth.uid() = user_id` for anonymous users (FK `weekly_stats_user_id_fkey` needs the profile row). Claude has no management access to the Synaps Supabase project (the CLI login only sees KalTrack / Lens & Muse).
+# LEADERBOARD — anonymous learners
+- [x] Anonymous sign-ins enabled in Supabase (2026-09-28); verified end to end (profile row created, names readable, own row writable, others' rows 403).
+- [ ] Decide: add `ON DELETE CASCADE` to `profiles_id_fkey` (auth.users → profiles) so deleting a user — or pruning old anonymous users — doesn't fail.
+- [ ] No in-app account deletion exists; App Store guideline 5.1.1(v) requires it for apps that let users create accounts.
 
 # RETENTION (2026-09-28)
 278 of 325 users used the app on a single day; D1 ≈ 6%. The first-run instrumentation (1.0.9) should show exactly where they leave — read the **Activation & Drop-off** dashboard in PostHog once ~1–2 weeks of 1.0.9 data exist, then pick a strategy. Suspects found in the code, to confirm or rule out with that data:

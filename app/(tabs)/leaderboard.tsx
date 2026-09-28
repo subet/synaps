@@ -173,6 +173,7 @@ export default function LeaderboardTab() {
                   entry={userEntry}
                   isMe
                   showFlag={showFlag}
+                  canSeeNames={!!myId}
                   onPress={() => setSelectedUserId(userEntry.userId)}
                 />
               </View>
@@ -183,6 +184,7 @@ export default function LeaderboardTab() {
               entry={item}
               isMe={item.userId === myId}
               showFlag={showFlag}
+              canSeeNames={!!myId}
               onPress={() => setSelectedUserId(item.userId)}
             />
           )}
@@ -202,17 +204,20 @@ function EntryRow({
   entry,
   isMe,
   showFlag,
+  canSeeNames,
   onPress,
 }: {
   entry: LeaderboardEntry;
   isMe: boolean;
   showFlag: boolean;
+  /** Without any session, profile names are unreadable (RLS) — not anonymous */
+  canSeeNames: boolean;
   onPress?: () => void;
 }) {
   const { t } = useTranslation();
   const medalColor = entry.rank <= 3 ? MEDAL_COLORS[entry.rank - 1] : null;
   // No profile name = a signed-out learner; show a stable short code instead
-  const isAnonymous = !entry.displayName || entry.displayName === '—';
+  const isAnonymous = canSeeNames && (!entry.displayName || entry.displayName === '—');
   const name = isAnonymous
     ? `${t('leaderboard_anonymous')} #${entry.userId.replace(/-/g, '').slice(0, 4).toUpperCase()}`
     : entry.displayName;
