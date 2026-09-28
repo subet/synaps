@@ -1,12 +1,14 @@
 # Synaps Public Deck Library
 
-Total: 38 decks, 10,410 cards
+Total: 41 decks, 11,710 cards
 
 Source of truth: `src/data/publicDecks/decks.ts` — keep this file in sync when adding decks.
 
 F = Featured, E = Editor's Choice, N = New
 
-Name/description translations cover all 12 app locales; card-level translations: language decks have front-only translations, subject decks front+back (produced by Claude subagents — see `ADDING_NEW_LANGUAGE.md` step 6; `scripts/generate-translations.ts` is the legacy method). YKS decks are Turkish-only.
+Name/description translations cover all 12 app locales; card-level translations: language decks have front-only translations, subject decks front+back (produced by Claude subagents — see `ADDING_NEW_LANGUAGE.md` step 6; `scripts/generate-translations.ts` is the legacy method). YKS decks are Turkish-only; the Japan exam decks are Japanese-only.
+
+**Discover visibility:** the Featured / Editor's Choice / New / Most Studied sections show multilingual and English decks to everyone, but a deck in another single language (YKS, Japan exams) only to users whose app language matches (`isDeckForLanguage` in `src/data/publicDecks/index.ts`); own-language featured decks come first. Browse and search list every deck.
 
 ## Languages (9 decks)
 
@@ -54,6 +56,16 @@ Name/description translations cover all 12 app locales; card-level translations:
 |------|------|
 | N    | YKS Matematik (500, TR) |
 | N    | YKS Biyoloji (500, TR) |
+
+## Exams — Japan (3 decks, JA only)
+
+| Tags | Deck |
+|------|------|
+| F, N | 英検2級・準2級 英単語 (500: 準2級 1–250, 2級 251–500) |
+| F, N | TOEIC 頻出英単語 (500: 600点 1–250, 800点 251–500) |
+| F, N | 古文単語 300 (300) |
+
+Card format: English decks — front = English word/phrase, back = `【品詞】意味\n例: English sentence\n（和訳）`; 古文 — front = headword (歴史的仮名遣い), back = `【品詞】①意味…\nポイント: …`. These decks have no TTS language mapping (no speaker button), like SAT Vocabulary.
 
 ## Exams — SAT (7 decks)
 

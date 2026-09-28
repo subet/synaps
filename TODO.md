@@ -41,6 +41,7 @@ Sort by most downloaded in library.
 
 # EXAM SPECIFI DECKS
 Tier 1 (HIGH ROI — start here)
+🇯🇵 Japanese → 英検 2級・準2級, TOEIC, 古文単語 (done in 1.0.9; next candidates: 日本史 一問一答, 四字熟語・ことわざ)
 🇹🇷 Turkish → YKS, LGS
 🇩🇪 German → Abitur
 🇬🇧 English → SAT, IELTS

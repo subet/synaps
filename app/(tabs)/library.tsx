@@ -20,6 +20,7 @@ import {
   getStaticEditorsChoiceDecks,
   getStaticFeaturedDecks,
   getHiddenVocabDeckId,
+  isDeckForLanguage,
   searchStaticDecks,
 } from '../../src/data/publicDecks';
 import { bulkInsertCards, createDeck } from '../../src/services/database';
@@ -80,9 +81,9 @@ export default function LibraryScreen() {
   useEffect(() => {
     const filterHidden = (decks: PublicDeck[]) =>
       hiddenDeckId ? decks.filter((d) => d.id !== hiddenDeckId) : decks;
-    setFeaturedDecks(filterHidden(getStaticFeaturedDecks()));
-    setEditorsChoiceDecks(filterHidden(getStaticEditorsChoiceDecks()));
-  }, [hiddenDeckId]);
+    setFeaturedDecks(filterHidden(getStaticFeaturedDecks(language)));
+    setEditorsChoiceDecks(filterHidden(getStaticEditorsChoiceDecks(language)));
+  }, [hiddenDeckId, language]);
 
   // Fetch download counts from Supabase
   useEffect(() => {
@@ -276,6 +277,7 @@ export default function LibraryScreen() {
           onDownload={handleDownload}
           onSelect={handlePreview}
           hiddenDeckId={hiddenDeckId}
+          language={language}
         />
       ) : (
         <BrowseTab
@@ -374,6 +376,7 @@ function DiscoverTab({
   onDownload,
   onSelect,
   hiddenDeckId,
+  language,
 }: {
   featuredDecks: PublicDeck[];
   editorsChoiceDecks: PublicDeck[];
@@ -383,24 +386,26 @@ function DiscoverTab({
   onDownload: (d: PublicDeck) => void;
   onSelect: (d: PublicDeck) => void;
   hiddenDeckId: string | undefined;
+  language: Language;
 }) {
   const { t } = useTranslation();
+  // Single-language decks (YKS, 英検, …) only surface here for speakers of that language
+  const base = useMemo(
+    () => ALL_DECKS.filter((d) => d.id !== hiddenDeckId && isDeckForLanguage(d, language)),
+    [hiddenDeckId, language]
+  );
 
   // New Decks: sorted by created_at descending, take 5
-  const newDecks = useMemo(() => {
-    const base = hiddenDeckId ? ALL_DECKS.filter((d) => d.id !== hiddenDeckId) : ALL_DECKS;
-    return [...base]
-      .sort((a, b) => b.created_at.localeCompare(a.created_at))
-      .slice(0, 5);
-  }, [hiddenDeckId]);
+  const newDecks = useMemo(
+    () => [...base].sort((a, b) => b.created_at.localeCompare(a.created_at)).slice(0, 5),
+    [base]
+  );
 
   // Most Studied: sorted by download count descending, take 5
-  const mostStudiedDecks = useMemo(() => {
-    const base = hiddenDeckId ? ALL_DECKS.filter((d) => d.id !== hiddenDeckId) : ALL_DECKS;
-    return [...base]
-      .sort((a, b) => (downloadCounts[b.id] ?? 0) - (downloadCounts[a.id] ?? 0))
-      .slice(0, 5);
-  }, [hiddenDeckId, downloadCounts]);
+  const mostStudiedDecks = useMemo(
+    () => [...base].sort((a, b) => (downloadCounts[b.id] ?? 0) - (downloadCounts[a.id] ?? 0)).slice(0, 5),
+    [base, downloadCounts]
+  );
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.tabContent}>

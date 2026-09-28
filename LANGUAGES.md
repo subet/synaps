@@ -23,6 +23,6 @@ Source of truth in code: the `Language` union in `src/types/index.ts`.
 
 - **Portuguese is region-split**: device locale `pt-BR` maps to `pt_BR`, everything else `pt` maps to `pt_PT` (`detectLocale()` in `app/_layout.tsx`). Unsupported device languages fall back to `en`.
 - **`ar` (Arabic) is NOT an app locale** — it appears only as a deck content language (Arabic Vocabulary deck) and in the TTS locale map (`src/utils/tts.ts`).
-- The 20 multilingual public decks (9 language + 11 subject decks) carry `name/description/card` translations for all locales above; single-language decks: YKS = `tr`, SAT/GCSE/Make Money = `en`.
+- The 20 multilingual public decks (9 language + 11 subject decks) carry `name/description/card` translations for all locales above; single-language decks: YKS = `tr`, 英検/TOEIC/古文単語 = `ja`, SAT/GCSE/Make Money = `en` (Startup Fundamentals = `en`, `de`).
 - Country names in `src/i18n/countries.ts` have a column per locale (all 12 present).
 - Local notification strings (`src/services/notifications.ts`) are hardcoded English — known limitation.

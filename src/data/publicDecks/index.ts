@@ -1,5 +1,6 @@
 import { Language, PublicCard, PublicDeck } from '../../types';
 import { resolveTranslation } from '../../utils/translations';
+import { isMultilingual } from '../../utils/languages';
 import { ALL_DECKS } from './decks';
 
 // Languages
@@ -29,6 +30,9 @@ import { mcatCards } from './subjects/mcat';
 // Exams
 import { yksMathCards } from './exams/yks_math';
 import { yksBioCards } from './exams/yks_bio';
+import { eikenVocabCards } from './exams/eiken_vocab';
+import { toeicVocabCards } from './exams/toeic_vocab';
+import { kobunVocabCards } from './exams/kobun_vocab';
 import { satVocabCards } from './exams/sat_vocab';
 import { satGrammarCards } from './exams/sat_grammar';
 import { satMathFormulasCards } from './exams/sat_math_formulas';
@@ -94,6 +98,9 @@ const CARDS_MAP: Record<string, PublicCard[]> = {
   'deck-mcat': mcatCards,
   'deck-yks-math': yksMathCards,
   'deck-yks-bio': yksBioCards,
+  'deck-eiken-vocab': eikenVocabCards,
+  'deck-toeic-vocab': toeicVocabCards,
+  'deck-kobun-vocab': kobunVocabCards,
   'deck-sat-vocab': satVocabCards,
   'deck-sat-grammar': satGrammarCards,
   'deck-sat-math-formulas': satMathFormulasCards,
@@ -112,12 +119,27 @@ const CARDS_MAP: Record<string, PublicCard[]> = {
   'deck-tiktok-growth': tiktokGrowthCards,
 };
 
-export function getStaticFeaturedDecks(): PublicDeck[] {
-  return ALL_DECKS.filter((d) => d.is_featured);
+/**
+ * Whether a deck belongs in the curated Discover sections for this UI language.
+ * Multilingual and English decks show everywhere (as they always have); decks
+ * in another single language (YKS = tr, 英検/TOEIC/古文 = ja) only show to
+ * speakers of that language. Browse and search still list every deck.
+ */
+export function isDeckForLanguage(deck: PublicDeck, lang: Language): boolean {
+  const langs = deck.supported_languages;
+  return isMultilingual(langs) || !!langs?.includes(lang) || !!langs?.includes('en');
 }
 
-export function getStaticEditorsChoiceDecks(): PublicDeck[] {
-  return ALL_DECKS.filter((d) => d.is_editors_choice);
+/** Featured decks for this language, decks made specifically for it first. */
+export function getStaticFeaturedDecks(lang: Language): PublicDeck[] {
+  const decks = ALL_DECKS.filter((d) => d.is_featured && isDeckForLanguage(d, lang));
+  const ownLanguage = (d: PublicDeck) =>
+    lang !== 'en' && !isMultilingual(d.supported_languages) && !!d.supported_languages?.includes(lang);
+  return [...decks.filter(ownLanguage), ...decks.filter((d) => !ownLanguage(d))];
+}
+
+export function getStaticEditorsChoiceDecks(lang: Language): PublicDeck[] {
+  return ALL_DECKS.filter((d) => d.is_editors_choice && isDeckForLanguage(d, lang));
 }
 
 export function getStaticDeckCards(deckId: string): PublicCard[] {
