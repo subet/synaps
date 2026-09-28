@@ -48,7 +48,7 @@ Supabase (`src/services/supabase.ts`) handles auth (email + Apple/Google via `so
 
 ### Public deck library
 
-Ready-made decks are **statically bundled** in `src/data/publicDecks/` (metadata in `decks.ts`, cards per category under `languages/`, `subjects/`, `exams/`, `make_money/`). Downloading a deck copies it into local SQLite (`source_id`, `is_public_download` flags). Deck catalog is documented in `DECKS.md` — keep it in sync when adding decks. Static cards carry `front_translations`/`back_translations` maps produced by the scripts in `scripts/`.
+Ready-made decks are **statically bundled** in `src/data/publicDecks/` (metadata in `decks.ts`, cards per category under `languages/`, `subjects/`, `exams/`, `make_money/`). Downloading a deck copies it into local SQLite (`source_id`, `is_public_download` flags). Deck catalog is documented in `DECKS.md` — keep it in sync when adding decks. Deck `icon_url` must be an Ionicons name (`*-outline`, or `logo-*` for brands) — never emoji/clipart; country flags only on language decks and YKS. `repairPublicDeckTranslations()` re-syncs icons of already-downloaded decks on every cold start. Static cards carry `front_translations`/`back_translations` maps produced by the scripts in `scripts/`.
 
 ### Analytics (PostHog)
 
