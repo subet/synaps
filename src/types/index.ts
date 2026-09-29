@@ -151,6 +151,8 @@ export interface AppSettings {
   localeDetected?: boolean;
   /** Learner answered the post-session reminder card (either way) — don't ask again. */
   reminderPromptDismissed?: boolean;
+  /** First-run tip ids the learner has dismissed (see src/components/ui/Tip.tsx). */
+  seenTips?: string[];
 }
 
 // ─── Friends system ───────────────────────────────────────────────────────────

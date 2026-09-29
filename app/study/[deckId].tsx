@@ -20,6 +20,7 @@ import Animated, {
 import { RatingButtons } from '../../src/components/study/RatingButtons';
 import { FlashCard } from '../../src/components/study/FlashCard';
 import { ReminderPrompt } from '../../src/components/study/ReminderPrompt';
+import { Tip } from '../../src/components/ui/Tip';
 import { Button } from '../../src/components/ui/Button';
 import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
@@ -201,6 +202,13 @@ export default function StudyScreen() {
       <View style={styles.progressTrack}>
         <Animated.View style={[styles.progressFill, progressStyle]} />
       </View>
+
+      {/* First-run tips: how to answer, then how to rate */}
+      {isFlipped ? (
+        <Tip id="study_rate" icon="speedometer-outline" style={styles.tip} />
+      ) : (
+        <Tip id="study_how" icon="bulb-outline" style={styles.tip} />
+      )}
 
       {/* Card */}
       <View style={styles.cardArea}>
@@ -386,6 +394,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   progressFill: { height: 4, backgroundColor: colors.primary, borderRadius: 2 },
+  tip: { marginHorizontal: spacing.md, marginBottom: spacing.sm },
   cardArea: { flex: 1, paddingHorizontal: spacing.md, paddingBottom: spacing.md },
   flipHint: {
     paddingHorizontal: spacing.md,

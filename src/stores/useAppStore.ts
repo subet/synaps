@@ -15,6 +15,7 @@ interface AppState extends AppSettings {
   setHapticsEnabled: (enabled: boolean) => Promise<void>;
   markOnboardingComplete: () => Promise<void>;
   dismissReminderPrompt: () => Promise<void>;
+  markTipSeen: (id: string) => Promise<void>;
   incrementFreeDownloads: () => Promise<void>;
   resetFreeDownloads: () => Promise<void>;
 }
@@ -83,6 +84,12 @@ export const useAppStore = create<AppState>((set, get) => ({
   dismissReminderPrompt: async () => {
     set({ reminderPromptDismissed: true });
     await saveSettings({ ...get(), reminderPromptDismissed: true });
+  },
+
+  markTipSeen: async (id) => {
+    const seenTips = [...new Set([...(get().seenTips ?? []), id])];
+    set({ seenTips });
+    await saveSettings({ ...get(), seenTips });
   },
 
   markOnboardingComplete: async () => {

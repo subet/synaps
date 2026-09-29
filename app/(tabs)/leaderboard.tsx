@@ -24,6 +24,7 @@ import {
   LeaderboardEntry,
 } from '../../src/services/leaderboard';
 import { FriendsTab } from '../../src/components/leaderboard/FriendsTab';
+import { Tip } from '../../src/components/ui/Tip';
 import { UserProfileSheet } from '../../src/components/leaderboard/UserProfileSheet';
 
 type Tab = 'country' | 'world' | 'friends';
@@ -153,6 +154,7 @@ export default function LeaderboardTab() {
           keyExtractor={(item) => item.userId}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />}
           contentContainerStyle={styles.listContent}
+          ListHeaderComponent={<Tip id="leaderboard_how" icon="trophy-outline" style={styles.tip} />}
           ListEmptyComponent={
             <View style={styles.emptyBox}>
               <View style={styles.emptyIconWrap}>
@@ -351,6 +353,7 @@ const styles = StyleSheet.create({
 
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 
+  tip: { marginBottom: spacing.sm },
   listContent: { paddingHorizontal: spacing.md, paddingBottom: spacing.xl },
 
   row: {

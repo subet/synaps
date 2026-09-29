@@ -13,7 +13,8 @@ import { DeckListItem } from '../../src/components/home/DeckListItem';
 import { GreetingHeader } from '../../src/components/home/GreetingHeader';
 import { StatBoxes } from '../../src/components/home/StatBoxes';
 import { StreakCard } from '../../src/components/home/StreakCard';
-import { EmptyState } from '../../src/components/ui/EmptyState';
+import { GetStartedCard } from '../../src/components/home/GetStartedCard';
+import { Tip } from '../../src/components/ui/Tip';
 import { FABMenu, FABMenuItem } from '../../src/components/ui/FABMenu';
 import { colors, spacing, typography } from '../../src/constants';
 import { getHiddenVocabDeckId } from '../../src/data/publicDecks';
@@ -81,31 +82,26 @@ export default function HomeScreen() {
     [deckStats]
   );
 
+  const hasDecks = visibleDecks.length > 0;
+
   const ListHeader = useMemo(
     () => (
       <View>
         <GreetingHeader weekDays={weekDays} />
-        <StreakCard currentStreak={currentStreak} weekDays={weekDays} />
-        <StatBoxes cardsMastered={cardsMastered} avgDailyFocusMinutes={avgDailyFocusMinutes} />
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>{t('my_decks')}</Text>
-          <Text style={styles.deckCount}>{visibleDecks.length}</Text>
-        </View>
-      </View>
-    ),
-    [currentStreak, weekDays, cardsMastered, avgDailyFocusMinutes, visibleDecks.length, language]
-  );
-
-  return (
-    <SafeAreaView style={styles.safe} edges={['top']}>
-      <TabHeader />
-      <FlatList
-        data={visibleDecks}
-        keyExtractor={(item) => item.id}
-        renderItem={renderDeck}
-        ListHeaderComponent={ListHeader}
-        ListEmptyComponent={
-          <EmptyState
+        {hasDecks ? (
+          <>
+            <StreakCard currentStreak={currentStreak} weekDays={weekDays} />
+            <StatBoxes cardsMastered={cardsMastered} avgDailyFocusMinutes={avgDailyFocusMinutes} />
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>{t('my_decks')}</Text>
+              <Text style={styles.deckCount}>{visibleDecks.length}</Text>
+            </View>
+            {/* Only before the first study session: no streak yet */}
+            <Tip id="home_open_deck" when={currentStreak === 0 && cardsMastered === 0} style={styles.tip} />
+          </>
+        ) : (
+          // No decks yet: stats are all zero, so lead with getting a deck instead
+          <GetStartedCard
             title={t('no_decks_title')}
             subtitle={t('no_decks_subtitle')}
             ctaLabel={t('browse_ready_decks')}
@@ -119,7 +115,20 @@ export default function HomeScreen() {
               router.push('/deck/create');
             }}
           />
-        }
+        )}
+      </View>
+    ),
+    [hasDecks, currentStreak, weekDays, cardsMastered, avgDailyFocusMinutes, visibleDecks.length, language]
+  );
+
+  return (
+    <SafeAreaView style={styles.safe} edges={['top']}>
+      <TabHeader />
+      <FlatList
+        data={visibleDecks}
+        keyExtractor={(item) => item.id}
+        renderItem={renderDeck}
+        ListHeaderComponent={ListHeader}
         contentContainerStyle={{ paddingBottom: 32 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
@@ -134,6 +143,10 @@ const styles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+  tip: {
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.sm,
   },
   sectionHeader: {
     flexDirection: 'row',

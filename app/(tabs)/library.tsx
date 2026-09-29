@@ -27,6 +27,7 @@ import { bulkInsertCards, createDeck } from '../../src/services/database';
 import { incrementDownloadCount, fetchDownloadCounts } from '../../src/services/supabase';
 import { useTranslation } from '../../src/i18n';
 import { logEvent } from '../../src/services/analytics';
+import { Tip } from '../../src/components/ui/Tip';
 import { TabHeader } from '../../src/components/ui/TabHeader';
 import { useDeckStore } from '../../src/stores/useDeckStore';
 import { useAppStore } from '../../src/stores/useAppStore';
@@ -409,6 +410,7 @@ function DiscoverTab({
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.tabContent}>
+      <Tip id="library_pick" icon="library-outline" style={styles.tip} />
       {/* Featured */}
       {featuredDecks.length > 0 && (
         <View style={styles.section}>
@@ -1063,6 +1065,7 @@ const styles = StyleSheet.create({
   popupItemLabel: { ...typography.body, color: colors.textPrimary, flex: 1 },
   popupItemLabelSelected: { ...typography.bodyBold, color: colors.primary },
   popupCheck: { ...typography.bodyBold, color: colors.primary, fontSize: 18 },
+  tip: { marginBottom: spacing.md },
   tabContent: { padding: spacing.md, paddingBottom: 40 },
   emptyText: { ...typography.body, color: colors.textMuted, textAlign: 'center', marginTop: 40 },
   deckCount: { ...typography.caption, color: colors.textMuted, marginBottom: spacing.sm },

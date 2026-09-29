@@ -11,8 +11,8 @@
 
 # RETENTION (2026-09-28)
 **Found 2026-09-29 (first 1.0.9 data): the app never auto-detected the device language** — the `'en'` default made the detection branch unreachable, so all Japanese devices ran in English and the Japan decks were hidden from Discover. Fixed for 1.0.10 (one-time re-detect for existing installs). Other first-day signals (9 real users): 3 of 8 who reached the notification-permission step left there without answering; 1 left on the sign-up screen; 0 real users studied a card. → 1.0.10 drops that step (reminder now asked after the first finished session — and it now really enables reminders; the old step never did), skips the iOS-only ATT screen on Android, and translates the hard-coded English privacy footer.
-- [ ] Empty home: the empty-state text and the "Browse ready-made decks" button sit below the fold on a phone (only the icon shows) — fold into the planned first-run tips.
-- [ ] Phase 2 (Murat, 2026-09-29): first-run tip boxes / coach marks for new users.
+- [x] Empty home: button was below the fold — home now shows a get-started card under the greeting when there are no decks (1.0.11).
+- [x] Phase 2: first-run tip boxes (library, home, study ×2, leaderboard) — code done for 1.0.11, not yet built/released; watch the "First-run tips" tile.
 
 278 of 325 users used the app on a single day; D1 ≈ 6%. The first-run instrumentation (1.0.9) should show exactly where they leave — read the **Activation & Drop-off** dashboard in PostHog once ~1–2 weeks of 1.0.9 data exist, then pick a strategy. Suspects found in the code, to confirm or rule out with that data:
 - ~~Empty home screen's only button is "create your first deck"~~ — 1.0.9 leads with the library (done; watch `empty_home_cta`).
