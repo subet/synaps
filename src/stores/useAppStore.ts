@@ -7,7 +7,8 @@ import { AppSettings, Language } from '../types';
 interface AppState extends AppSettings {
   isLoading: boolean;
   loadSettings: () => Promise<void>;
-  setLanguage: (lang: Language) => Promise<void>;
+  /** `auto` = set from the device locale, not by the user. */
+  setLanguage: (lang: Language, opts?: { auto?: boolean }) => Promise<void>;
   setNotificationsEnabled: (enabled: boolean) => Promise<void>;
   setNotificationTime: (time: string) => Promise<void>;
   setWeeklyRecapEnabled: (enabled: boolean) => Promise<void>;
@@ -45,13 +46,13 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
   },
 
-  setLanguage: async (language) => {
+  setLanguage: async (language, opts) => {
     const previous = get().language;
+    const auto = !!opts?.auto;
     setLocale(language); // sync — i18n.locale updated before Zustand subscribers re-render
-    set({ language });
+    set(auto ? { language, localeDetected: true } : { language, languageExplicit: true });
     setSuperProperties({ app_language: language });
-    // First-launch detection has no previous language; only log real switches
-    if (previous && previous !== language) logEvent('language_changed', { from: previous, to: language });
+    if (previous !== language) logEvent('language_changed', { from: previous, to: language, auto });
     await saveSettings({ ...get(), language });
   },
 

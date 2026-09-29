@@ -42,16 +42,20 @@ export default function RootLayout() {
       logEvent('app_opened'); // once per cold start
       await loadSettings();
 
-      const { language, setLanguage, hasSeenOnboarding: onboardingDone } = useAppStore.getState();
-      if (language) {
-        // Returning user — apply stored locale
+      const { language, languageExplicit, localeDetected, setLanguage, hasSeenOnboarding: onboardingDone } =
+        useAppStore.getState();
+      if (languageExplicit || localeDetected) {
+        // Language already settled — by the user in Settings, or by a past detection
         setLocale(language);
       } else {
-        // First launch — detect from device locale and persist
+        // Detect from the device locale once. `language` is only the 'en' default
+        // here: before 1.0.10 the default made this branch unreachable, so every
+        // install (incl. Japanese devices) ran in English. Existing installs get
+        // this one-time fix-up too.
         const tag = locales[0]?.languageTag ?? '';
         const code = locales[0]?.languageCode ?? '';
         const detected = detectLocale(tag, code);
-        await setLanguage(detected);
+        await setLanguage(detected, { auto: true });
       }
 
       await initAuth();

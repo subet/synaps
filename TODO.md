@@ -10,6 +10,8 @@
 - [ ] Optional: prune anonymous users inactive for 30+ days (Supabase recommends it); deletes now cascade.
 
 # RETENTION (2026-09-28)
+**Found 2026-09-29 (first 1.0.9 data): the app never auto-detected the device language** — the `'en'` default made the detection branch unreachable, so all Japanese devices ran in English and the Japan decks were hidden from Discover. Fixed for 1.0.10 (one-time re-detect for existing installs). Other first-day signals (9 real users): 3 of 8 who reached the notification-permission step left there without answering; 1 left on the sign-up screen; 0 real users studied a card.
+
 278 of 325 users used the app on a single day; D1 ≈ 6%. The first-run instrumentation (1.0.9) should show exactly where they leave — read the **Activation & Drop-off** dashboard in PostHog once ~1–2 weeks of 1.0.9 data exist, then pick a strategy. Suspects found in the code, to confirm or rule out with that data:
 - ~~Empty home screen's only button is "create your first deck"~~ — 1.0.9 leads with the library (done; watch `empty_home_cta`).
 - ~~After a library download there is only a success alert~~ — 1.0.9 offers "Study now" (done; watch `download_next_step`).

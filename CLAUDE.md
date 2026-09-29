@@ -45,7 +45,7 @@ Supabase (`src/services/supabase.ts`) handles auth (email + Apple/Google via `so
 
 ### i18n (12 locales)
 
-`src/i18n/` uses i18n-js with locales: en, es, it, tr, de, fr, nl, ru, zh, pt_BR, pt_PT, ja (full list with native names: `LANGUAGES.md`). Use the `useTranslation()` hook in components — it subscribes to `useAppStore.language` so components re-render on locale switch. `t()` outside components does not re-render. First launch detects device locale (Portuguese is region-split into pt_BR/pt_PT); any new user-facing string must be added to all 12 locale files. **When adding a new app language, follow the full checklist in `ADDING_NEW_LANGUAGE.md`** — language support spans ~15 files and TypeScript does not catch all of them.
+`src/i18n/` uses i18n-js with locales: en, es, it, tr, de, fr, nl, ru, zh, pt_BR, pt_PT, ja (full list with native names: `LANGUAGES.md`). Use the `useTranslation()` hook in components — it subscribes to `useAppStore.language` so components re-render on locale switch. `t()` outside components does not re-render. First launch detects device locale (Portuguese is region-split into pt_BR/pt_PT) — gated on the persisted `languageExplicit` (user picked it in Settings) / `localeDetected` flags, **not** on `language` being empty (it always holds the `'en'` default; that bug kept every install in English until 1.0.10, which then re-detects once for anyone who never chose a language); any new user-facing string must be added to all 12 locale files. **When adding a new app language, follow the full checklist in `ADDING_NEW_LANGUAGE.md`** — language support spans ~15 files and TypeScript does not catch all of them.
 
 ### Public deck library
 

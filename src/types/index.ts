@@ -145,6 +145,10 @@ export interface AppSettings {
   hasSeenOnboarding: boolean;
   freeDownloadsUsed: number;
   hapticsEnabled: boolean;
+  /** User picked the language in Settings — never auto-detect over it. */
+  languageExplicit?: boolean;
+  /** Device-locale detection has run once (first launch, or the 1.0.10 fix-up). */
+  localeDetected?: boolean;
 }
 
 // ─── Friends system ───────────────────────────────────────────────────────────
