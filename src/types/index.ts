@@ -153,6 +153,10 @@ export interface AppSettings {
   reminderPromptDismissed?: boolean;
   /** First-run tip ids the learner has dismissed (see src/components/ui/Tip.tsx). */
   seenTips?: string[];
+  /** Finished study sessions on this device (drives the in-app review prompt). */
+  completedSessions?: number;
+  /** The native store-review dialog has been requested once. */
+  reviewRequested?: boolean;
 }
 
 // ─── Friends system ───────────────────────────────────────────────────────────

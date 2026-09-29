@@ -16,6 +16,8 @@ interface AppState extends AppSettings {
   markOnboardingComplete: () => Promise<void>;
   dismissReminderPrompt: () => Promise<void>;
   markTipSeen: (id: string) => Promise<void>;
+  recordCompletedSession: () => Promise<number>;
+  markReviewRequested: () => Promise<void>;
   incrementFreeDownloads: () => Promise<void>;
   resetFreeDownloads: () => Promise<void>;
 }
@@ -84,6 +86,18 @@ export const useAppStore = create<AppState>((set, get) => ({
   dismissReminderPrompt: async () => {
     set({ reminderPromptDismissed: true });
     await saveSettings({ ...get(), reminderPromptDismissed: true });
+  },
+
+  recordCompletedSession: async () => {
+    const completedSessions = (get().completedSessions ?? 0) + 1;
+    set({ completedSessions });
+    await saveSettings({ ...get(), completedSessions });
+    return completedSessions;
+  },
+
+  markReviewRequested: async () => {
+    set({ reviewRequested: true });
+    await saveSettings({ ...get(), reviewRequested: true });
   },
 
   markTipSeen: async (id) => {

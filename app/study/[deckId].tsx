@@ -21,6 +21,7 @@ import { RatingButtons } from '../../src/components/study/RatingButtons';
 import { FlashCard } from '../../src/components/study/FlashCard';
 import { ReminderPrompt } from '../../src/components/study/ReminderPrompt';
 import { Tip } from '../../src/components/ui/Tip';
+import { maybeRequestReview } from '../../src/services/review';
 import { Button } from '../../src/components/ui/Button';
 import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
@@ -279,6 +280,19 @@ function SessionComplete({
     }
     setCelebrationBadge(null);
   };
+
+  // Rating dialog only once any badge celebrations are out of the way
+  const reviewAsked = useRef(false);
+  useEffect(() => {
+    if (celebrationBadge || newlyAwardedIds.length > 0 || reviewAsked.current) return;
+    // Badges can arrive a moment after this screen mounts; only commit once the
+    // delay passes with no celebration, so a cancelled timer can retry later
+    const timer = setTimeout(() => {
+      reviewAsked.current = true;
+      maybeRequestReview();
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [celebrationBadge, newlyAwardedIds.length]);
 
   const handleDismissCelebration = () => {
     showNextCelebration();

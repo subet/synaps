@@ -213,6 +213,9 @@ export const useStudyStore = create<StudyState>((set, get) => ({
       duration_seconds: durationSeconds,
     });
 
+    // Counts toward the in-app review prompt (src/services/review.ts)
+    useAppStore.getState().recordCompletedSession().catch(() => {});
+
     logEvent('study_session_completed', {
       deck_id: sessionMeta.deckId,
       is_public_deck: sessionMeta.isPublic,

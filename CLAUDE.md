@@ -61,6 +61,7 @@ Ready-made decks are **statically bundled** in `src/data/publicDecks/` (metadata
 - **Study (in `useStudyStore`):** `study_session_started`, `study_card_graded`, `study_session_completed`, `study_session_abandoned` (logged by `resetSession` when the session was not finished), `study_blocked_offline` (`where`: `deck_detail` | `mid_session`).
 - **Money:** `paywall_view`, `paywall_closed`, `purchase_started`, `purchase_completed`, `purchase_error`, `restore_result` (all except `purchase_error` carry the paywall `source`), `free_limit_hit` (`limit`: `decks` | `cards_per_deck` | `downloads` | `pro_feature`).
 - **First-run tips (since 1.0.11):** `tip_shown`, `tip_dismissed` (`tip`).
+- **Store rating (since 1.0.11):** `review_prompt_requested` (`sessions`) — `src/services/review.ts` opens the native review dialog once, after the 3rd finished session (counter `AppSettings.completedSessions`), after any badge celebrations. Settings keeps its manual "Rate us" button.
 - **Other:** `app_opened`, `notification_opened`, `language_changed`. The SDK adds `Application Installed/Opened/Became Active/Backgrounded`.
 
 Dashboards: **Synaps — Growth & Monetization** (id 979762, project home) and **Synaps — Activation & Drop-off** (id 979791; first-run funnel, library funnel, study and retention by activation). The action **Got a deck** = `public_deck_downloaded` OR `deck_created`. A new event needs a tile there too. There is no OTA updates channel (`expo-updates` is not installed), so new events only arrive once a store build ships.
