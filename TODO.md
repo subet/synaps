@@ -20,7 +20,7 @@ Strategy: our old US keywords (study, learn, memory, flashcards, habit) are "out
 - Tracked in Applyra on both US listings (baseline 2026-09-29: not in top 100 for any): sat vocabulary, sat math, sat prep, mcat prep, mcat flashcards, vocabulary builder, anatomy flashcards, medical terminology.
 - [ ] ~2026-10-13: check ranks (`get_keyword_rank_history`) and Play Console US listing visitors/installs.
 - Titles unchanged on purpose (brand + existing rank); revisit only after the above shows results.
-- Bigger lever still: no ratings yet → in-app review prompt (e.g. after the 3rd finished session).
+- [ ] **In-app review prompt (Murat approved 2026-09-29, do after the ASO/localisation work):** ask for a store rating with the native dialog (`expo-store-review`) after the 3rd finished study session — the app has no ratings on either store, which hurts both ranking and conversion. Ships with 1.0.11 (no EAS builds until 2026-10-23).
 
 # RETENTION (2026-09-28)
 **Found 2026-09-29 (first 1.0.9 data): the app never auto-detected the device language** — the `'en'` default made the detection branch unreachable, so all Japanese devices ran in English and the Japan decks were hidden from Discover. Fixed for 1.0.10 (one-time re-detect for existing installs). Other first-day signals (9 real users): 3 of 8 who reached the notification-permission step left there without answering; 1 left on the sign-up screen; 0 real users studied a card. → 1.0.10 drops that step (reminder now asked after the first finished session — and it now really enables reminders; the old step never did), skips the iOS-only ATT screen on Android, and translates the hard-coded English privacy footer.
