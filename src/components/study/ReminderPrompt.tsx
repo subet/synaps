@@ -67,14 +67,17 @@ export function ReminderPrompt() {
   if (outcome !== 'ask') {
     return (
       <View style={styles.card}>
-        <Ionicons
-          name={outcome === 'enabled' ? 'checkmark-circle-outline' : 'notifications-off-outline'}
-          size={22}
-          color={outcome === 'enabled' ? colors.primary : colors.textSecondary}
-        />
-        <Text style={[styles.body, styles.flex]}>
-          {outcome === 'enabled' ? t('reminder_prompt_enabled', { time }) : t('reminder_prompt_denied')}
-        </Text>
+        {/* Row, not the card's column: `flex: 1` text in a column collapses to 0 height */}
+        <View style={[styles.row, styles.center]}>
+          <Ionicons
+            name={outcome === 'enabled' ? 'checkmark-circle-outline' : 'notifications-off-outline'}
+            size={22}
+            color={outcome === 'enabled' ? colors.primary : colors.textSecondary}
+          />
+          <Text style={[styles.body, styles.flex, styles.noTopMargin]}>
+            {outcome === 'enabled' ? t('reminder_prompt_enabled', { time }) : t('reminder_prompt_denied')}
+          </Text>
+        </View>
       </View>
     );
   }
@@ -122,6 +125,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   flex: { flex: 1 },
+  center: { alignItems: 'center' },
+  noTopMargin: { marginTop: 0 },
   title: { ...typography.bodyBold, color: colors.textPrimary },
   body: { ...typography.caption, color: colors.textSecondary, marginTop: 2 },
   actions: { flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', gap: spacing.md },
