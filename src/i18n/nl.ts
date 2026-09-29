@@ -49,6 +49,11 @@ export const nl = {
   notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
   notifications_enable: 'Enable Notifications',
   maybe_later: "Misschien later",
+  reminder_prompt_title: "Dagelijkse herinnering?",
+  reminder_prompt_body: "We herinneren je elke dag om %{time} zodat je reeks doorloopt.",
+  reminder_prompt_yes: "Herinner me",
+  reminder_prompt_enabled: "Klaar! We herinneren je elke dag om %{time}. Je kunt dit wijzigen in Instellingen.",
+  reminder_prompt_denied: "Meldingen staan uit. Je kunt ze altijd aanzetten in Instellingen.",
   paywall_skip: 'Continue with Free Plan',
 
   // Home
@@ -227,6 +232,8 @@ export const nl = {
   data_deleted: 'Alle lokale gegevens zijn verwijderd. Start de app opnieuw op.',
   terms: 'Algemene voorwaarden',
   privacy: 'Privacybeleid',
+  privacy_footer_prefix: "Lees ons ",
+  privacy_footer_suffix: " voor meer informatie.",
   contact_support: 'Contact opnemen met support',
   app_version: 'App-versie',
   pro_badge: 'PRO',

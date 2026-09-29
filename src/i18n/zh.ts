@@ -49,6 +49,11 @@ export const zh = {
   notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
   notifications_enable: 'Enable Notifications',
   maybe_later: "以后再说",
+  reminder_prompt_title: "需要每日提醒吗？",
+  reminder_prompt_body: "我们会每天%{time}提醒你，保持连续学习。",
+  reminder_prompt_yes: "提醒我",
+  reminder_prompt_enabled: "已设置！我们会每天%{time}提醒你，可在设置中更改。",
+  reminder_prompt_denied: "通知已关闭，可随时在设置中开启。",
   paywall_skip: 'Continue with Free Plan',
 
   // Home
@@ -227,6 +232,8 @@ export const zh = {
   data_deleted: '所有本地数据已删除。请重启应用。',
   terms: '用户协议',
   privacy: '隐私政策',
+  privacy_footer_prefix: "了解更多，请阅读我们的",
+  privacy_footer_suffix: "。",
   contact_support: '联系客服',
   app_version: '应用版本',
   pro_badge: 'PRO',

@@ -49,6 +49,11 @@ export const pt_PT = {
   notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
   notifications_enable: 'Enable Notifications',
   maybe_later: "Talvez mais tarde",
+  reminder_prompt_title: "Quer um lembrete diário?",
+  reminder_prompt_body: "Vamos lembrá-lo todos os dias às %{time} para manter a sua sequência.",
+  reminder_prompt_yes: "Lembrar-me",
+  reminder_prompt_enabled: "Pronto! Vamos lembrá-lo todos os dias às %{time}. Pode alterar isto nas Definições.",
+  reminder_prompt_denied: "As notificações estão desativadas. Pode ativá-las a qualquer momento nas Definições.",
   paywall_skip: 'Continue with Free Plan',
 
   // Home
@@ -227,6 +232,8 @@ export const pt_PT = {
   data_deleted: 'Todos os dados locais foram eliminados. Por favor, reinicie a aplicação.',
   terms: 'Termos e Condições',
   privacy: 'Política de Privacidade',
+  privacy_footer_prefix: "Leia a nossa ",
+  privacy_footer_suffix: " para saber mais.",
   contact_support: 'Contactar Suporte',
   app_version: 'Versão da Aplicação',
   pro_badge: 'PRO',

@@ -49,6 +49,11 @@ export const ru = {
   notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
   notifications_enable: 'Enable Notifications',
   maybe_later: "Позже",
+  reminder_prompt_title: "Напоминать каждый день?",
+  reminder_prompt_body: "Мы будем напоминать каждый день в %{time}, чтобы серия не прерывалась.",
+  reminder_prompt_yes: "Напоминать",
+  reminder_prompt_enabled: "Готово! Будем напоминать каждый день в %{time}. Это можно изменить в Настройках.",
+  reminder_prompt_denied: "Уведомления выключены. Их можно включить в Настройках в любое время.",
   paywall_skip: 'Continue with Free Plan',
 
   // Home
@@ -227,6 +232,8 @@ export const ru = {
   data_deleted: 'Все локальные данные удалены. Пожалуйста, перезапустите приложение.',
   terms: 'Условия использования',
   privacy: 'Политика конфиденциальности',
+  privacy_footer_prefix: "Подробнее читайте на странице «",
+  privacy_footer_suffix: "».",
   contact_support: 'Связаться с поддержкой',
   app_version: 'Версия приложения',
   pro_badge: 'PRO',

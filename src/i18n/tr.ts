@@ -48,6 +48,11 @@ export const tr = {
   notifications_onboarding_subtitle: 'Günlük hatırlatıcılar alın ve streakınızı koruyun.',
   notifications_enable: 'Bildirimleri Etkinleştir',
   maybe_later: 'Belki Sonra',
+  reminder_prompt_title: "Her gün hatırlatalım mı?",
+  reminder_prompt_body: "Seriniz bozulmasın diye size her gün hatırlatma gönderelim (saat %{time}).",
+  reminder_prompt_yes: "Hatırlat",
+  reminder_prompt_enabled: "Tamam! Her gün saat %{time} için hatırlatma kuruldu. Bunu Ayarlar'dan değiştirebilirsiniz.",
+  reminder_prompt_denied: "Bildirimler kapalı. İstediğiniz zaman Ayarlar'dan açabilirsiniz.",
   paywall_skip: 'Ücretsiz Planla Devam Et',
 
   // Home
@@ -227,6 +232,8 @@ export const tr = {
   data_deleted: 'Tüm yerel veriler silindi. Lütfen uygulamayı yeniden başlatın.',
   terms: 'Kullanım Şartları',
   privacy: 'Gizlilik Politikası',
+  privacy_footer_prefix: "Daha fazla bilgi için ",
+  privacy_footer_suffix: " sayfamızı okuyun.",
   contact_support: 'Destek ile İletişim',
   app_version: 'Uygulama Versiyonu',
   pro_badge: 'PRO',

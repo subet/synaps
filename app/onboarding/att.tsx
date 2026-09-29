@@ -62,9 +62,9 @@ export default function ATTScreen() {
           </Pressable>
 
           <Text style={styles.footer}>
-            Read our{' '}
-            <Text style={styles.footerLink} onPress={() => router.push('/legal/privacy')}>Privacy Policy</Text>
-            {' '}to learn more.
+            {t('privacy_footer_prefix')}
+            <Text style={styles.footerLink} onPress={() => router.push('/legal/privacy')}>{t('privacy')}</Text>
+            {t('privacy_footer_suffix')}
           </Text>
         </View>
       </SafeAreaView>

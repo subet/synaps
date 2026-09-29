@@ -48,6 +48,11 @@ export const en = {
   notifications_onboarding_subtitle: 'Get daily reminders to review your cards and maintain your streak.',
   notifications_enable: 'Enable Notifications',
   maybe_later: 'Maybe Later',
+  reminder_prompt_title: "Want a daily reminder?",
+  reminder_prompt_body: "We'll remind you every day at %{time} so your streak keeps going.",
+  reminder_prompt_yes: "Remind me",
+  reminder_prompt_enabled: "Done! We'll remind you every day at %{time}. You can change this in Settings.",
+  reminder_prompt_denied: "Notifications are off. You can turn them on anytime in Settings.",
   paywall_skip: 'Continue with Free Plan',
 
   // Home
@@ -228,6 +233,8 @@ export const en = {
   data_deleted: 'All local data has been deleted. Please restart the app.',
   terms: 'Terms & Conditions',
   privacy: 'Privacy Policy',
+  privacy_footer_prefix: "Read our ",
+  privacy_footer_suffix: " to learn more.",
   contact_support: 'Contact Support',
   app_version: 'App Version',
   pro_badge: 'PRO',

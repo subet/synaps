@@ -19,6 +19,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { RatingButtons } from '../../src/components/study/RatingButtons';
 import { FlashCard } from '../../src/components/study/FlashCard';
+import { ReminderPrompt } from '../../src/components/study/ReminderPrompt';
 import { Button } from '../../src/components/ui/Button';
 import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
@@ -326,6 +327,8 @@ function SessionComplete({
             />
           </View>
         )}
+
+        <ReminderPrompt />
 
         <Button label={t('back_to_deck')} onPress={() => router.back()} style={styles.backBtn} />
       </View>

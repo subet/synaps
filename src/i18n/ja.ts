@@ -48,6 +48,11 @@ export const ja = {
   notifications_onboarding_subtitle: '毎日のリマインダーでカードを復習し、連続記録をキープしましょう。',
   notifications_enable: '通知を有効にする',
   maybe_later: '後で',
+  reminder_prompt_title: "毎日リマインドしますか？",
+  reminder_prompt_body: "連続記録が途切れないよう、毎日%{time}にお知らせします。",
+  reminder_prompt_yes: "リマインドする",
+  reminder_prompt_enabled: "設定しました！毎日%{time}にお知らせします。設定からいつでも変更できます。",
+  reminder_prompt_denied: "通知はオフです。設定からいつでもオンにできます。",
   paywall_skip: '無料プランで続ける',
 
   // Home
@@ -228,6 +233,8 @@ export const ja = {
   data_deleted: 'すべてのローカルデータを削除しました。アプリを再起動してください。',
   terms: '利用規約',
   privacy: 'プライバシーポリシー',
+  privacy_footer_prefix: "詳しくは",
+  privacy_footer_suffix: "をご覧ください。",
   contact_support: 'サポートに問い合わせ',
   app_version: 'アプリバージョン',
   pro_badge: 'PRO',

@@ -49,6 +49,11 @@ export const es = {
   notifications_onboarding_subtitle: 'Recibe recordatorios diarios para repasar tus tarjetas y mantener tu racha.',
   notifications_enable: 'Activar notificaciones',
   maybe_later: 'Quizás después',
+  reminder_prompt_title: "¿Quieres un recordatorio diario?",
+  reminder_prompt_body: "Te avisaremos cada día a las %{time} para que no pierdas tu racha.",
+  reminder_prompt_yes: "Recuérdamelo",
+  reminder_prompt_enabled: "¡Listo! Te avisaremos cada día a las %{time}. Puedes cambiarlo en Ajustes.",
+  reminder_prompt_denied: "Las notificaciones están desactivadas. Puedes activarlas cuando quieras en Ajustes.",
   paywall_skip: 'Continuar con el plan gratuito',
 
   // Home
@@ -227,6 +232,8 @@ export const es = {
   data_deleted: 'Todos los datos locales han sido eliminados. Por favor, reinicia la app.',
   terms: 'Términos y condiciones',
   privacy: 'Política de privacidad',
+  privacy_footer_prefix: "Consulta nuestra ",
+  privacy_footer_suffix: " para saber más.",
   contact_support: 'Contactar soporte',
   app_version: 'Versión de la app',
   pro_badge: 'PRO',

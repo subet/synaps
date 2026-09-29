@@ -49,6 +49,11 @@ export const it = {
   notifications_onboarding_subtitle: 'Ricevi promemoria giornalieri per ripassare le tue carte e mantenere la tua serie.',
   notifications_enable: 'Attiva notifiche',
   maybe_later: 'Forse più tardi',
+  reminder_prompt_title: "Vuoi un promemoria ogni giorno?",
+  reminder_prompt_body: "Ti ricorderemo ogni giorno alle %{time} per non interrompere la tua serie.",
+  reminder_prompt_yes: "Ricordamelo",
+  reminder_prompt_enabled: "Fatto! Ti ricorderemo ogni giorno alle %{time}. Puoi cambiarlo nelle Impostazioni.",
+  reminder_prompt_denied: "Le notifiche sono disattivate. Puoi attivarle quando vuoi nelle Impostazioni.",
   paywall_skip: 'Continua con il piano gratuito',
 
   // Home
@@ -227,6 +232,8 @@ export const it = {
   data_deleted: 'Tutti i dati locali sono stati eliminati. Riavvia l\'app.',
   terms: 'Termini e condizioni',
   privacy: 'Informativa sulla privacy',
+  privacy_footer_prefix: "Leggi la nostra ",
+  privacy_footer_suffix: " per saperne di più.",
   contact_support: 'Contatta il supporto',
   app_version: 'Versione app',
   pro_badge: 'PRO',

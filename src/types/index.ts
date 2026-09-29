@@ -149,6 +149,8 @@ export interface AppSettings {
   languageExplicit?: boolean;
   /** Device-locale detection has run once (first launch, or the 1.0.10 fix-up). */
   localeDetected?: boolean;
+  /** Learner answered the post-session reminder card (either way) — don't ask again. */
+  reminderPromptDismissed?: boolean;
 }
 
 // ─── Friends system ───────────────────────────────────────────────────────────

@@ -14,6 +14,7 @@ interface AppState extends AppSettings {
   setWeeklyRecapEnabled: (enabled: boolean) => Promise<void>;
   setHapticsEnabled: (enabled: boolean) => Promise<void>;
   markOnboardingComplete: () => Promise<void>;
+  dismissReminderPrompt: () => Promise<void>;
   incrementFreeDownloads: () => Promise<void>;
   resetFreeDownloads: () => Promise<void>;
 }
@@ -77,6 +78,11 @@ export const useAppStore = create<AppState>((set, get) => ({
   setHapticsEnabled: async (hapticsEnabled) => {
     set({ hapticsEnabled });
     await saveSettings({ ...get(), hapticsEnabled });
+  },
+
+  dismissReminderPrompt: async () => {
+    set({ reminderPromptDismissed: true });
+    await saveSettings({ ...get(), reminderPromptDismissed: true });
   },
 
   markOnboardingComplete: async () => {

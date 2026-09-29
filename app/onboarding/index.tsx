@@ -30,6 +30,7 @@ import { LeaderboardHero } from '../../src/components/onboarding/LeaderboardHero
 import { colors, spacing, typography } from '../../src/constants';
 import { useTranslation } from '../../src/i18n';
 import { logEvent } from '../../src/services/analytics';
+import { AFTER_INTRO_ROUTE } from '../../src/utils/onboarding';
 
 const { width } = Dimensions.get('window');
 
@@ -121,11 +122,11 @@ export default function OnboardingScreen() {
   };
 
   const handleSkip = () => {
-    router.replace('/onboarding/att');
+    router.replace(AFTER_INTRO_ROUTE);
   };
 
   const handleGetStarted = () => {
-    router.replace('/onboarding/att');
+    router.replace(AFTER_INTRO_ROUTE);
   };
 
   const isLastSlide = currentIndex === SLIDES.length - 1;

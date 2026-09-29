@@ -20,6 +20,7 @@ import { useTranslation } from '../../src/i18n';
 import { useAuthStore } from '../../src/stores/useAuthStore';
 import { useAppStore } from '../../src/stores/useAppStore';
 import { logEvent } from '../../src/services/analytics';
+import { finishOnboarding } from '../../src/utils/onboarding';
 import { SocialAuthButtons } from '../../src/components/auth/SocialAuthButtons';
 
 const LOGO_ICON_SVG = `<svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
@@ -96,7 +97,7 @@ export default function LoginScreen() {
 
     try {
       await login(email.trim(), password);
-      router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+      inOnboarding ? finishOnboarding() : router.replace('/(tabs)');
     } catch {
       // Error is already set in store
     }
@@ -113,7 +114,7 @@ export default function LoginScreen() {
             style={styles.backBtn}
             onPress={() => {
               logEvent('auth_skipped', { screen: 'login', via: 'close' });
-              router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+              inOnboarding ? finishOnboarding() : router.replace('/(tabs)');
             }}
           >
             <Ionicons name="close" size={24} color={colors.textSecondary} />
@@ -165,7 +166,7 @@ export default function LoginScreen() {
               try {
                 await loginWithApple();
                 if (useAuthStore.getState().user) {
-                  router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+                  inOnboarding ? finishOnboarding() : router.replace('/(tabs)');
                 }
               } catch {}
             }}
@@ -174,7 +175,7 @@ export default function LoginScreen() {
               try {
                 await loginWithGoogle();
                 if (useAuthStore.getState().user) {
-                  router.replace(inOnboarding ? '/onboarding/notifications' : '/(tabs)');
+                  inOnboarding ? finishOnboarding() : router.replace('/(tabs)');
                 }
               } catch {}
             }}
