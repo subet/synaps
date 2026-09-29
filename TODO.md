@@ -13,9 +13,14 @@
 - 2026-09-29: short description changed (Applyra data) from 「間隔反復（SM-2）で効率よく暗記。英検・TOEIC・古文単語の単語帳も。毎日の学習を習慣に。」 to 「英検・TOEIC・古文単語を効率よく覚える。英単語の暗記や試験対策を毎日の学習習慣に。」 — dropped unsearched 間隔/反復/SM, added 英単語 (96), 覚える (82), 対策 (82). Title and full description unchanged.
 - [ ] ~2026-10-13: compare Japan store listing visitors / installs (Play Console) for the 2 weeks before vs after. Don't change the listing again before then.
 
-# ASO — Google Play en-US (on hold, Murat 2026-09-29)
-- Current short description 「Smart Flashcards & Repetition」 uses 33/80 chars and repeats "flashcards" from the title. Proposed (80): 「Smart study decks for SAT prep, vocabulary & science. Build a daily study habit.」 — check demand for SAT / vocabulary with the Applyra MCP (`inspect_keyword`, `simulate_metadata`) before applying.
-- Bigger lever for US visibility: the app has no ratings yet → consider an in-app review prompt (e.g. after the 3rd finished session).
+# ASO — US (Applyra data, 2026-09-29)
+Strategy: our old US keywords (study, learn, memory, flashcards, habit) are "out of reach" (owned by far bigger apps). Target long-tail exam terms we actually have decks for — Applyra KEI "excellent": sat vocabulary (Play 52/32, iOS 46/31), sat math, mcat prep, mcat flashcards, vocabulary builder (Play only). Don't use "anki" anywhere in metadata (competitor name; Apple 2.3.7 / Play policy).
+- [x] Google Play en-US (2026-09-29): short description 「Smart Flashcards & Repetition」 → 「SAT vocabulary, SAT math & MCAT prep decks. Smart vocabulary builder for exams.」; long description line now "Study for SAT vocabulary & SAT math, MCAT prep, GCSE, YKS, …". Applyra sim: ASO health 64 → 70.
+- [ ] **App Store en-US with 1.0.11** (metadata is locked while 1.0.10 is in review): subtitle 「Study, Memorize & Learn Fast」 → 「SAT Vocabulary & MCAT Prep」; keywords field 「flashcards app,flashcards,spaced repetition,anki,flashcard maker,study tool,memory training,revision」 → 「math,anatomy,medical,terminology,spaced,repetition,gcse,exam,biology,chemistry,psychology,quiz,cards」 (100/100). Applyra sim: 55 → 61, targeting 36 → 48.
+- Tracked in Applyra on both US listings (baseline 2026-09-29: not in top 100 for any): sat vocabulary, sat math, sat prep, mcat prep, mcat flashcards, vocabulary builder, anatomy flashcards, medical terminology.
+- [ ] ~2026-10-13: check ranks (`get_keyword_rank_history`) and Play Console US listing visitors/installs.
+- Titles unchanged on purpose (brand + existing rank); revisit only after the above shows results.
+- Bigger lever still: no ratings yet → in-app review prompt (e.g. after the 3rd finished session).
 
 # RETENTION (2026-09-28)
 **Found 2026-09-29 (first 1.0.9 data): the app never auto-detected the device language** — the `'en'` default made the detection branch unreachable, so all Japanese devices ran in English and the Japan decks were hidden from Discover. Fixed for 1.0.10 (one-time re-detect for existing installs). Other first-day signals (9 real users): 3 of 8 who reached the notification-permission step left there without answering; 1 left on the sign-up screen; 0 real users studied a card. → 1.0.10 drops that step (reminder now asked after the first finished session — and it now really enables reminders; the old step never did), skips the iOS-only ATT screen on Android, and translates the hard-coded English privacy footer.
