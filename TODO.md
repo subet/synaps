@@ -1,3 +1,23 @@
+# NEXT UP (saved 2026-10-02 — read this first when Murat says "devam edelim")
+
+**Now → 2026-10-13: wait, don't touch store listings** (so the ASO changes can be measured).
+- Check iOS 1.0.10 (30) / Android 1.0.10 (20) went live (Android is live since 2026-09-29; iOS was in review).
+
+**~2026-10-13 — measure** (Applyra MCP + Play Console + PostHog):
+1. ASO ranks: `get_keyword_rank_history` for the tracked keywords — Play JP (571019), iOS JP (571021), Play US (208059), iOS US (208063), Play TR (571024), Play GB (571033). Baseline 2026-09-29: none in top 100 except iOS JP 古文単語 #37.
+2. Play Console: store-listing visitors / installs for JP, US, TR, GB — 2 weeks before vs after (JP short description changed 2026-09-29; US short+long; 11 new Play languages).
+3. PostHog (Activation & Drop-off dashboard 979791): effect of 1.0.10's language fix on Japanese users — `app_language` should now be `ja`; deck downloads, finished sessions, D1/D7 retention vs before; reminder prompt answers; first-run funnel.
+4. Decide the next ASO round from that (e.g. title changes, more markets) — then store listings may change again.
+
+**After 2026-10-23 (EAS build quota resets — no builds before) — release 1.0.11:**
+- Already in code: first-run tips, empty-home get-started card, in-app review prompt after the 3rd session.
+- Apply at iOS submission: US subtitle 「SAT Vocabulary & MCAT Prep」 + new keywords field; ja name 「Synaps：単語帳・暗記フラッシュカード」 + Japanese subtitle (simulate on 571021 first). Details in the ASO sections below.
+- Usual path: TestFlight + Play internal → Murat tests → submit; translate whatsNew for 10 App Store locales.
+
+**Open decisions for Murat:**
+- Remove the "Anki" comparison from all store descriptions? (see ASO — more markets)
+- Badge celebration popups use emoji icons (🔥 👣) — switch to Ionicons like the decks?
+
 # GOOGLE PLAY — release dashboard (seen on 1.0.9 / 19, 2026-09-28)
 - [x] **Done in 1.0.10:** DEX optimization/obfuscation was 3% (min 25%). Turn on R8 via `expo-build-properties` → `android.enableProguardInReleaseBuilds: true` (+ `enableShrinkResourcesInReleaseBuilds`), test the whole app on internal (RevenueCat, PostHog, Supabase, notifications), and upload `mapping.txt` to Play with each release (edits.deobfuscationfiles). Planned for 1.0.10.
 - [ ] Recommended: "deprecated edge-to-edge APIs" — not from our code (no status/nav bar colour calls in app/ or src/); comes from RN 0.81 / Expo SDK 54 internals, goes away with an Expo SDK upgrade.
