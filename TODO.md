@@ -14,9 +14,9 @@
 - Apply at iOS submission: US subtitle 「SAT Vocabulary & MCAT Prep」 + new keywords field; ja name 「Synaps：単語帳・暗記フラッシュカード」 + Japanese subtitle (simulate on 571021 first). Details in the ASO sections below.
 - Usual path: TestFlight + Play internal → Murat tests → submit; translate whatsNew for 10 App Store locales.
 
-**Open decisions for Murat:**
-- Remove the "Anki" comparison from all store descriptions? (see ASO — more markets)
-- Badge celebration popups use emoji icons (🔥 👣) — switch to Ionicons like the decks?
+**Decided by Murat (2026-10-02):**
+- "Anki" comparison in store descriptions: **keep it for now** — don't remove.
+- [ ] **Badge icons → Ionicons** (approved): the badge celebration popup and badge list use emoji (🔥 👣 …) — replace with Ionicons outline glyphs like the deck icons (rule in memory: no emoji/clipart icons). Code-only, ships with 1.0.11; do it at the start of the next session.
 
 # GOOGLE PLAY — release dashboard (seen on 1.0.9 / 19, 2026-09-28)
 - [x] **Done in 1.0.10:** DEX optimization/obfuscation was 3% (min 25%). Turn on R8 via `expo-build-properties` → `android.enableProguardInReleaseBuilds: true` (+ `enableShrinkResourcesInReleaseBuilds`), test the whole app on internal (RevenueCat, PostHog, Supabase, notifications), and upload `mapping.txt` to Play with each release (edits.deobfuscationfiles). Planned for 1.0.10.
@@ -46,7 +46,7 @@ Strategy: our old US keywords (study, learn, memory, flashcards, habit) are "out
 - [x] Google Play localised listings (were en-US + ja-JP only; other countries saw Play's machine translation with the English title): added tr-TR, en-GB, de-DE, fr-FR, es-ES, it-IT, pt-BR, pt-PT, ru-RU, zh-CN, nl-NL. Descriptions reuse the App Store localisations (es/it translated from the Play en-US text). tr-TR keeps the English title on purpose (Applyra: study/with/flashcards are searched in TR; Turkish title scored lower) with a YKS/TYT/AYT short description. en-GB: 「Synaps - GCSE Revision Cards」 + GCSE short description (Applyra sim 66 → 73). No per-language screenshots yet (fall back to en-US).
 - Applyra: added App Store JP (571021), Play TR (571024), Play GB (571033); 10 keywords tracked on each (JP: 単語帳, 暗記, 英単語, 英検, toeic, 古文単語, 暗記カード, フラッシュカード, 英検2級, toeic 単語 — 古文単語 already #37 on iOS; TR: yks, tyt, ayt, yks matematik, yks biyoloji, kelime ezberleme, ingilizce kelime, bilgi kartı, ezber, flashcard; GB: gcse maths/revision/flashcards, revision app, gcse maths revision, flashcards, anatomy flashcards, medical terminology, spaced repetition, vocabulary builder). Baseline 2026-09-29: none in top 100 except 古文単語.
 - [ ] **iOS ja name + subtitle are still English** (「Synaps: Flashcards & Memory」 / 「Study, Memorize & Learn Fast」) — the heaviest App Store field, so iOS JP can't rank for 単語帳/暗記/英単語. With 1.0.11 set ja name to 「Synaps：単語帳・暗記フラッシュカード」 (as on Play) and a Japanese subtitle (e.g. 「英検・TOEIC・古文単語の暗記カード」, ≤30) — check with `simulate_metadata` on app 571021 first.
-- [ ] Decide: every store description (all languages, both stores) compares us to "Anki" by name. Comparative mention, never flagged so far, but it is a competitor name (Apple 2.3.7 / Play metadata policy). Remove everywhere in one pass if Murat wants it gone.
+- Every store description (all languages, both stores) compares us to "Anki" by name — Murat decided 2026-10-02 to keep it for now.
 
 # RETENTION (2026-09-28)
 **Found 2026-09-29 (first 1.0.9 data): the app never auto-detected the device language** — the `'en'` default made the detection branch unreachable, so all Japanese devices ran in English and the Japan decks were hidden from Discover. Fixed for 1.0.10 (one-time re-detect for existing installs). Other first-day signals (9 real users): 3 of 8 who reached the notification-permission step left there without answering; 1 left on the sign-up screen; 0 real users studied a card. → 1.0.10 drops that step (reminder now asked after the first finished session — and it now really enables reminders; the old step never did), skips the iOS-only ATT screen on Android, and translates the hard-coded English privacy footer.
