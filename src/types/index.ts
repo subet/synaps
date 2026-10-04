@@ -157,6 +157,8 @@ export interface AppSettings {
   completedSessions?: number;
   /** The native store-review dialog has been requested once. */
   reviewRequested?: boolean;
+  /** Post-session paywall has been shown once — never show again. */
+  hasSeenPostSessionPaywall?: boolean;
 }
 
 // ─── Friends system ───────────────────────────────────────────────────────────

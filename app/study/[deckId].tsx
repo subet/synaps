@@ -248,6 +248,17 @@ function SessionComplete({
   const [celebrationBadge, setCelebrationBadge] = React.useState<typeof badges[number] | null>(null);
   const celebrationQueue = React.useRef<string[]>([]);
 
+  const { isPro } = useSubscriptionStore();
+  const { completedSessions, hasSeenPostSessionPaywall, markPostSessionPaywallSeen } = useAppStore();
+
+  // Show paywall once after the very first completed study session
+  useEffect(() => {
+    if (completedSessions === 1 && !isPro && !hasSeenPostSessionPaywall) {
+      markPostSessionPaywallSeen();
+      router.push('/paywall?source=session_complete');
+    }
+  }, []);
+
   const accuracy = result.cardsStudied > 0
     ? Math.round((result.cardsCorrect / result.cardsStudied) * 100)
     : 0;

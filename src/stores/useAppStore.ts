@@ -18,6 +18,7 @@ interface AppState extends AppSettings {
   markTipSeen: (id: string) => Promise<void>;
   recordCompletedSession: () => Promise<number>;
   markReviewRequested: () => Promise<void>;
+  markPostSessionPaywallSeen: () => Promise<void>;
   incrementFreeDownloads: () => Promise<void>;
   resetFreeDownloads: () => Promise<void>;
 }
@@ -100,6 +101,11 @@ export const useAppStore = create<AppState>((set, get) => ({
     await saveSettings({ ...get(), reviewRequested: true });
   },
 
+  markPostSessionPaywallSeen: async () => {
+    set({ hasSeenPostSessionPaywall: true });
+    await saveSettings({ ...get(), hasSeenPostSessionPaywall: true });
+  },
+
   markTipSeen: async (id) => {
     const seenTips = [...new Set([...(get().seenTips ?? []), id])];
     set({ seenTips });
@@ -126,10 +132,18 @@ export const useAppStore = create<AppState>((set, get) => ({
 
 async function saveSettings(settings: AppSettings): Promise<void> {
   try {
-    const { hasSeenOnboarding, language, notifications, freeDownloadsUsed, hapticsEnabled } = settings;
+    const {
+      hasSeenOnboarding, language, notifications, freeDownloadsUsed, hapticsEnabled,
+      languageExplicit, localeDetected, reminderPromptDismissed, seenTips,
+      completedSessions, reviewRequested, hasSeenPostSessionPaywall,
+    } = settings;
     await AsyncStorage.setItem(
       SETTINGS_KEY,
-      JSON.stringify({ hasSeenOnboarding, language, notifications, freeDownloadsUsed, hapticsEnabled })
+      JSON.stringify({
+        hasSeenOnboarding, language, notifications, freeDownloadsUsed, hapticsEnabled,
+        languageExplicit, localeDetected, reminderPromptDismissed, seenTips,
+        completedSessions, reviewRequested, hasSeenPostSessionPaywall,
+      })
     );
   } catch {
     // Silently fail — preferences are not critical

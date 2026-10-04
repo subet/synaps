@@ -60,7 +60,7 @@ interface PlanViewModel {
 
 export default function PaywallScreen() {
   const { t } = useTranslation();
-  const [selectedPlan, setSelectedPlan] = useState<PlanKey>('monthly');
+  const [selectedPlan, setSelectedPlan] = useState<PlanKey>('annual');
   const [iosEligibleIds, setIosEligibleIds] = useState<Set<string> | null>(null);
   const { offerings, loadOfferings, purchase, restore, isLoading, isPro, wasPro } = useSubscriptionStore();
   const { hasSeenOnboarding } = useAppStore();
@@ -204,9 +204,19 @@ export default function PaywallScreen() {
 
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerEmoji}>{isWinback ? '👋' : '⚡'}</Text>
-          <Text style={styles.title}>{isWinback ? t('winback_title') : t('unlock_pro')}</Text>
-          <Text style={styles.subtitle}>{isWinback ? t('winback_subtitle') : t('paywall_subtitle')}</Text>
+          <Text style={styles.headerEmoji}>
+            {source === 'session_complete' ? '🎉' : isWinback ? '👋' : '⚡'}
+          </Text>
+          <Text style={styles.title}>
+            {source === 'session_complete'
+              ? 'You completed your first study session!'
+              : isWinback ? t('winback_title') : t('unlock_pro')}
+          </Text>
+          <Text style={styles.subtitle}>
+            {source === 'session_complete'
+              ? 'Upgrade to Pro and keep your streak going.'
+              : isWinback ? t('winback_subtitle') : t('paywall_subtitle')}
+          </Text>
         </View>
 
         {/* Features */}
