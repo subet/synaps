@@ -30,7 +30,8 @@
         "ascAppId": "6761515969"
       },
       "android": {
-        "track": "internal"
+        "track": "internal",
+        "serviceAccountKeyPath": "/Volumes/AI-LAB/mrr-engine/.vault/keys/google-play-service-account.json"
       }
     }
   }
